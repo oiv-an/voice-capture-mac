@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 1,
+            "activePatchIndex": 2,
             "patches": [
                 {
                     "date": 1781523570765,
@@ -12,6 +12,10 @@
                 {
                     "date": 1781523586614,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,14 +7,12 @@\n // Защита от запуска второго экземпляра: если VoiceCapture уже работает —\n // два процесса конкурировали бы за хоткей и оба слали бы Cmd+V (нестабильная вставка).\n let bundleId = Bundle.main.bundleIdentifier ?? \"com.ivol.voicecapture\"\n let myPID = ProcessInfo.processInfo.processIdentifier\n-let running = NSWorkspace.shared.runningApplications.filter {\n+let others = NSWorkspace.shared.runningApplications.filter {\n     $0.bundleIdentifier == bundleId && $0.processIdentifier != myPID\n }\n-// Также проверяем по имени исполняемого файла (для запуска из .build без bundle id).\n-let sameName = NSRunningApplication.runningApplications(withBundleIdentifier: bundleId)\n-if !running.isEmpty || sameName.contains(where: { $0.processIdentifier != myPID }) {\n+if !others.isEmpty {\n     NSLog(\"[App] VoiceCapture уже запущен — выходим, чтобы не дублировать.\")\n     exit(0)\n }\n \n"
+                },
+                {
+                    "date": 1781526241944,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,21 +1,22 @@\n import AppKit\n+import Foundation\n \n let app = NSApplication.shared\n // Меню-бар приложение без иконки в Dock (как accessory).\n app.setActivationPolicy(.accessory)\n \n-// Защита от запуска второго экземпляра: если VoiceCapture уже работает —\n-// два процесса конкурировали бы за хоткей и оба слали бы Cmd+V (нестабильная вставка).\n-let bundleId = Bundle.main.bundleIdentifier ?? \"com.ivol.voicecapture\"\n-let myPID = ProcessInfo.processInfo.processIdentifier\n-let others = NSWorkspace.shared.runningApplications.filter {\n-    $0.bundleIdentifier == bundleId && $0.processIdentifier != myPID\n-}\n-if !others.isEmpty {\n-    NSLog(\"[App] VoiceCapture уже запущен — выходим, чтобы не дублировать.\")\n+// Защита от запуска второго экземпляра через файловый замок (flock).\n+// Работает при ЛЮБОМ способе запуска (.app, прямой бинарь, swift run),\n+// в отличие от проверки по bundleIdentifier.\n+// Два процесса конкурировали бы за хоткей и слали бы Cmd+V дважды.\n+let lockPath = NSTemporaryDirectory() + \"voicecapture.lock\"\n+let lockFD = open(lockPath, O_CREAT | O_RDWR, 0o644)\n+if lockFD == -1 || flock(lockFD, LOCK_EX | LOCK_NB) != 0 {\n+    NSLog(\"[App] VoiceCapture уже запущен (lock занят) — выходим.\")\n     exit(0)\n }\n+// lockFD держим открытым весь жизненный цикл процесса — замок снимется при выходе.\n \n let delegate = AppDelegate()\n app.delegate = delegate\n app.run()\n"
                 }
             ],
             "date": 1781523570765,

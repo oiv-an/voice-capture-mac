@@ -18,9 +18,8 @@ final class ClipboardManager {
         postCmdV()
     }
 
-    /// Отправить Cmd+V через CGEvent. Флаг Command ставим ТОЛЬКО на события V
-    /// (без отдельных нажатий клавиши Command — они вызывают «залипание» модификатора).
-    /// Между keyDown и keyUp — микропауза, чтобы приложение успело обработать.
+    /// Отправить Cmd+V через CGEvent. Флаг Command ставим на события V.
+    /// keyDown и keyUp шлём подряд без блокирующих пауз на главном потоке.
     private func postCmdV() {
         let vKey: CGKeyCode = 9  // "v"
         guard let src = CGEventSource(stateID: .combinedSessionState),
@@ -37,8 +36,11 @@ final class ClipboardManager {
 
         let loc: CGEventTapLocation = .cghidEventTap
         vDown.post(tap: loc)
-        usleep(20_000)  // 20 мс между down и up
-        vUp.post(tap: loc)
+        // keyUp с небольшой асинхронной задержкой (не блокируем главный поток),
+        // чтобы целевое приложение успело принять keyDown.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.03) {
+            vUp.post(tap: loc)
+        }
         NSLog("[Clipboard] Cmd+V отправлен (CGEvent)")
     }
 
