@@ -29,7 +29,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 NSLog("[App] Доступ к микрофону не предоставлен")
             }
         }
-        if !GlobalHotkeyMonitor.ensureAccessibilityPermission(prompt: true) {
+        // Проверяем доступ ТИХО (prompt: false), чтобы системное окно не выскакивало каждый запуск.
+        // Если доступа нет — покажем свою подсказку один раз.
+        if !GlobalHotkeyMonitor.ensureAccessibilityPermission(prompt: false) {
             showAccessibilityHint()
         }
 

@@ -76,9 +76,25 @@ cat > "$APP/Contents/Info.plist" <<PLIST
 </plist>
 PLIST
 
-# Ad-hoc подпись (чтобы macOS разрешил TCC-доступ к микрофону и Accessibility стабильно)
-echo "==> Codesign (ad-hoc)"
-codesign --force --deep --sign - "$APP" 2>/dev/null || echo "  (codesign пропущен)"
+# Ad-hoc подпись со СТАБИЛЬНЫМ идентификатором.
+# Без --deep и с явным --identifier — designated requirement привязывается к bundle id,
+# поэтому при пересборке TCC-доступ (Accessibility/Микрофон) НЕ слетает.
+echo "==> Codesign (ad-hoc, stable identifier)"
+# Явный designated requirement по identifier (а не по cdhash),
+# чтобы TCC опознавал приложение по bundle id и доступ не слетал при пересборке.
+REQ_FILE="$(mktemp)"
+cat > "$REQ_FILE" <<REQ
+designated => identifier "com.ivol.voicecapture"
+REQ
+codesign --force --sign - \
+  --identifier "com.ivol.voicecapture" \
+  -r "$REQ_FILE" \
+  "$APP/Contents/MacOS/$APP_NAME" || echo "  (codesign бинаря пропущен)"
+codesign --force --sign - \
+  --identifier "com.ivol.voicecapture" \
+  -r "$REQ_FILE" \
+  "$APP" || echo "  (codesign бандла пропущен)"
+rm -f "$REQ_FILE"
 
 echo ""
 echo "DONE: $APP"
