@@ -18,30 +18,55 @@ final class ClipboardManager {
         postCmdV()
     }
 
-    /// Отправить Cmd+V через CGEvent. Флаг Command ставим на события V.
-    /// keyDown и keyUp шлём подряд без блокирующих пауз на главном потоке.
+    /// Отправить Cmd+V через CGEvent ПОЛНОЙ последовательностью клавиш:
+    /// Cmd↓ → V↓ → V↑ → Cmd↑.
+    ///
+    /// Почему так: браузеры (Chrome/Safari/Electron) часто игнорируют
+    /// «V с выставленным flag .maskCommand», если перед этим не было
+    /// реального keyDown самой клавиши Command. Нативные Cocoa-поля
+    /// (редакторы) принимают и упрощённый вариант, поэтому раньше «через раз»
+    /// падало именно в браузере. Полная последовательность с явными
+    /// нажатием/отпусканием Command делает вставку стабильной везде.
+    ///
+    /// Все паузы — асинхронные (не блокируем главный поток).
     private func postCmdV() {
         let vKey: CGKeyCode = 9  // "v"
+        let cmdKey: CGKeyCode = 55  // left Command
+
         guard let src = CGEventSource(stateID: .combinedSessionState),
+            let cmdDown = CGEvent(keyboardEventSource: src, virtualKey: cmdKey, keyDown: true),
             let vDown = CGEvent(keyboardEventSource: src, virtualKey: vKey, keyDown: true),
-            let vUp = CGEvent(keyboardEventSource: src, virtualKey: vKey, keyDown: false)
+            let vUp = CGEvent(keyboardEventSource: src, virtualKey: vKey, keyDown: false),
+            let cmdUp = CGEvent(keyboardEventSource: src, virtualKey: cmdKey, keyDown: false)
         else {
             NSLog("[Clipboard] Не удалось создать CGEvent — пробую AppleScript")
             pasteViaAppleScript()
             return
         }
 
+        // Флаг Command держим выставленным на всех событиях, пока Command «нажат».
+        cmdDown.flags = .maskCommand
         vDown.flags = .maskCommand
         vUp.flags = .maskCommand
+        cmdUp.flags = .maskCommand
 
         let loc: CGEventTapLocation = .cghidEventTap
-        vDown.post(tap: loc)
-        // keyUp с небольшой асинхронной задержкой (не блокируем главный поток),
-        // чтобы целевое приложение успело принять keyDown.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.03) {
-            vUp.post(tap: loc)
+
+        // Cmd↓
+        cmdDown.post(tap: loc)
+        // V↓ через короткий зазор, чтобы цель успела «увидеть» зажатый Command.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.012) {
+            vDown.post(tap: loc)
+            // V↑
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.03) {
+                vUp.post(tap: loc)
+                // Cmd↑ — отпускаем модификатор в самом конце.
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.012) {
+                    cmdUp.post(tap: loc)
+                }
+            }
         }
-        NSLog("[Clipboard] Cmd+V отправлен (CGEvent)")
+        NSLog("[Clipboard] Cmd+V отправлен (CGEvent: Cmd↓ V↓ V↑ Cmd↑)")
     }
 
     /// Запасной механизм вставки через System Events (если CGEvent недоступен).
