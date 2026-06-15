@@ -1,0 +1,22 @@
+{
+    "sourceFile": "Sources/VoiceCapture/main.swift",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1781523570765,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1781523586614,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,14 +7,12 @@\n // Защита от запуска второго экземпляра: если VoiceCapture уже работает —\n // два процесса конкурировали бы за хоткей и оба слали бы Cmd+V (нестабильная вставка).\n let bundleId = Bundle.main.bundleIdentifier ?? \"com.ivol.voicecapture\"\n let myPID = ProcessInfo.processInfo.processIdentifier\n-let running = NSWorkspace.shared.runningApplications.filter {\n+let others = NSWorkspace.shared.runningApplications.filter {\n     $0.bundleIdentifier == bundleId && $0.processIdentifier != myPID\n }\n-// Также проверяем по имени исполняемого файла (для запуска из .build без bundle id).\n-let sameName = NSRunningApplication.runningApplications(withBundleIdentifier: bundleId)\n-if !running.isEmpty || sameName.contains(where: { $0.processIdentifier != myPID }) {\n+if !others.isEmpty {\n     NSLog(\"[App] VoiceCapture уже запущен — выходим, чтобы не дублировать.\")\n     exit(0)\n }\n \n"
+                }
+            ],
+            "date": 1781523570765,
+            "name": "Commit-0",
+            "content": "import AppKit\n\nlet app = NSApplication.shared\n// Меню-бар приложение без иконки в Dock (как accessory).\napp.setActivationPolicy(.accessory)\n\n// Защита от запуска второго экземпляра: если VoiceCapture уже работает —\n// два процесса конкурировали бы за хоткей и оба слали бы Cmd+V (нестабильная вставка).\nlet bundleId = Bundle.main.bundleIdentifier ?? \"com.ivol.voicecapture\"\nlet myPID = ProcessInfo.processInfo.processIdentifier\nlet running = NSWorkspace.shared.runningApplications.filter {\n    $0.bundleIdentifier == bundleId && $0.processIdentifier != myPID\n}\n// Также проверяем по имени исполняемого файла (для запуска из .build без bundle id).\nlet sameName = NSRunningApplication.runningApplications(withBundleIdentifier: bundleId)\nif !running.isEmpty || sameName.contains(where: { $0.processIdentifier != myPID }) {\n    NSLog(\"[App] VoiceCapture уже запущен — выходим, чтобы не дублировать.\")\n    exit(0)\n}\n\nlet delegate = AppDelegate()\napp.delegate = delegate\napp.run()\n\n"
+        }
+    ]
+}

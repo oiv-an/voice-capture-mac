@@ -192,8 +192,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
 
-        // Небольшая пауза, чтобы фокус гарантированно вернулся в целевое поле.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) { [weak self] in
+        // Небольшая пауза, чтобы фокус гарантированно вернулся в целевое поле
+        // и буфер обмена успел обновиться.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { [weak self] in
             self?.clipboard.paste()
         }
     }
