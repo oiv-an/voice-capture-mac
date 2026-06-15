@@ -1,0 +1,22 @@
+{
+    "sourceFile": ".vscode/launch.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1781502971825,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1781503468583,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,7 +18,27 @@\n             \"name\": \"Release VoiceCapture\",\n             \"target\": \"VoiceCapture\",\n             \"configuration\": \"release\",\n             \"preLaunchTask\": \"swift: Build Release VoiceCapture\"\n+        },\n+        {\n+            \"type\": \"swift\",\n+            \"request\": \"launch\",\n+            \"args\": [],\n+            \"cwd\": \"${workspaceFolder:VoiceCapture}\",\n+            \"name\": \"Debug Diag\",\n+            \"target\": \"Diag\",\n+            \"configuration\": \"debug\",\n+            \"preLaunchTask\": \"swift: Build Debug Diag\"\n+        },\n+        {\n+            \"type\": \"swift\",\n+            \"request\": \"launch\",\n+            \"args\": [],\n+            \"cwd\": \"${workspaceFolder:VoiceCapture}\",\n+            \"name\": \"Release Diag\",\n+            \"target\": \"Diag\",\n+            \"configuration\": \"release\",\n+            \"preLaunchTask\": \"swift: Build Release Diag\"\n         }\n     ]\n }\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1781502971825,
+            "name": "Commit-0",
+            "content": "{\n    \"configurations\": [\n        {\n            \"type\": \"swift\",\n            \"request\": \"launch\",\n            \"args\": [],\n            \"cwd\": \"${workspaceFolder:VoiceCapture}\",\n            \"name\": \"Debug VoiceCapture\",\n            \"target\": \"VoiceCapture\",\n            \"configuration\": \"debug\",\n            \"preLaunchTask\": \"swift: Build Debug VoiceCapture\"\n        },\n        {\n            \"type\": \"swift\",\n            \"request\": \"launch\",\n            \"args\": [],\n            \"cwd\": \"${workspaceFolder:VoiceCapture}\",\n            \"name\": \"Release VoiceCapture\",\n            \"target\": \"VoiceCapture\",\n            \"configuration\": \"release\",\n            \"preLaunchTask\": \"swift: Build Release VoiceCapture\"\n        }\n    ]\n}"
+        }
+    ]
+}

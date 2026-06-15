@@ -1,0 +1,22 @@
+{
+    "sourceFile": "Package.swift",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1781503466613,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1781504682014,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -33,15 +33,6 @@\n                 .linkedFramework(\"Carbon\"),\n                 .linkedFramework(\"Accelerate\"),\n             ]\n         ),\n-        .executableTarget(\n-            name: \"Diag\",\n-            dependencies: [\"CWhisper\"],\n-            path: \"Sources/Diag\",\n-            linkerSettings: [\n-                .linkedFramework(\"AVFoundation\"),\n-                .linkedFramework(\"Accelerate\"),\n-            ]\n-        ),\n     ]\n )\n"
+                }
+            ],
+            "date": 1781503466613,
+            "name": "Commit-0",
+            "content": "// swift-tools-version:5.9\nimport PackageDescription\n\nlet package = Package(\n    name: \"VoiceCapture\",\n    platforms: [\n        .macOS(.v13)\n    ],\n    targets: [\n        // C-обёртка над собранной статической библиотекой whisper.cpp.\n        // Заголовки лежат в Vendor/install/include, либа — в Vendor/install/lib.\n        .target(\n            name: \"CWhisper\",\n            path: \"Sources/CWhisper\",\n            linkerSettings: [\n                .unsafeFlags([\n                    \"-LVendor/install/lib\",\n                    \"-lwhisper_combined\",\n                    \"-lc++\"\n                ]),\n                .linkedFramework(\"Accelerate\"),\n                .linkedFramework(\"Foundation\")\n            ]\n        ),\n        .executableTarget(\n            name: \"VoiceCapture\",\n            dependencies: [\"CWhisper\"],\n            path: \"Sources/VoiceCapture\",\n            linkerSettings: [\n                .linkedFramework(\"AppKit\"),\n                .linkedFramework(\"AVFoundation\"),\n                .linkedFramework(\"CoreGraphics\"),\n                .linkedFramework(\"Carbon\"),\n                .linkedFramework(\"Accelerate\")\n            ]\n        ),\n        .executableTarget(\n            name: \"Diag\",\n            dependencies: [\"CWhisper\"],\n            path: \"Sources/Diag\",\n            linkerSettings: [\n                .linkedFramework(\"AVFoundation\"),\n                .linkedFramework(\"Accelerate\")\n            ]\n        )\n    ]\n)\n"
+        }
+    ]
+}

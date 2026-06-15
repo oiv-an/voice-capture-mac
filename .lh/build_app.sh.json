@@ -1,0 +1,18 @@
+{
+    "sourceFile": "build_app.sh",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1781512718643,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1781512718643,
+            "name": "Commit-0",
+            "content": "#!/usr/bin/env bash\n#\n# build_app.sh — собирает VoiceCapture.app (macOS application bundle).\n#\n# Шаги:\n#   1) собирает whisper.cpp (если либы ещё нет)\n#   2) swift build -c release\n#   3) упаковывает бинарник в dist/VoiceCapture.app с Info.plist\n#\nset -euo pipefail\n\nROOT=\"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")\" && pwd)\"\nAPP_NAME=\"VoiceCapture\"\nDIST=\"$ROOT/dist\"\nAPP=\"$DIST/$APP_NAME.app\"\nVERSION=\"3.0.0\"\n\n# 1) whisper.cpp\nif [[ ! -f \"$ROOT/Vendor/install/lib/libwhisper_combined.a\" ]]; then\n  echo \"==> Building whisper.cpp...\"\n  bash \"$ROOT/build_whisper.sh\"\nfi\n\n# 2) Swift release build\necho \"==> swift build -c release\"\nswift build -c release\n\nBIN=\"$ROOT/.build/release/$APP_NAME\"\nif [[ ! -f \"$BIN\" ]]; then\n  echo \"ERROR: бинарник не найден: $BIN\"\n  exit 1\nfi\n\n# 3) Сборка .app bundle\necho \"==> Packaging $APP\"\nrm -rf \"$APP\"\nmkdir -p \"$APP/Contents/MacOS\"\nmkdir -p \"$APP/Contents/Resources\"\n\ncp \"$BIN\" \"$APP/Contents/MacOS/$APP_NAME\"\nchmod +x \"$APP/Contents/MacOS/$APP_NAME\"\n\ncat > \"$APP/Contents/Info.plist\" <<PLIST\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n<plist version=\"1.0\">\n<dict>\n    <key>CFBundleName</key>\n    <string>$APP_NAME</string>\n    <key>CFBundleDisplayName</key>\n    <string>VoiceCapture</string>\n    <key>CFBundleIdentifier</key>\n    <string>com.ivol.voicecapture</string>\n    <key>CFBundleVersion</key>\n    <string>$VERSION</string>\n    <key>CFBundleShortVersionString</key>\n    <string>$VERSION</string>\n    <key>CFBundleExecutable</key>\n    <string>$APP_NAME</string>\n    <key>CFBundlePackageType</key>\n    <string>APPL</string>\n    <key>LSMinimumSystemVersion</key>\n    <string>13.0</string>\n    <!-- Меню-бар приложение без иконки в Dock -->\n    <key>LSUIElement</key>\n    <true/>\n    <!-- Доступ к микрофону -->\n    <key>NSMicrophoneUsageDescription</key>\n    <string>VoiceCapture использует микрофон для записи речи и преобразования её в текст.</string>\n    <!-- Apple Events (System Events) — для авто-вставки Cmd+V -->\n    <key>NSAppleEventsUsageDescription</key>\n    <string>VoiceCapture отправляет Cmd+V в активное приложение для авто-вставки распознанного текста.</string>\n    <key>NSHighResolutionCapable</key>\n    <true/>\n</dict>\n</plist>\nPLIST\n\n# Ad-hoc подпись (чтобы macOS разрешил TCC-доступ к микрофону и Accessibility стабильно)\necho \"==> Codesign (ad-hoc)\"\ncodesign --force --deep --sign - \"$APP\" 2>/dev/null || echo \"  (codesign пропущен)\"\n\necho \"\"\necho \"DONE: $APP\"\necho \"Запуск:  open \\\"$APP\\\"\"\n"
+        }
+    ]
+}

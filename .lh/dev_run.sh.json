@@ -1,0 +1,18 @@
+{
+    "sourceFile": "dev_run.sh",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1781505681508,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1781505681508,
+            "name": "Commit-0",
+            "content": "#!/bin/bash\n# Быстрый запуск для разработки/отладки (без сборки .app).\n# Хоткеи работают сразу, без клика по меню-бару (polling модификаторов).\n# Логи пишутся в консоль. Ctrl+C для остановки.\nset -e\n\necho \"[dev] Сборка...\"\nswift build --product VoiceCapture 2>&1 | grep -vE \"ld: warning\" | grep -iE \"error|complete\" || true\n\n# Убиваем старый процесс, если завис\npkill -f \".build/debug/VoiceCapture\" 2>/dev/null || true\nsleep 0.3\n\necho \"[dev] Запуск. Зажми ⌘⌃ и говори. Ctrl+C для выхода.\"\nexec .build/debug/VoiceCapture\n"
+        }
+    ]
+}

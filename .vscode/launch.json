@@ -1,0 +1,44 @@
+{
+  "configurations": [
+    {
+      "type": "swift",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:VoiceCapture}",
+      "name": "Debug VoiceCapture",
+      "target": "VoiceCapture",
+      "configuration": "debug",
+      "preLaunchTask": "swift: Build Debug VoiceCapture"
+    },
+    {
+      "type": "swift",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:VoiceCapture}",
+      "name": "Release VoiceCapture",
+      "target": "VoiceCapture",
+      "configuration": "release",
+      "preLaunchTask": "swift: Build Release VoiceCapture"
+    },
+    {
+      "type": "swift",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:VoiceCapture}",
+      "name": "Debug Diag",
+      "target": "Diag",
+      "configuration": "debug",
+      "preLaunchTask": "swift: Build Debug Diag"
+    },
+    {
+      "type": "swift",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:VoiceCapture}",
+      "name": "Release Diag",
+      "target": "Diag",
+      "configuration": "release",
+      "preLaunchTask": "swift: Build Release Diag"
+    }
+  ]
+}

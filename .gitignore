@@ -1,0 +1,26 @@
+# Swift / SwiftPM
+.build/
+.swiftpm/
+*.xcodeproj
+DerivedData/
+
+# Vendor build artifacts
+Vendor/whisper.cpp/build/
+Vendor/install/
+Vendor/.obj/
+
+# App bundle output
+dist/
+*.app
+
+# Models (large, downloaded separately)
+Models/*.bin
+
+# macOS
+.DS_Store
+
+# Local config with secrets (Groq API key etc.)
+*.local.json
+
+# Logs
+*.log

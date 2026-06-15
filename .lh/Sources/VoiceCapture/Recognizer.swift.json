@@ -1,0 +1,18 @@
+{
+    "sourceFile": "Sources/VoiceCapture/Recognizer.swift",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1781510535252,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1781510535252,
+            "name": "Commit-0",
+            "content": "import Foundation\n\n/// Общий протокол распознавателя речи.\nprotocol Recognizer {\n    /// Принимает float-сэмплы (16kHz mono) и возвращает текст.\n    func transcribe(samples: [Float]) throws -> String\n\n    /// Предзагрузка/прогрев (опционально). Для локальной модели — загрузка в память заранее.\n    func prewarm()\n}\n\nextension Recognizer {\n    func prewarm() {}\n}\n\nenum RecognizerError: LocalizedError {\n    case modelNotFound(String)\n    case modelLoadFailed\n    case inferenceFailed\n    case emptyAudio\n    case network(String)\n    case http(Int, String)\n    case missingApiKey\n\n    var errorDescription: String? {\n        switch self {\n        case .modelNotFound(let p): return \"Модель не найдена: \\(p). Скачайте её (см. README / кнопку в настройках).\"\n        case .modelLoadFailed:      return \"Не удалось загрузить модель whisper.\"\n        case .inferenceFailed:      return \"Ошибка распознавания (whisper).\"\n        case .emptyAudio:           return \"Пустая запись — нечего распознавать.\"\n        case .network(let m):       return \"Сетевая ошибка: \\(m)\"\n        case .http(let c, let m):   return \"Ошибка сервера (\\(c)): \\(m)\"\n        case .missingApiKey:        return \"Не задан Groq API-ключ в настройках.\"\n        }\n    }\n}\n\n"
+        }
+    ]
+}
