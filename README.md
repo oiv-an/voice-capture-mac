@@ -16,15 +16,41 @@
 
 ---
 
+## 🚀 Быстрый старт (скачать готовое приложение)
+
+Не хочешь собирать из исходников? Скачай готовый `.app`:
+
+1. **Скачай** последний релиз → [Releases](https://github.com/oiv-an/voice-capture-mac/releases/latest)
+   (файл `VoiceCapture-3.0-macOS-arm64.zip`, ~0.5 МБ — модель скачивается отдельно).
+2. **Распакуй** и перетащи `VoiceCapture.app` в папку `Программы` (`/Applications`).
+3. **Сними карантин** (приложение подписано ad-hoc, без Apple Developer ID):
+   ```bash
+   xattr -dr com.apple.quarantine /Applications/VoiceCapture.app
+   ```
+   Или: правый клик по приложению → **«Открыть»** → **«Открыть»** (один раз).
+4. **Скачай модель** large-v3 (~3.1 ГБ) — один раз:
+   ```bash
+   mkdir -p ~/Library/Application\ Support/VoiceCapture/Models
+   curl -L --progress-bar \
+     -o ~/Library/Application\ Support/VoiceCapture/Models/ggml-large-v3.bin \
+     https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3.bin
+   ```
+5. **Запусти**, выдай права (Микрофон + Универсальный доступ — см. раздел 4),
+   зажми **⌘ + ⌃** и говори.
+
+> Бинарь собран под **Apple Silicon (arm64)**. На Intel-Mac собирай из исходников (раздел 3).
+
+---
+
 ## 1. Требования
 
-| Требование             | Значение                                                        |
-| ---------------------- | --------------------------------------------------------------- |
-| **macOS**              | 13.0 (Ventura) или новее                                        |
-| **Процессор**          | Apple Silicon (M1+) или Intel x86_64                            |
-| **Xcode / Toolchain**  | Xcode 15+ (нужен `swift` 5.9+ и `clang++`). Хватает Command Line Tools |
-| **Свободное место**    | ~3.5 ГБ (модель large-v3 ≈ 3.1 ГБ + бинарь/либы)               |
-| **Права доступа**      | Микрофон + Accessibility (Универсальный доступ)                 |
+| Требование            | Значение                                                               |
+| --------------------- | ---------------------------------------------------------------------- |
+| **macOS**             | 13.0 (Ventura) или новее                                               |
+| **Процессор**         | Apple Silicon (M1+) или Intel x86_64                                   |
+| **Xcode / Toolchain** | Xcode 15+ (нужен `swift` 5.9+ и `clang++`). Хватает Command Line Tools |
+| **Свободное место**   | ~3.5 ГБ (модель large-v3 ≈ 3.1 ГБ + бинарь/либы)                       |
+| **Права доступа**     | Микрофон + Accessibility (Универсальный доступ)                        |
 
 Проверь наличие тулчейна:
 
@@ -49,7 +75,7 @@ xcode-select --install
 ### 2.1. Клонирование
 
 ```bash
-git clone <URL_РЕПОЗИТОРИЯ> VoiceCapture
+git clone https://github.com/oiv-an/voice-capture-mac.git VoiceCapture
 cd VoiceCapture
 ```
 
