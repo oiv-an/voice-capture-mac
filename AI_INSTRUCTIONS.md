@@ -120,11 +120,12 @@ open dist/VoiceCapture.app
 ## 7. Хранение настроек
 
 `~/Library/Application Support/VoiceCapture/settings.json` (Codable `AppSettings`):
-- `backend`: `local` | `groq`
+- `backend`: `local` | `groq` | `both`
 - `localModel`: имя файла модели (напр. `ggml-large-v3.bin`)
 - `language`: `ru` | `en` | `auto`
 - `groqApiKey`, `groqModel`
 - `autoPaste`: bool
+- Режим `both` — «совместный» (третий пункт в выпадающем списке «Распознавание»). Стратегия: сразу шлём Groq (обычно мгновенный); если за 2 секунды Groq не дал результат — параллельно запускаем локальный whisper, дальше гонка. Побеждает первый успешный непустой результат. Если Groq провалился раньше 2с — Local подключается немедленно. Так CPU в большинстве случаев не дёргаем. Работает только если задан Groq-ключ И скачана локальная модель (`parallelRaceApplicable`). Реализация — `AppDelegate.runParallel(...)` (NSLock + флаги settled/localStarted, очередь `raceQueue` concurrent, `localDelay=2.0`). prompt (`initialPrompt`) передаётся И в whisper.cpp, И в Groq (поле `prompt` в multipart). В окне настроек в этом режиме доступны И Groq-поля, И локальная модель.
 - `hotkeyRequiresCommand/Control/Option/Shift`: какие модификаторы держать
 
 ---

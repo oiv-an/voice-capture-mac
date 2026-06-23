@@ -4,11 +4,13 @@ import Foundation
 enum RecognitionBackend: String, Codable, CaseIterable {
     case local  // whisper.cpp локально (по умолчанию)
     case groq  // облачный Groq Whisper
+    case both  // параллельно Local + Groq, кто первый — тот и победил
 
     var displayName: String {
         switch self {
         case .local: return "Локально (whisper.cpp)"
         case .groq: return "Groq (облако)"
+        case .both: return "Совместно (Groq + Local — кто первый)"
         }
     }
 }
@@ -118,5 +120,13 @@ struct AppSettings: Codable {
     /// Полный путь к выбранной локальной модели.
     var localModelURL: URL {
         AppSettings.modelsDirectory.appendingPathComponent(localModel)
+    }
+
+    /// Применим ли совместный режим: выбран backend `.both` И есть Groq-ключ И скачана локальная модель.
+    var parallelRaceApplicable: Bool {
+        guard backend == .both else { return false }
+        let hasKey = !groqApiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        let hasModel = FileManager.default.fileExists(atPath: localModelURL.path)
+        return hasKey && hasModel
     }
 }

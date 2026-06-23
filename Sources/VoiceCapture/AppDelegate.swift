@@ -14,10 +14,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var isProcessing = false
     private let workQueue = DispatchQueue(label: "voicecapture.work", qos: .userInitiated)
     private let prewarmQueue = DispatchQueue(label: "voicecapture.prewarm", qos: .utility)
+    // Параллельная очередь для гонки (Local + Groq одновременно на разных потоках).
+    private let raceQueue = DispatchQueue(
+        label: "voicecapture.race", qos: .userInitiated, attributes: .concurrent)
 
     // Кэш распознавателя, чтобы тяжёлая модель (large-v3 ~3 ГБ) грузилась один раз, а не на каждое нажатие.
     private var cachedRecognizer: Recognizer?
     private var cachedRecognizerKey: String?
+
+    // Отдельный кэш локального распознавателя для параллельного режима
+    // (чтобы large-v3 не перезагружалась на каждое нажатие).
+    private var cachedLocalRecognizer: LocalWhisperRecognizer?
+    private var cachedLocalKey: String?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         setupMenuBar()
@@ -41,6 +49,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func prewarmRecognizer() {
         let s = settings
+        // Прогреваем локальную модель, если она используется напрямую ИЛИ в параллельном режиме.
+        if s.parallelRaceApplicable {
+            let r = makeLocalRecognizer(s)
+            prewarmQueue.async {
+                NSLog("[App] Прогрев модели (параллельный режим) в фоне…")
+                r.prewarm()
+                NSLog("[App] Модель готова к работе")
+            }
+            return
+        }
         guard s.backend == .local else { return }
         // Создаём recognizer СИНХРОННО на главном потоке (запись в кэш без гонки),
         // а тяжёлую загрузку модели делаем в отдельной фоновой очереди.
@@ -139,6 +157,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 90, execute: watchdog)
 
         let currentSettings = settings
+
+        // Параллельный режим («гонка»): Groq + Local одновременно, кто первый — тот и победил.
+        if currentSettings.parallelRaceApplicable {
+            runParallel(samples: samples, settings: currentSettings, watchdog: watchdog)
+            return
+        }
+
         // recognizer берём здесь, на главном потоке (без гонки за кэш).
         let recognizer = makeRecognizer(currentSettings)
         workQueue.async { [weak self] in
@@ -160,14 +185,119 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    private func handleResult(_ text: String, settings: AppSettings) {
+    // MARK: - Совместный режим (Groq сразу, Local с задержкой как страховка)
+
+    /// Стратегия: сразу шлём Groq (обычно мгновенный). Если за `localDelay` секунд
+    /// Groq не вернул результат — параллельно запускаем локальный whisper, и дальше гонка.
+    /// Побеждает первый успешный непустой результат. Так в большинстве случаев CPU не дёргаем.
+    private func runParallel(samples: [Float], settings: AppSettings, watchdog: DispatchWorkItem) {
+        let localDelay: TimeInterval = 2.0
+
+        let groq = GroqRecognizer(
+            apiKey: settings.groqApiKey, model: settings.groqModel, language: settings.language,
+            prompt: settings.initialPrompt)
+
+        let lock = NSLock()
+        var settled = false  // победитель уже определён
+        var groqDone = false  // Groq завершился (успех или провал)
+        var localStarted = false  // локальный движок уже запущен
+        var groqFailed = false  // Groq завершился без результата
+
+        // Принимает результат от движка. Возвращает обработку победы/провала.
+        func accept(_ text: String?, _ name: String) {
+            lock.lock()
+            let isWinner = !settled && (text?.isEmpty == false)
+            if isWinner { settled = true }
+            lock.unlock()
+
+            if isWinner, let text = text {
+                NSLog("[Race] Победил: \(name)")
+                DispatchQueue.main.async {
+                    watchdog.cancel()
+                    self.handleResult(text, settings: settings, source: name)
+                }
+            }
+        }
+
+        // Запуск локального движка (страховка). Вызывается из таймера или при провале Groq.
+        func startLocalIfNeeded(reason: String) {
+            lock.lock()
+            if settled || localStarted {
+                lock.unlock()
+                return
+            }
+            localStarted = true
+            lock.unlock()
+
+            NSLog("[Race] Запуск Local (\(reason))…")
+            let local = self.makeLocalRecognizer(settings)
+            self.raceQueue.async {
+                let t = try? local.transcribe(samples: samples)
+                accept(t, "Local")
+                // Если оба отработали без результата — показываем ошибку.
+                lock.lock()
+                let bothFailed = self.boolAnd(!settled, groqDone, (t?.isEmpty != false))
+                lock.unlock()
+                if bothFailed {
+                    NSLog("[Race] Оба движка не дали результата")
+                    DispatchQueue.main.async {
+                        watchdog.cancel()
+                        self.isProcessing = false
+                        self.statusUI.show(.error("Распознавание не дало результата"))
+                    }
+                }
+            }
+        }
+
+        // 1) Groq — сразу.
+        NSLog("[Race] Старт Groq…")
+        raceQueue.async {
+            let t = try? groq.transcribe(samples: samples)
+            lock.lock()
+            groqDone = true
+            groqFailed = (t?.isEmpty != false)
+            lock.unlock()
+            accept(t, "Groq")
+            // Groq провалился раньше таймера — сразу подключаем Local.
+            if groqFailed {
+                startLocalIfNeeded(reason: "Groq не дал результата")
+            }
+        }
+
+        // 2) Таймер: через localDelay секунд, если Groq ещё не победил — запускаем Local.
+        raceQueue.asyncAfter(deadline: .now() + localDelay) {
+            startLocalIfNeeded(reason: "Groq тупит > \(Int(localDelay))с")
+        }
+    }
+
+    /// Хелпер: логическое И трёх условий (для читаемости под локом).
+    private func boolAnd(_ a: Bool, _ b: Bool, _ c: Bool) -> Bool { a && b && c }
+
+    /// Создаёт/переиспользует локальный распознаватель (отдельный кэш для параллельного режима).
+    private func makeLocalRecognizer(_ s: AppSettings) -> LocalWhisperRecognizer {
+        let key = "local|\(s.localModel)|\(s.language)|\(s.initialPrompt)"
+        if let cached = cachedLocalRecognizer, cachedLocalKey == key {
+            return cached
+        }
+        let r = LocalWhisperRecognizer(
+            modelURL: s.localModelURL, language: s.language, initialPrompt: s.initialPrompt)
+        cachedLocalRecognizer = r
+        cachedLocalKey = key
+        return r
+    }
+
+    private func handleResult(_ text: String, settings: AppSettings, source: String? = nil) {
         isProcessing = false
         guard !text.isEmpty else {
             NSLog("[App] Пустой результат распознавания")
             statusUI.show(.error("Пустой результат"))
             return
         }
-        NSLog("[App] РЕЗУЛЬТАТ: \(text)")
+        if let source = source {
+            NSLog("[App] РЕЗУЛЬТАТ (\(source)): \(text)")
+        } else {
+            NSLog("[App] РЕЗУЛЬТАТ: \(text)")
+        }
         clipboard.copy(text)
         statusUI.show(.done(text))
         if settings.autoPaste {
@@ -203,7 +333,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         // Ключ кэша: backend + модель/язык/промпт. Если те же — переиспользуем загруженную модель.
         let key: String
         switch s.backend {
-        case .local: key = "local|\(s.localModel)|\(s.language)|\(s.initialPrompt)"
+        case .local, .both: key = "local|\(s.localModel)|\(s.language)|\(s.initialPrompt)"
         case .groq: key = "groq|\(s.groqModel)|\(s.language)"
         }
 
@@ -213,12 +343,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         let recognizer: Recognizer
         switch s.backend {
-        case .local:
+        case .local, .both:
             recognizer = LocalWhisperRecognizer(
                 modelURL: s.localModelURL, language: s.language, initialPrompt: s.initialPrompt)
         case .groq:
             recognizer = GroqRecognizer(
-                apiKey: s.groqApiKey, model: s.groqModel, language: s.language)
+                apiKey: s.groqApiKey, model: s.groqModel, language: s.language,
+                prompt: s.initialPrompt)
         }
         cachedRecognizer = recognizer
         cachedRecognizerKey = key
@@ -236,6 +367,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             // Настройки изменились — сбрасываем кэш распознавателя (модель/язык могли поменяться).
             self.cachedRecognizer = nil
             self.cachedRecognizerKey = nil
+            self.cachedLocalRecognizer = nil
+            self.cachedLocalKey = nil
+            // Перепрогреваем модель под новые настройки (актуально и для параллельного режима).
+            self.prewarmRecognizer()
         }
         self.settingsWC = wc
         wc.showWindow(nil)

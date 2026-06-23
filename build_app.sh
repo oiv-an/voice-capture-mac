@@ -98,4 +98,11 @@ rm -f "$REQ_FILE"
 
 echo ""
 echo "DONE: $APP"
-echo "Запуск:  open \"$APP\""
+
+# 4) Перезапуск приложения: убиваем старый процесс и открываем свежий билд.
+echo "==> Перезапуск приложения"
+pkill -x "$APP_NAME" 2>/dev/null || true
+pkill -f "$APP/Contents/MacOS/$APP_NAME" 2>/dev/null || true
+sleep 0.5
+open "$APP"
+echo "Запущено: $APP"

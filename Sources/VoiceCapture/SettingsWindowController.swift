@@ -29,7 +29,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         self.onSave = onSave
 
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 500, height: 520),
+            contentRect: NSRect(x: 0, y: 0, width: 500, height: 560),
             styleMask: [.titled, .closable],
             backing: .buffered,
             defer: false
@@ -47,7 +47,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     private func buildUI() {
         guard let content = window?.contentView else { return }
 
-        var y: CGFloat = 470
+        var y: CGFloat = 510
 
         func addRow(_ title: String, _ control: NSView, height: CGFloat = 26) {
             let label = NSTextField(labelWithString: title)
@@ -178,13 +178,17 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     @objc private func modelChanged() { updateModelStatus() }
 
     private func updateEnabled() {
-        let isLocal = backendPopup.indexOfSelectedItem == 0
-        modelPopup.isEnabled = isLocal
-        downloadButton.isEnabled = isLocal
-        promptTextView.isEditable = isLocal
-        promptTextView.isSelectable = isLocal
-        groqKeyField.isEnabled = !isLocal
-        groqModelField.isEnabled = !isLocal
+        // 0 = Локально, 1 = Groq, 2 = Совместно (.both).
+        let idx = backendPopup.indexOfSelectedItem
+        let localOn = idx == 0 || idx == 2  // локальные поля нужны для Local и Совместно
+        let groqOn = idx == 1 || idx == 2  // Groq-поля нужны для Groq и Совместно
+
+        modelPopup.isEnabled = localOn
+        downloadButton.isEnabled = localOn
+        promptTextView.isEditable = localOn
+        promptTextView.isSelectable = localOn
+        groqKeyField.isEnabled = groqOn
+        groqModelField.isEnabled = groqOn
     }
 
     private func updateModelStatus() {

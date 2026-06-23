@@ -21,6 +21,9 @@ Models/*.bin
 
 # Local config with secrets (Groq API key etc.)
 *.local.json
+settings.json
+secrets/
+*.secret
 
 # Logs
 *.log
