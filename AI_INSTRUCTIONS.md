@@ -125,6 +125,7 @@ open dist/VoiceCapture.app
 - `language`: `ru` | `en` | `auto`
 - `groqApiKey`, `groqModel`
 - `autoPaste`: bool
+- `localStartDelay`: Double (сек) — задержка перед запуском локального whisper в режиме `both` (дефолт 2.0, настраивается в UI, кламп 0…10). Декодирование настроек устойчиво к отсутствующим ключам (кастомный `init(from:)` с `decodeIfPresent ?? default`) — добавление новых полей не сбрасывает settings.json.
 - Режим `both` — «совместный» (третий пункт в выпадающем списке «Распознавание»). Стратегия: сразу шлём Groq (обычно мгновенный); если за 2 секунды Groq не дал результат — параллельно запускаем локальный whisper, дальше гонка. Побеждает первый успешный непустой результат. Если Groq провалился раньше 2с — Local подключается немедленно. Так CPU в большинстве случаев не дёргаем. Работает только если задан Groq-ключ И скачана локальная модель (`parallelRaceApplicable`). Реализация — `AppDelegate.runParallel(...)` (NSLock + флаги settled/localStarted, очередь `raceQueue` concurrent, `localDelay=2.0`). prompt (`initialPrompt`) передаётся И в whisper.cpp, И в Groq (поле `prompt` в multipart). В окне настроек в этом режиме доступны И Groq-поля, И локальная модель.
 - `hotkeyRequiresCommand/Control/Option/Shift`: какие модификаторы держать
 

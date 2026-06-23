@@ -69,6 +69,10 @@ struct AppSettings: Codable {
     /// Автоматически вставлять распознанный текст (Cmd+V) после копирования
     var autoPaste: Bool = true
 
+    /// Совместный режим: задержка (сек) перед запуском локального whisper.
+    /// Если Groq не ответил за это время — параллельно стартует Local. Дефолт 2.0.
+    var localStartDelay: Double = 2.0
+
     // --- Хоткей (hold-to-talk) ---
     /// Требуемые модификаторы для записи. По умолчанию Cmd+Ctrl.
     var hotkeyRequiresCommand: Bool = true
@@ -77,6 +81,44 @@ struct AppSettings: Codable {
     var hotkeyRequiresShift: Bool = false
 
     static let appName = "VoiceCapture"
+
+    // MARK: - Codable (устойчивое декодирование: отсутствующие ключи → дефолты)
+
+    init() {}
+
+    private enum CodingKeys: String, CodingKey {
+        case backend, localModel, language, initialPrompt
+        case groqApiKey, groqModel, autoPaste, localStartDelay
+        case hotkeyRequiresCommand, hotkeyRequiresControl
+        case hotkeyRequiresOption, hotkeyRequiresShift
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        let d = AppSettings()
+        backend = (try? c.decodeIfPresent(RecognitionBackend.self, forKey: .backend)) ?? d.backend
+        localModel = (try? c.decodeIfPresent(String.self, forKey: .localModel)) ?? d.localModel
+        language = (try? c.decodeIfPresent(String.self, forKey: .language)) ?? d.language
+        initialPrompt =
+            (try? c.decodeIfPresent(String.self, forKey: .initialPrompt)) ?? d.initialPrompt
+        groqApiKey = (try? c.decodeIfPresent(String.self, forKey: .groqApiKey)) ?? d.groqApiKey
+        groqModel = (try? c.decodeIfPresent(String.self, forKey: .groqModel)) ?? d.groqModel
+        autoPaste = (try? c.decodeIfPresent(Bool.self, forKey: .autoPaste)) ?? d.autoPaste
+        localStartDelay =
+            (try? c.decodeIfPresent(Double.self, forKey: .localStartDelay)) ?? d.localStartDelay
+        hotkeyRequiresCommand =
+            (try? c.decodeIfPresent(Bool.self, forKey: .hotkeyRequiresCommand))
+            ?? d.hotkeyRequiresCommand
+        hotkeyRequiresControl =
+            (try? c.decodeIfPresent(Bool.self, forKey: .hotkeyRequiresControl))
+            ?? d.hotkeyRequiresControl
+        hotkeyRequiresOption =
+            (try? c.decodeIfPresent(Bool.self, forKey: .hotkeyRequiresOption))
+            ?? d.hotkeyRequiresOption
+        hotkeyRequiresShift =
+            (try? c.decodeIfPresent(Bool.self, forKey: .hotkeyRequiresShift))
+            ?? d.hotkeyRequiresShift
+    }
 
     // MARK: - Persistence
 

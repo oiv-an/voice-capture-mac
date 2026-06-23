@@ -16,6 +16,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     private let promptScroll = NSScrollView()
     private let autoPasteCheck = NSButton(
         checkboxWithTitle: "Авто-вставка (Cmd+V) после распознавания", target: nil, action: nil)
+    private let localDelayField = NSTextField()
 
     private let downloadButton = NSButton(title: "Скачать модель", target: nil, action: nil)
     private let progressBar = NSProgressIndicator()
@@ -29,7 +30,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         self.onSave = onSave
 
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 500, height: 560),
+            contentRect: NSRect(x: 0, y: 0, width: 500, height: 600),
             styleMask: [.titled, .closable],
             backing: .buffered,
             defer: false
@@ -47,7 +48,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     private func buildUI() {
         guard let content = window?.contentView else { return }
 
-        var y: CGFloat = 510
+        var y: CGFloat = 550
 
         func addRow(_ title: String, _ control: NSView, height: CGFloat = 26) {
             let label = NSTextField(labelWithString: title)
@@ -130,6 +131,15 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         content.addSubview(autoPasteCheck)
         y -= 40
 
+        addRow("Задержка Local (сек):", localDelayField, height: 24)
+        let delayHint = NSTextField(
+            labelWithString: "Через сколько секунд запускать локальную модель, если Groq молчит")
+        delayHint.frame = NSRect(x: 180, y: y + 6, width: 320, height: 16)
+        delayHint.font = NSFont.systemFont(ofSize: 10)
+        delayHint.textColor = .secondaryLabelColor
+        content.addSubview(delayHint)
+        y -= 14
+
         let hint = NSTextField(
             wrappingLabelWithString:
                 "Хоткей записи (hold-to-talk): зажмите ⌘⌃ и говорите, отпустите — текст вставится.")
@@ -170,6 +180,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         groqKeyField.stringValue = settings.groqApiKey
         groqModelField.stringValue = settings.groqModel
         autoPasteCheck.state = settings.autoPaste ? .on : .off
+        localDelayField.stringValue = String(format: "%g", settings.localStartDelay)
         updateEnabled()
         updateModelStatus()
     }
@@ -299,6 +310,11 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         settings.groqModel =
             groqModelField.stringValue.isEmpty ? "whisper-large-v3" : groqModelField.stringValue
         settings.autoPaste = autoPasteCheck.state == .on
+        // Задержка: парсим число (поддержка запятой как разделителя), клампим в 0…10с.
+        let raw = localDelayField.stringValue.replacingOccurrences(of: ",", with: ".")
+        if let v = Double(raw) {
+            settings.localStartDelay = min(max(v, 0), 10)
+        }
         settings.save()
         onSave(settings)
         window?.close()

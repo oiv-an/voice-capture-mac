@@ -191,7 +191,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     /// Groq не вернул результат — параллельно запускаем локальный whisper, и дальше гонка.
     /// Побеждает первый успешный непустой результат. Так в большинстве случаев CPU не дёргаем.
     private func runParallel(samples: [Float], settings: AppSettings, watchdog: DispatchWorkItem) {
-        let localDelay: TimeInterval = 2.0
+        let localDelay: TimeInterval = max(0, settings.localStartDelay)
 
         let groq = GroqRecognizer(
             apiKey: settings.groqApiKey, model: settings.groqModel, language: settings.language,
