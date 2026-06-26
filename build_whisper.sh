@@ -52,8 +52,12 @@ DEFINES=(
   -DWHISPER_VERSION="\"$WHISPER_VER\""
 )
 
-CFLAGS=(-O3 -fPIC -std=c11 "${DEFINES[@]}" "${INCLUDES[@]}")
-CXXFLAGS=(-O3 -fPIC -std=c++17 "${DEFINES[@]}" "${INCLUDES[@]}")
+# Deployment target: должен совпадать с platforms в Package.swift (.macOS(.v13)),
+# иначе линковщик ругается "object file was built for newer macOS version".
+MACOS_MIN="13.0"
+
+CFLAGS=(-O3 -fPIC -std=c11 -mmacosx-version-min="$MACOS_MIN" "${DEFINES[@]}" "${INCLUDES[@]}")
+CXXFLAGS=(-O3 -fPIC -std=c++17 -mmacosx-version-min="$MACOS_MIN" "${DEFINES[@]}" "${INCLUDES[@]}")
 
 if [[ "$ARCH" == "arm64" ]]; then
   CFLAGS+=(-mcpu=apple-m1)

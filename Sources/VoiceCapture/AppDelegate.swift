@@ -1,8 +1,9 @@
 import AVFoundation
 import AppKit
 
-final class AppDelegate: NSObject, NSApplicationDelegate {
+final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var settings = AppSettings.load()
+    private let history = RecognitionHistory.shared
 
     private var statusItem: NSStatusItem!
     private let recorder = AudioRecorder()
@@ -81,6 +82,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         let menu = NSMenu()
+        menu.delegate = self  // меню перестраивается при каждом открытии (счётчики/история динамические)
+        statusItem.menu = menu
+    }
+
+    /// Перестраиваем меню при каждом открытии — счётчики и история актуальны.
+    func menuNeedsUpdate(_ menu: NSMenu) {
+        menu.removeAllItems()
+
         menu.addItem(NSMenuItem(title: "VoiceCapture 3.0", action: nil, keyEquivalent: ""))
         menu.addItem(.separator())
 
@@ -88,6 +97,43 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             title: "Запись: зажмите ⌘⌃ и говорите", action: nil, keyEquivalent: "")
         info.isEnabled = false
         menu.addItem(info)
+
+        // --- Счётчики ---
+        let stats = NSMenuItem(
+            title: "Распознано: \(history.totalCount) · слов: \(history.totalWords)",
+            action: nil, keyEquivalent: "")
+        stats.isEnabled = false
+        menu.addItem(stats)
+        menu.addItem(.separator())
+
+        // --- История (подменю) ---
+        let historyItem = NSMenuItem(title: "История", action: nil, keyEquivalent: "")
+        let historySub = NSMenu()
+        if history.entries.isEmpty {
+            let empty = NSMenuItem(title: "Пусто", action: nil, keyEquivalent: "")
+            empty.isEnabled = false
+            historySub.addItem(empty)
+        } else {
+            for (index, entry) in history.entries.enumerated() {
+                let preview =
+                    entry.text.count > 50
+                    ? String(entry.text.prefix(50)) + "…"
+                    : entry.text
+                let item = NSMenuItem(
+                    title: preview, action: #selector(copyHistoryEntry(_:)), keyEquivalent: "")
+                item.target = self
+                item.tag = index
+                item.toolTip = entry.text
+                historySub.addItem(item)
+            }
+            historySub.addItem(.separator())
+            let clear = NSMenuItem(
+                title: "Очистить историю", action: #selector(clearHistory), keyEquivalent: "")
+            clear.target = self
+            historySub.addItem(clear)
+        }
+        historyItem.submenu = historySub
+        menu.addItem(historyItem)
         menu.addItem(.separator())
 
         menu.addItem(
@@ -99,9 +145,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 title: "Проверить доступ (Accessibility)", action: #selector(checkAccessibility),
                 keyEquivalent: ""))
         menu.addItem(.separator())
+        menu.addItem(
+            NSMenuItem(title: "Перезапустить", action: #selector(restart), keyEquivalent: "r"))
         menu.addItem(NSMenuItem(title: "Выход", action: #selector(quit), keyEquivalent: "q"))
-
-        statusItem.menu = menu
     }
 
     // MARK: - Hotkeys
@@ -299,6 +345,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             NSLog("[App] РЕЗУЛЬТАТ: \(text)")
         }
         clipboard.copy(text)
+        history.add(text: text, source: source ?? "")
         statusUI.show(.done(text))
         if settings.autoPaste {
             // Ждём, пока пользователь реально отпустит все модификаторы (⌘⌃),
@@ -398,6 +445,44 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         alert.informativeText =
             "Для глобальных горячих клавиш и авто-вставки разрешите VoiceCapture в Системные настройки → Конфиденциальность и безопасность → Универсальный доступ, затем перезапустите приложение."
         alert.runModal()
+    }
+
+    @objc private func restart() {
+        // Перезапуск: запускаем новый экземпляр того же бинарника и завершаем текущий.
+        let bundleURL = Bundle.main.bundleURL
+        let task = Process()
+
+        if bundleURL.pathExtension == "app" {
+            // Запущены как .app — открываем через `open -n` (новый экземпляр).
+            task.executableURL = URL(fileURLWithPath: "/usr/bin/open")
+            task.arguments = ["-n", bundleURL.path]
+        } else {
+            // Запущены как голый бинарник (swift run) — перезапускаем его напрямую.
+            task.executableURL = Bundle.main.executableURL
+        }
+
+        do {
+            try task.run()
+        } catch {
+            NSLog("[App] Не удалось перезапустить: \(error.localizedDescription)")
+        }
+
+        hotkeys.stop()
+        NSApp.terminate(nil)
+    }
+
+    // MARK: - История
+
+    @objc private func copyHistoryEntry(_ sender: NSMenuItem) {
+        let index = sender.tag
+        guard index >= 0, index < history.entries.count else { return }
+        let text = history.entries[index].text
+        clipboard.copy(text)
+        statusUI.show(.done(text))
+    }
+
+    @objc private func clearHistory() {
+        history.clear()
     }
 
     @objc private func quit() {

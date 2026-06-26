@@ -19,6 +19,9 @@ Models/*.bin
 # macOS
 .DS_Store
 
+# VSCode Local History
+.lh/
+
 # Local config with secrets (Groq API key etc.)
 *.local.json
 settings.json

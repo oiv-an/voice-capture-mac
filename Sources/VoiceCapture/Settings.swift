@@ -48,11 +48,11 @@ struct WhisperModelInfo {
 /// Настройки приложения. Хранятся в JSON в ~/Library/Application Support/VoiceCapture/settings.json
 struct AppSettings: Codable {
     // Какой backend использовать
-    var backend: RecognitionBackend = .local
+    var backend: RecognitionBackend = .both
 
     // --- Локальный whisper.cpp ---
-    /// Имя файла модели в папке Models (например, ggml-large-v3.bin)
-    var localModel: String = "ggml-large-v3.bin"
+    /// Имя файла модели в папке Models (например, ggml-large-v3-turbo.bin)
+    var localModel: String = "ggml-large-v3-turbo.bin"
     /// Язык распознавания (ru, en, auto)
     var language: String = "ru"
 

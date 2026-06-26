@@ -120,8 +120,8 @@ open dist/VoiceCapture.app
 ## 7. Хранение настроек
 
 `~/Library/Application Support/VoiceCapture/settings.json` (Codable `AppSettings`):
-- `backend`: `local` | `groq` | `both`
-- `localModel`: имя файла модели (напр. `ggml-large-v3.bin`)
+- `backend`: `local` | `groq` | `both` (дефолт — **`both`**)
+- `localModel`: имя файла модели (дефолт — **`ggml-large-v3-turbo.bin`**)
 - `language`: `ru` | `en` | `auto`
 - `groqApiKey`, `groqModel`
 - `autoPaste`: bool
