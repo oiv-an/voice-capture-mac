@@ -1,8 +1,7 @@
-# VoiceCapture 3.0 — голосовой ввод для macOS
+# VoiceCapture 3.1 — голосовой ввод для macOS
 
 Нативное меню-бар приложение для macOS на **Swift + AppKit**. Распознаёт речь
-локально (офлайн, на базе `whisper.cpp` с моделью **large-v3**) и вставляет
-распознанный текст в активное приложение по горячей клавише.
+и вставляет распознанный текст в активное приложение по горячей клавише.
 
 **Принцип работы (hold-to-talk):**
 1. Зажми **⌘ + ⌃ (Cmd + Control)**.
@@ -10,9 +9,29 @@
 3. Отпусти клавиши → речь распознаётся → текст копируется в буфер и
    автоматически вставляется (Cmd + V).
 
-Распознавание полностью **локальное и приватное** — ничего не уходит в облако
-(опционально доступен облачный backend Groq, но по умолчанию используется
-локальная модель).
+По умолчанию работает **совместный режим** (`both`): запрос сразу уходит в
+облако **Groq** (обычно мгновенный ответ), а если Groq не успел за заданную
+задержку — параллельно стартует локальный `whisper.cpp`, и побеждает первый
+успешный результат. Локальная модель по умолчанию — **large-v3-turbo** (быстрая
+и точная, ~1.6 ГБ). Можно работать и **полностью офлайн** на локальной модели
+(приватно, ничего не уходит в облако) — режим и модель выбираются в «Настройках».
+
+---
+
+## ✨ Что нового в 3.1
+
+- **Совместный режим распознавания (`both`)** — Groq + локальный whisper «гонкой»:
+  Groq отвечает почти мгновенно, локальный whisper подключается с задержкой как
+  бесплатный офлайн-фолбэк. Побеждает первый успешный результат.
+- **Настраиваемая задержка** запуска локальной модели в совместном режиме
+  (поле в «Настройках», дефолт 2 сек) — чтобы лишний раз не греть CPU.
+- **Дефолтная модель — large-v3-turbo** (~1.6 ГБ) вместо large-v3 (~3.1 ГБ):
+  быстрее и легче при сопоставимом качестве.
+- **История распознаваний** — последние 10 в меню-баре, клик копирует текст.
+- **Счётчик** распознаваний и слов за всё время (в меню-баре).
+- **Перезапуск приложения** прямо из меню (`⌘R`) — если залипло.
+- **Стабильная авто-вставка**, в т.ч. в браузерах; защита от запуска второго
+  экземпляра (flock).
 
 ---
 
@@ -21,19 +40,19 @@
 Не хочешь собирать из исходников? Скачай готовый `.app`:
 
 1. **Скачай** последний релиз → [Releases](https://github.com/oiv-an/voice-capture-mac/releases/latest)
-   (файл `VoiceCapture-3.0-macOS-arm64.zip`, ~0.5 МБ — модель скачивается отдельно).
+   (файл `VoiceCapture-3.1-macOS-arm64.zip`, ~0.5 МБ — модель скачивается отдельно).
 2. **Распакуй** и перетащи `VoiceCapture.app` в папку `Программы` (`/Applications`).
 3. **Сними карантин** (приложение подписано ad-hoc, без Apple Developer ID):
    ```bash
    xattr -dr com.apple.quarantine /Applications/VoiceCapture.app
    ```
    Или: правый клик по приложению → **«Открыть»** → **«Открыть»** (один раз).
-4. **Скачай модель** large-v3 (~3.1 ГБ) — один раз:
+4. **Скачай модель** large-v3-turbo (~1.6 ГБ) — один раз:
    ```bash
    mkdir -p ~/Library/Application\ Support/VoiceCapture/Models
    curl -L --progress-bar \
-     -o ~/Library/Application\ Support/VoiceCapture/Models/ggml-large-v3.bin \
-     https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3.bin
+     -o ~/Library/Application\ Support/VoiceCapture/Models/ggml-large-v3-turbo.bin \
+     https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo.bin
    ```
 5. **Запусти**, выдай права (Микрофон + Универсальный доступ — см. раздел 4),
    зажми **⌘ + ⌃** и говори.
@@ -49,7 +68,7 @@
 | **macOS**             | 13.0 (Ventura) или новее                                               |
 | **Процессор**         | Apple Silicon (M1+) или Intel x86_64                                   |
 | **Xcode / Toolchain** | Xcode 15+ (нужен `swift` 5.9+ и `clang++`). Хватает Command Line Tools |
-| **Свободное место**   | ~3.5 ГБ (модель large-v3 ≈ 3.1 ГБ + бинарь/либы)                       |
+| **Свободное место**   | ~2 ГБ (модель large-v3-turbo ≈ 1.6 ГБ + бинарь/либы)                   |
 | **Права доступа**     | Микрофон + Accessibility (Универсальный доступ)                        |
 
 Проверь наличие тулчейна:
@@ -92,7 +111,7 @@ cd VoiceCapture
 Результат: `Vendor/install/lib/libwhisper_combined.a` + заголовки в
 `Vendor/install/include/`.
 
-### 2.3. Загрузка модели large-v3 (~3.1 ГБ)
+### 2.3. Загрузка модели large-v3-turbo (~1.6 ГБ)
 
 Модель хранится в папке поддержки приложения:
 `~/Library/Application Support/VoiceCapture/Models/`
@@ -100,23 +119,23 @@ cd VoiceCapture
 Скрипт сам создаёт папку и скачивает нужный файл:
 
 ```bash
-./download_model.sh large-v3
+./download_model.sh large-v3-turbo
 ```
 
-Это скачает `ggml-large-v3.bin` с Hugging Face:
-`https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3.bin`
+Это скачает `ggml-large-v3-turbo.bin` с Hugging Face:
+`https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo.bin`
 
 Альтернатива — скачать вручную:
 
 ```bash
 mkdir -p ~/Library/Application\ Support/VoiceCapture/Models
 curl -L --progress-bar \
-  -o ~/Library/Application\ Support/VoiceCapture/Models/ggml-large-v3.bin \
-  https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3.bin
+  -o ~/Library/Application\ Support/VoiceCapture/Models/ggml-large-v3-turbo.bin \
+  https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo.bin
 ```
 
-> Можно выбрать модель полегче (быстрее, но менее точно):
-> `./download_model.sh small` (≈466 МБ) или `medium` (≈1.5 ГБ).
+> Можно выбрать другую модель: `large-v3` (≈3.1 ГБ, максимум точности),
+> `medium` (≈1.5 ГБ) или `small` (≈466 МБ, быстрее/легче).
 > Активная модель выбирается в окне «Настройки» приложения.
 
 ---
@@ -194,8 +213,8 @@ xattr -dr com.apple.quarantine dist/VoiceCapture.app
 2. **Зажми и держи ⌘ + ⌃**, говори.
 3. **Отпусти клавиши** — появится индикатор:
    - 🔴 **«Запись…»** — идёт захват звука;
-   - 🟡 **«Распознавание…»** — модель обрабатывает аудио (large-v3 на CPU: от
-     долей секунды до нескольких секунд, зависит от длины фразы);
+   - 🟡 **«Распознавание…»** — модель обрабатывает аудио (large-v3-turbo на CPU:
+     от долей секунды до нескольких секунд, зависит от длины фразы);
    - 🟢 **готовый текст** — распознано, скопировано в буфер и вставлено.
 
 Если сказать слишком тихо или коротко — покажется подсказка («Тишина…» /
@@ -273,7 +292,7 @@ ps aux | grep -i voicecapture | grep -v grep
 ls -lh ~/Library/Application\ Support/VoiceCapture/Models/
 ```
 
-Должен лежать `ggml-large-v3.bin` (≈3.1 ГБ). Если нет — см. шаг 2.3.
+Должен лежать `ggml-large-v3-turbo.bin` (≈1.6 ГБ). Если нет — см. шаг 2.3.
 
 ### Хоткеи ⌘⌃ не срабатывают
 - Проверь Accessibility (шаг 4.2) и **перезапусти** приложение после выдачи прав.
@@ -333,7 +352,7 @@ VoiceCapture/
 2. Заархивируй `dist/VoiceCapture.app` (например, в `.zip` или `.dmg`).
 3. Получатель распаковывает, при необходимости снимает карантин
    (`xattr -dr com.apple.quarantine VoiceCapture.app`) и запускает.
-4. Модель `ggml-large-v3.bin` (~3 ГБ) **не кладётся в бандл** (это раздуло бы
+4. Модель `ggml-large-v3-turbo.bin` (~1.6 ГБ) **не кладётся в бандл** (это раздуло бы
    `.app`). Пользователь скачивает её один раз через `download_model.sh` или
    прямо из окна «Настройки» приложения (кнопка «Скачать»).
 

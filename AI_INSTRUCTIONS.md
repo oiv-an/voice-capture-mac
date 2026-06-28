@@ -1,4 +1,4 @@
-# AI_INSTRUCTIONS — VoiceCapture 3.0 (macOS / Swift)
+# AI_INSTRUCTIONS — VoiceCapture 3.1 (macOS / Swift)
 
 > **ПРОЧИТАЙ ЭТОТ ФАЙЛ ПЕРВЫМ.** Это стартовая инструкция для AI-ассистента по проекту.
 > Язык общения: **русский**. Тон: инженер-инженеру, без воды.
@@ -7,7 +7,7 @@
 
 ## 1. Что это за проект
 
-**VoiceCapture 3.0** — нативное macOS-приложение на **Swift + AppKit**.
+**VoiceCapture 3.1** — нативное macOS-приложение на **Swift + AppKit**.
 Распознаёт речь и вставляет текст в активное приложение (hold-to-talk).
 
 - Это **полностью отдельный проект**, переписанный с нуля на Swift.
@@ -99,10 +99,11 @@ open dist/VoiceCapture.app
 Скачиваются скриптом в `~/Library/Application Support/VoiceCapture/Models/`:
 
 ```bash
-./download_model.sh tiny|base|small|medium|large-v3
+./download_model.sh tiny|base|small|medium|large-v3|large-v3-turbo
 ```
 
-- Для русского лучше **large-v3** (точнее всего) или medium/small (баланс).
+- Дефолт — **large-v3-turbo** (`ggml-large-v3-turbo.bin`, ~1.6 ГБ): быстрая и точная, лучший баланс.
+- Максимум точности — **large-v3** (~3.1 ГБ), полегче — medium/small.
 - Активная модель выбирается в Настройках (поле «Локальная модель»).
 
 ---
@@ -133,8 +134,16 @@ open dist/VoiceCapture.app
 
 ## 8. ТЕКУЩИЕ ЗАДАЧИ / TODO (на момент написания)
 
+### Сделано в 3.1
+- [x] **Совместный режим (`both`)** — Groq + Local «гонкой», дефолтный backend. См. `AppDelegate.runParallel(...)`.
+- [x] **Настраиваемая задержка** запуска Local в режиме `both` (`localStartDelay`, дефолт 2.0, UI-поле).
+- [x] **История распознаваний** (последние 10) + **счётчики** распознаваний/слов в меню-баре. См. `RecognitionHistory.swift`.
+- [x] **Перезапуск из меню** (`⌘R`) — корректный рестарт процесса.
+- [x] **Стабильная авто-вставка** (в т.ч. браузеры) + защита от второго экземпляра (flock).
+- [x] Дефолтная модель — **large-v3-turbo** (`ggml-large-v3-turbo.bin`, ~1.6 ГБ), `Settings.swift`.
 - [x] **Выбор модели в UI** + скачивание прямо из настроек (список каталога, кнопка «Скачать», прогресс-бар). См. `SettingsWindowController.swift` + `WhisperModelInfo` в `Settings.swift`.
-- [x] Дефолтная модель — **large-v3** (`Settings.swift`).
+
+### Backlog
 - [ ] Возможно добавить **Metal-ускорение** whisper (требует установки Metal Toolchain: `xcodebuild -downloadComponent MetalToolchain`, затем пересобрать `build_whisper.sh` с `ggml-metal` и `use_gpu = true` в `LocalWhisperRecognizer`).
 - [ ] Иконка приложения (сейчас системный символ `mic.fill`).
 - [ ] Индикатор прогресса распознавания для длинных записей.
