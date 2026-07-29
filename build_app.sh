@@ -5,7 +5,7 @@
 # Шаги:
 #   1) собирает whisper.cpp (если статической библиотеки ещё нет)
 #   2) собирает release-бинарник SwiftPM вместе с FluidAudio
-#   3) упаковывает VoiceCapture 3.2.0 в dist/VoiceCapture.app
+#   3) упаковывает VoiceCapture 3.2.1 в dist/VoiceCapture.app
 #   4) подписывает bundle стабильной ad-hoc подписью и перезапускает приложение
 #
 set -euo pipefail
@@ -14,7 +14,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 APP_NAME="VoiceCapture"
 DIST="$ROOT/dist"
 APP="$DIST/$APP_NAME.app"
-VERSION="3.2.0"
+VERSION="3.2.1"
 
 # 1) whisper.cpp
 if [[ ! -f "$ROOT/Vendor/install/lib/libwhisper_combined.a" ]]; then

@@ -13,6 +13,7 @@ final class StatusController {
 
     private var window: NSWindow?
     private let label = NSTextField(labelWithString: "")
+    private let liveTextView = NSTextView(frame: .zero)
     private let dot = NSView()
     private var hideTimer: Timer?
 
@@ -26,7 +27,7 @@ final class StatusController {
         guard window == nil else { return }
 
         let w = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 620, height: 64),
+            contentRect: NSRect(x: 0, y: 0, width: 320, height: 64),
             styleMask: [.borderless],
             backing: .buffered,
             defer: false
@@ -44,15 +45,12 @@ final class StatusController {
         container.layer?.cornerRadius = 14
         container.autoresizingMask = [.width, .height]
 
-        // Точка-индикатор: вертикальный центр окна (64/2=32, минус половина высоты точки=6).
         dot.frame = NSRect(x: 18, y: 26, width: 12, height: 12)
         dot.wantsLayer = true
         dot.layer?.cornerRadius = 6
         container.addSubview(dot)
 
-        // Текст: одна строка по центру окна по вертикали. Ширины хватает для live-транскрипта.
-        label.frame = NSRect(x: 42, y: 22, width: 562, height: 20)
-        label.autoresizingMask = [.width]
+        label.frame = NSRect(x: 42, y: 22, width: 262, height: 20)
         label.font = NSFont.systemFont(ofSize: 14, weight: .medium)
         label.textColor = .white
         label.alignment = .left
@@ -61,6 +59,20 @@ final class StatusController {
         label.cell?.usesSingleLineMode = true
         label.maximumNumberOfLines = 1
         container.addSubview(label)
+
+        liveTextView.isEditable = false
+        liveTextView.isSelectable = false
+        liveTextView.drawsBackground = false
+        liveTextView.textColor = .white
+        liveTextView.font = NSFont.systemFont(ofSize: 14, weight: .medium)
+        liveTextView.textContainerInset = .zero
+        liveTextView.textContainer?.lineFragmentPadding = 0
+        liveTextView.textContainer?.lineBreakMode = .byWordWrapping
+        liveTextView.textContainer?.widthTracksTextView = true
+        liveTextView.isHorizontallyResizable = false
+        liveTextView.isVerticallyResizable = true
+        liveTextView.isHidden = true
+        container.addSubview(liveTextView)
 
         w.contentView?.addSubview(container)
         self.window = w
@@ -74,26 +86,77 @@ final class StatusController {
         w.setFrameOrigin(NSPoint(x: x, y: y))
     }
 
-    private func setWindowWidth(_ width: CGFloat) {
+    private func setWindowSize(width: CGFloat, height: CGFloat) {
         guard let window else { return }
         var frame = window.frame
-        frame.size.width = width
+        frame.size = NSSize(width: width, height: height)
         window.setFrame(frame, display: true)
-        label.frame.size.width = width - 58
+    }
+
+    private func applyCompactLayout() {
+        liveTextView.isHidden = true
+        label.isHidden = false
+
+        setWindowSize(width: 320, height: 64)
+        label.frame = NSRect(x: 42, y: 22, width: 262, height: 20)
+        dot.frame.origin.y = 26
+    }
+
+    private func applyLiveTextLayout(_ text: String) {
+        let windowWidth: CGFloat = 620
+        let horizontalTextInset: CGFloat = 42
+        let rightInset: CGFloat = 16
+        let verticalInset: CGFloat = 14
+        let minimumWindowHeight: CGFloat = 64
+        let textWidth = windowWidth - horizontalTextInset - rightInset
+        let displayedText = text.isEmpty ? "Слушаю…" : text
+
+        label.isHidden = true
+        liveTextView.isHidden = false
+        liveTextView.string = displayedText
+        liveTextView.frame = NSRect(
+            x: horizontalTextInset,
+            y: verticalInset,
+            width: textWidth,
+            height: 20
+        )
+
+        guard let textContainer = liveTextView.textContainer,
+            let layoutManager = liveTextView.layoutManager
+        else { return }
+
+        textContainer.containerSize = NSSize(
+            width: textWidth,
+            height: .greatestFiniteMagnitude
+        )
+        layoutManager.ensureLayout(for: textContainer)
+        let measuredTextHeight = max(
+            ceil(layoutManager.usedRect(for: textContainer).height),
+            20
+        )
+
+        // Ограничения по высоте нет: окно всегда вмещает весь распознанный текст.
+        let windowHeight = max(
+            minimumWindowHeight,
+            measuredTextHeight + verticalInset * 2
+        )
+        let textHeight = measuredTextHeight
+
+        setWindowSize(width: windowWidth, height: windowHeight)
+        liveTextView.frame = NSRect(
+            x: horizontalTextInset,
+            y: windowHeight - verticalInset - textHeight,
+            width: textWidth,
+            height: textHeight
+        )
+
+        // Точка остаётся у первой строки, когда окно становится многострочным.
+        dot.frame.origin.y = liveTextView.frame.maxY - 16
     }
 
     private func render(_ state: State) {
         ensureWindow()
         hideTimer?.invalidate()
-
-        // Широкая плашка нужна только для FluidAudio live-текста.
-        // Обычные Recording/Processing/Error остаются компактными, как раньше.
-        switch state {
-        case .liveText:
-            setWindowWidth(620)
-        default:
-            setWindowWidth(320)
-        }
 
         switch state {
         case .idle:
@@ -102,9 +165,8 @@ final class StatusController {
         case .recording:
             dot.layer?.backgroundColor = NSColor.systemRed.cgColor
             label.stringValue = "Запись… (отпустите клавиши)"
-        case .liveText(let text):
+        case .liveText:
             dot.layer?.backgroundColor = NSColor.systemRed.cgColor
-            label.stringValue = text.isEmpty ? "Слушаю…" : text
         case .processing:
             dot.layer?.backgroundColor = NSColor.systemYellow.cgColor
             label.stringValue = "Распознавание…"
@@ -117,6 +179,12 @@ final class StatusController {
             dot.layer?.backgroundColor = NSColor.systemOrange.cgColor
             label.stringValue = msg
             scheduleHide(after: 4.0)
+        }
+
+        if case .liveText(let text) = state {
+            applyLiveTextLayout(text)
+        } else {
+            applyCompactLayout()
         }
 
         position()

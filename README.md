@@ -1,13 +1,19 @@
-# VoiceCapture 3.2 — быстрый голосовой ввод для macOS
+# VoiceCapture 3.2.1 — быстрый голосовой ввод для macOS
 
 Нативное menu bar-приложение на **Swift + AppKit**: зажимаешь **⌘ + ⌃**, говоришь,
 отпускаешь — готовый текст вставляется в активное приложение.
 
-Главное обновление 3.2 — локальный движок **FluidAudio / NVIDIA Parakeet TDT v3**.
+Главное обновление линейки 3.2 — локальный движок **FluidAudio / NVIDIA Parakeet TDT v3**.
 Он работает на Apple Neural Engine, поддерживает русский и показывает распознанный
 текст прямо во время речи.
 
-## Что нового в 3.2
+## Что нового в 3.2.1
+
+- Live-текст переносится по словам и отображается в несколько строк.
+- Оверлей автоматически растёт на полную высоту транскрипта без программного ограничения.
+- Компактные статусы записи, распознавания, результата и ошибок остались прежнего размера.
+
+## Что появилось в 3.2
 
 - **FluidAudio / Parakeet TDT v3** — новый локальный backend в выпадающем меню.
 - **Live-транскрипт** — текст появляется в нижнем оверлее во время удержания хоткея.
@@ -41,7 +47,7 @@
 
 1. Скачай последний релиз:
    [VoiceCapture Releases](https://github.com/oiv-an/voice-capture-mac/releases/latest).
-2. Распакуй `VoiceCapture-3.2-macOS-arm64.zip`.
+2. Распакуй `VoiceCapture-3.2.1-macOS-arm64.zip`.
 3. Перетащи `VoiceCapture.app` в `/Applications`.
 4. Сними карантин, так как приложение подписано ad-hoc:
 
@@ -206,7 +212,7 @@ VoiceCapture/
 - [`AudioRecorder`](Sources/VoiceCapture/AudioRecorder.swift) пишет 16 kHz mono Float PCM.
 - [`AppDelegate`](Sources/VoiceCapture/AppDelegate.swift) периодически берёт потокобезопасный snapshot записи.
 - [`FluidAudioRecognizer`](Sources/VoiceCapture/FluidAudioRecognizer.swift) распознаёт snapshot через Parakeet TDT v3.
-- [`StatusController`](Sources/VoiceCapture/StatusController.swift) показывает live-текст.
+- [`StatusController`](Sources/VoiceCapture/StatusController.swift) показывает live-текст в многострочном `NSTextView`; оверлей растёт на полную высоту транскрипта.
 - После отпускания хоткея выполняется финальный проход по полной записи.
 
 Код FluidVoice не копировался. Архитектура live-preview реализована самостоятельно поверх публичного FluidAudio API.
