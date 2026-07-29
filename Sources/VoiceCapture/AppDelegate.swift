@@ -28,6 +28,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var cachedLocalRecognizer: LocalWhisperRecognizer?
     private var cachedLocalKey: String?
 
+    // FluidAudio живёт отдельно: его API асинхронный и модель переиспользуется между live/final pass.
+    private let fluidRecognizer = FluidAudioRecognizer()
+    private var fluidPreviewTimer: DispatchSourceTimer?
+    private var fluidPreviewInFlight = false
+    private var fluidLatestSamples: [Float] = []
+    private var fluidLatestText = ""
+    private var fluidSessionID = 0
+    private var fluidLastPreviewSampleCount = 0
+    private var fluidPreviewPass = 0
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         setupMenuBar()
         setupHotkeys()
@@ -50,6 +60,21 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     private func prewarmRecognizer() {
         let s = settings
+
+        if s.backend == .fluidAudio {
+            Task { [weak self] in
+                guard let self = self else { return }
+                do {
+                    NSLog("[App] Прогрев FluidAudio/Parakeet в фоне…")
+                    try await self.fluidRecognizer.prepare()
+                    NSLog("[App] FluidAudio/Parakeet готов к работе")
+                } catch {
+                    NSLog("[App] Не удалось подготовить FluidAudio: \(error.localizedDescription)")
+                }
+            }
+            return
+        }
+
         // Прогреваем локальную модель, если она используется напрямую ИЛИ в параллельном режиме.
         if s.parallelRaceApplicable {
             let r = makeLocalRecognizer(s)
@@ -90,7 +115,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     func menuNeedsUpdate(_ menu: NSMenu) {
         menu.removeAllItems()
 
-        menu.addItem(NSMenuItem(title: "VoiceCapture 3.0", action: nil, keyEquivalent: ""))
+        menu.addItem(NSMenuItem(title: "VoiceCapture 3.2", action: nil, keyEquivalent: ""))
         menu.addItem(.separator())
 
         let info = NSMenuItem(
@@ -140,6 +165,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             NSMenuItem(title: "Настройки…", action: #selector(openSettings), keyEquivalent: ","))
         menu.addItem(
             NSMenuItem(title: "Папка моделей…", action: #selector(openModels), keyEquivalent: ""))
+        if settings.backend == .fluidAudio, FluidAudioRecognizer.isModelDownloaded {
+            menu.addItem(
+                NSMenuItem(
+                    title: "Удалить модель FluidAudio", action: #selector(deleteFluidAudioModel),
+                    keyEquivalent: ""))
+        }
         menu.addItem(
             NSMenuItem(
                 title: "Проверить доступ (Accessibility)", action: #selector(checkAccessibility),
@@ -164,9 +195,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private func startRecording() {
         guard !isProcessing else { return }
         guard !recorder.isRecording else { return }
+
+        let useFluidAudio = settings.backend == .fluidAudio
+
         if recorder.start() {
+            if useFluidAudio {
+                beginFluidLiveSession()
+            }
             statusUI.show(.recording)
         } else {
+            if useFluidAudio {
+                endFluidLiveSession()
+            }
             statusUI.show(.error("Не удалось начать запись"))
         }
     }
@@ -174,6 +214,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private func stopRecordingAndProcess() {
         guard recorder.isRecording else { return }
         let samples = recorder.stop()
+        endFluidLiveSession()
 
         guard samples.count > 1600 else {  // < 0.1с — игнор
             NSLog("[App] Слишком коротко (\(samples.count) сэмплов) — держите ⌘⌃ дольше")
@@ -204,6 +245,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         let currentSettings = settings
 
+        if currentSettings.backend == .fluidAudio {
+            transcribeFluidFinal(samples: samples, settings: currentSettings, watchdog: watchdog)
+            return
+        }
+
         // Параллельный режим («гонка»): Groq + Local одновременно, кто первый — тот и победил.
         if currentSettings.parallelRaceApplicable {
             runParallel(samples: samples, settings: currentSettings, watchdog: watchdog)
@@ -223,6 +269,133 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 }
             } catch {
                 DispatchQueue.main.async {
+                    watchdog.cancel()
+                    self.isProcessing = false
+                    self.statusUI.show(.error(error.localizedDescription))
+                }
+            }
+        }
+    }
+
+    // MARK: - FluidAudio live + final
+
+    private func beginFluidLiveSession() {
+        fluidSessionID += 1
+        let sessionID = fluidSessionID
+        fluidLatestSamples.removeAll(keepingCapacity: true)
+        fluidLatestText = ""
+        fluidPreviewInFlight = false
+        fluidLastPreviewSampleCount = 0
+        fluidPreviewPass = 0
+        NSLog("[FluidAudio Live] Сессия \(sessionID) началась")
+
+        let timer = DispatchSource.makeTimerSource(queue: .main)
+        timer.schedule(deadline: .now() + 0.35, repeating: 0.35)
+        timer.setEventHandler { [weak self] in
+            self?.requestFluidPreview(sessionID: sessionID)
+        }
+        fluidPreviewTimer = timer
+        timer.resume()
+    }
+
+    private func endFluidLiveSession() {
+        fluidPreviewTimer?.setEventHandler {}
+        fluidPreviewTimer?.cancel()
+        fluidPreviewTimer = nil
+        fluidSessionID += 1  // инвалидирует callback текущего preview
+        fluidLatestSamples.removeAll(keepingCapacity: false)
+    }
+
+    private func requestFluidPreview(sessionID: Int) {
+        guard recorder.isRecording,
+            fluidSessionID == sessionID,
+            !fluidPreviewInFlight
+        else { return }
+
+        let snapshot = recorder.currentSamples()
+        fluidLatestSamples = snapshot
+        guard snapshot.count >= 8_000,
+            snapshot.count - fluidLastPreviewSampleCount >= 4_000
+        else { return }
+        fluidLastPreviewSampleCount = snapshot.count
+        fluidPreviewInFlight = true
+        fluidPreviewPass += 1
+        let pass = fluidPreviewPass
+        let audioSeconds = String(format: "%.1f", Double(snapshot.count) / 16_000.0)
+        NSLog("[FluidAudio Live] Preview #\(pass): \(snapshot.count) samples (\(audioSeconds)s)")
+
+        Task { [weak self] in
+            guard let self = self else { return }
+            do {
+                let text = try await self.fluidRecognizer.transcribe(samples: snapshot)
+                await MainActor.run {
+                    guard self.fluidSessionID == sessionID, self.recorder.isRecording else {
+                        self.fluidPreviewInFlight = false
+                        return
+                    }
+                    self.fluidPreviewInFlight = false
+                    guard !text.isEmpty else {
+                        NSLog("[FluidAudio Live] Preview #\(pass): пустой результат")
+                        return
+                    }
+                    let stableText = self.stabilizeFluidPreview(
+                        previous: self.fluidLatestText, current: text)
+                    self.fluidLatestText = stableText
+                    NSLog("[FluidAudio Live] Preview #\(pass): \(stableText)")
+                    self.statusUI.show(.liveText(stableText))
+                }
+            } catch {
+                await MainActor.run {
+                    self.fluidPreviewInFlight = false
+                    guard self.fluidSessionID == sessionID else { return }
+                    NSLog("[FluidAudio Live] Preview #\(pass) error: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+
+    private func stabilizeFluidPreview(previous: String, current: String) -> String {
+        guard !previous.isEmpty else { return current }
+        guard !current.isEmpty else { return previous }
+
+        let previousWords = previous.split(separator: " ").map(String.init)
+        let currentWords = current.split(separator: " ").map(String.init)
+        var commonPrefix = 0
+
+        while commonPrefix < min(previousWords.count, currentWords.count) {
+            let oldWord = previousWords[commonPrefix]
+                .lowercased()
+                .trimmingCharacters(in: .punctuationCharacters)
+            let newWord = currentWords[commonPrefix]
+                .lowercased()
+                .trimmingCharacters(in: .punctuationCharacters)
+            guard oldWord == newWord else { break }
+            commonPrefix += 1
+        }
+
+        // Если начало совпадает хотя бы наполовину, принимаем полный свежий transcript.
+        // При случайной нестабильности первого окна оставляем прежний текст, чтобы UI не прыгал.
+        if commonPrefix >= max(1, previousWords.count / 2)
+            || currentWords.count > previousWords.count + 3
+        {
+            return current
+        }
+        return previous
+    }
+
+    private func transcribeFluidFinal(
+        samples: [Float], settings: AppSettings, watchdog: DispatchWorkItem
+    ) {
+        Task { [weak self] in
+            guard let self = self else { return }
+            do {
+                let text = try await self.fluidRecognizer.transcribe(samples: samples)
+                await MainActor.run {
+                    watchdog.cancel()
+                    self.handleResult(text, settings: settings, source: "FluidAudio")
+                }
+            } catch {
+                await MainActor.run {
                     watchdog.cancel()
                     self.isProcessing = false
                     self.statusUI.show(.error(error.localizedDescription))
@@ -381,6 +554,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let key: String
         switch s.backend {
         case .local, .both: key = "local|\(s.localModel)|\(s.language)|\(s.initialPrompt)"
+        case .fluidAudio: preconditionFailure("FluidAudio использует отдельный async-пайплайн")
         case .groq: key = "groq|\(s.groqModel)|\(s.language)"
         }
 
@@ -393,6 +567,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         case .local, .both:
             recognizer = LocalWhisperRecognizer(
                 modelURL: s.localModelURL, language: s.language, initialPrompt: s.initialPrompt)
+        case .fluidAudio:
+            preconditionFailure("FluidAudio использует отдельный async-пайплайн")
         case .groq:
             recognizer = GroqRecognizer(
                 apiKey: s.groqApiKey, model: s.groqModel, language: s.language,
@@ -425,7 +601,28 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @objc private func openModels() {
-        NSWorkspace.shared.open(AppSettings.modelsDirectory)
+        let directory =
+            settings.backend == .fluidAudio
+            ? FluidAudioRecognizer.modelDirectory
+            : AppSettings.modelsDirectory
+        NSWorkspace.shared.open(directory)
+    }
+
+    @objc private func deleteFluidAudioModel() {
+        let alert = NSAlert()
+        alert.messageText = "Удалить Parakeet TDT v3?"
+        alert.informativeText =
+            "Будет удалена локальная модель FluidAudio (~500 MB). Её можно скачать снова в Настройках."
+        alert.addButton(withTitle: "Удалить")
+        alert.addButton(withTitle: "Отмена")
+
+        guard alert.runModal() == .alertFirstButtonReturn else { return }
+        do {
+            try FluidAudioRecognizer.deleteModel()
+            statusUI.show(.done("Модель FluidAudio удалена"))
+        } catch {
+            statusUI.show(.error("Не удалось удалить модель: \(error.localizedDescription)"))
+        }
     }
 
     @objc private func checkAccessibility() {
@@ -486,6 +683,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @objc private func quit() {
+        endFluidLiveSession()
         hotkeys.stop()
         NSApp.terminate(nil)
     }

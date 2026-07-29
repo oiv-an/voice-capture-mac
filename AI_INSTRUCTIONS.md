@@ -1,4 +1,4 @@
-# AI_INSTRUCTIONS — VoiceCapture 3.1 (macOS / Swift)
+# AI_INSTRUCTIONS — VoiceCapture 3.2 (macOS / Swift)
 
 > **ПРОЧИТАЙ ЭТОТ ФАЙЛ ПЕРВЫМ.** Это стартовая инструкция для AI-ассистента по проекту.
 > Язык общения: **русский**. Тон: инженер-инженеру, без воды.
@@ -7,8 +7,9 @@
 
 ## 1. Что это за проект
 
-**VoiceCapture 3.1** — нативное macOS-приложение на **Swift + AppKit**.
-Распознаёт речь и вставляет текст в активное приложение (hold-to-talk).
+**VoiceCapture 3.2** — нативное macOS-приложение на **Swift + AppKit**.
+Распознаёт речь и вставляет текст в активное приложение (hold-to-talk). В backend
+FluidAudio показывает промежуточный текст прямо во время записи.
 
 - Это **полностью отдельный проект**, переписанный с нуля на Swift.
 - Старый проект — Python/PyQt6 (Windows) — лежит в соседней папке `../voice2.0`. **Его не трогаем.** Это был источник бизнес-логики.
@@ -23,16 +24,17 @@
 
 ## 2. Ключевые решения (КОНТЕКСТ — почему так)
 
-| Решение                                        | Причина                                                                                 |
-| ---------------------------------------------- | --------------------------------------------------------------------------------------- |
-| **Swift + AppKit**, не Python                  | Нативность, надёжные хоткеи, лёгкий .app                                                |
-| **SwiftPM**, не Xcode-проект                   | Собирается из CLI (`swift build`), Xcode не обязателен для повседневной разработки      |
-| **whisper.cpp локально**                       | Офлайн, приватно, бесплатно. Backend по умолчанию                                       |
-| **Groq** как опция                             | Облачное распознавание, если нужно                                                      |
-| **Корректор/постобработка УБРАНЫ**             | По требованию владельца — не нужен LLM-корректор                                        |
-| **whisper.cpp собран на CPU+Accelerate**       | Metal Toolchain не ставился. CPU быстр для коротких диктовок. Metal — будущее улучшение |
-| **Хоткеи через CGEventTap**                    | Нативно, надёжно, требует только Accessibility (не root)                                |
-| Backend распознавания: только **Local + Groq** | OpenAI/OpenRouter из старого проекта НЕ переносим                                       |
+| Решение                                                     | Причина                                                                                 |
+| ----------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| **Swift + AppKit**, не Python                               | Нативность, надёжные хоткеи, лёгкий .app                                                |
+| **SwiftPM**, не Xcode-проект                                | Собирается из CLI (`swift build`), Xcode не обязателен для повседневной разработки      |
+| **whisper.cpp локально**                                    | Офлайн, приватно, бесплатно. Сохранён как отдельный backend и fallback                  |
+| **FluidAudio / Parakeet v3** как опция                      | Локальный Core ML/ANE, русский + live-текст во время записи (Apple Silicon, macOS 14+)  |
+| **Groq** как опция                                          | Облачное распознавание, если нужно                                                      |
+| **Корректор/постобработка УБРАНЫ**                          | По требованию владельца — не нужен LLM-корректор                                        |
+| **whisper.cpp собран на CPU+Accelerate**                    | Metal Toolchain не ставился. CPU быстр для коротких диктовок. Metal — будущее улучшение |
+| **Хоткеи через CGEventTap**                                 | Нативно, надёжно, требует только Accessibility (не root)                                |
+| Backend распознавания: **Local + FluidAudio + Groq + both** | OpenAI/OpenRouter из старого проекта НЕ переносим                                       |
 
 ---
 
@@ -43,6 +45,8 @@ VoiceCapture/
 ├── AI_INSTRUCTIONS.md          # ← ЭТОТ ФАЙЛ
 ├── README.md                   # инструкция пользователя
 ├── Package.swift               # SwiftPM манифест
+├── Package.resolved            # зафиксированные версии зависимостей (FluidAudio 0.15.5)
+├── search.js                   # обязательный web-search runner для AI
 ├── build_whisper.sh            # сборка whisper.cpp → libwhisper_combined.a
 ├── build_app.sh                # swift build release + упаковка .app
 ├── download_model.sh           # скачивание ggml-моделей
@@ -61,6 +65,7 @@ VoiceCapture/
 │       ├── AudioRecorder.swift     # AVAudioEngine, 16kHz mono, WAV
 │       ├── Recognizer.swift        # протокол Recognizer + ошибки
 │       ├── LocalWhisperRecognizer.swift  # whisper.cpp
+│       ├── FluidAudioRecognizer.swift    # Parakeet TDT v3 / Core ML / live snapshot ASR
 │       ├── GroqRecognizer.swift    # Groq API
 │       ├── ClipboardManager.swift  # NSPasteboard + Cmd+V
 │       ├── StatusController.swift  # плавающий индикатор статуса
@@ -94,9 +99,20 @@ open dist/VoiceCapture.app
 
 ---
 
-## 5. Модели whisper
+## 5. Модели распознавания
 
-Скачиваются скриптом в `~/Library/Application Support/VoiceCapture/Models/`:
+### FluidAudio / Parakeet TDT v3
+
+- Скачивается из окна настроек, размер около 500 MB.
+- Хранится в `~/Library/Application Support/FluidAudio/Models/`.
+- Поддерживает 25 европейских языков, включая русский; язык определяется автоматически.
+- Live-preview: таймер 0.35с, первый проход после накопления 0.5с аудио, новый проход после каждых 0.25с новых samples.
+- Каждый preview декодирует полный snapshot с новым `TdtDecoderState`, чтобы состояние не дублировало текст.
+- При отпускании выполняется отдельный финальный pass по полной записи.
+
+### whisper.cpp
+
+Скачивается скриптом в `~/Library/Application Support/VoiceCapture/Models/`:
 
 ```bash
 ./download_model.sh tiny|base|small|medium|large-v3|large-v3-turbo
@@ -121,18 +137,27 @@ open dist/VoiceCapture.app
 ## 7. Хранение настроек
 
 `~/Library/Application Support/VoiceCapture/settings.json` (Codable `AppSettings`):
-- `backend`: `local` | `groq` | `both` (дефолт — **`both`**)
+- `backend`: `local` | `fluidAudio` | `groq` | `both` (дефолт — **`both`**)
 - `localModel`: имя файла модели (дефолт — **`ggml-large-v3-turbo.bin`**)
 - `language`: `ru` | `en` | `auto`
 - `groqApiKey`, `groqModel`
 - `autoPaste`: bool
 - `localStartDelay`: Double (сек) — задержка перед запуском локального whisper в режиме `both` (дефолт 2.0, настраивается в UI, кламп 0…10). Декодирование настроек устойчиво к отсутствующим ключам (кастомный `init(from:)` с `decodeIfPresent ?? default`) — добавление новых полей не сбрасывает settings.json.
-- Режим `both` — «совместный» (третий пункт в выпадающем списке «Распознавание»). Стратегия: сразу шлём Groq (обычно мгновенный); если за 2 секунды Groq не дал результат — параллельно запускаем локальный whisper, дальше гонка. Побеждает первый успешный непустой результат. Если Groq провалился раньше 2с — Local подключается немедленно. Так CPU в большинстве случаев не дёргаем. Работает только если задан Groq-ключ И скачана локальная модель (`parallelRaceApplicable`). Реализация — `AppDelegate.runParallel(...)` (NSLock + флаги settled/localStarted, очередь `raceQueue` concurrent, `localDelay=2.0`). prompt (`initialPrompt`) передаётся И в whisper.cpp, И в Groq (поле `prompt` в multipart). В окне настроек в этом режиме доступны И Groq-поля, И локальная модель.
+- Режим `both` — «совместный». Стратегия: сразу шлём Groq; если за `localStartDelay` Groq не дал результат — параллельно запускаем локальный whisper. Побеждает первый успешный непустой результат. Если Groq провалился раньше таймера — Local подключается немедленно. Работает только если задан Groq-ключ И скачана локальная модель (`parallelRaceApplicable`). Реализация — `AppDelegate.runParallel(...)`.
+- `fluidAudio` использует отдельный async-пайплайн и не реализует синхронный протокол `Recognizer`. Язык определяется Parakeet автоматически; `language` и `initialPrompt` не применяются.
 - `hotkeyRequiresCommand/Control/Option/Shift`: какие модификаторы держать
 
 ---
 
 ## 8. ТЕКУЩИЕ ЗАДАЧИ / TODO (на момент написания)
+
+### Сделано в 3.2
+- [x] **FluidAudio / Parakeet TDT v3** — отдельный backend в UI, модель ~500 MB скачивается из настроек.
+- [x] **Live-текст во время записи** — независимые проходы по полному snapshot; оверлей обновляется, при отпускании выполняется final pass и вставка.
+- [x] Скачивание, прогресс Core ML-оптимизации, повторная загрузка, папка и удаление FluidAudio-модели.
+- [x] FluidAudio SDK зафиксирован на `0.15.5` (Apache 2.0), модель — CC BY 4.0. Код GPLv3 FluidVoice не копировался.
+- [x] Минимальная система поднята до macOS 14; готовый релиз и FluidAudio рассчитаны на Apple Silicon.
+- [x] Версия приложения и release bundle обновлены до 3.2.0.
 
 ### Сделано в 3.1
 - [x] **Совместный режим (`both`)** — Groq + Local «гонкой», дефолтный backend. См. `AppDelegate.runParallel(...)`.

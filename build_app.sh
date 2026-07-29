@@ -3,9 +3,10 @@
 # build_app.sh — собирает VoiceCapture.app (macOS application bundle).
 #
 # Шаги:
-#   1) собирает whisper.cpp (если либы ещё нет)
-#   2) swift build -c release
-#   3) упаковывает бинарник в dist/VoiceCapture.app с Info.plist
+#   1) собирает whisper.cpp (если статической библиотеки ещё нет)
+#   2) собирает release-бинарник SwiftPM вместе с FluidAudio
+#   3) упаковывает VoiceCapture 3.2.0 в dist/VoiceCapture.app
+#   4) подписывает bundle стабильной ad-hoc подписью и перезапускает приложение
 #
 set -euo pipefail
 
@@ -13,7 +14,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 APP_NAME="VoiceCapture"
 DIST="$ROOT/dist"
 APP="$DIST/$APP_NAME.app"
-VERSION="3.1.0"
+VERSION="3.2.0"
 
 # 1) whisper.cpp
 if [[ ! -f "$ROOT/Vendor/install/lib/libwhisper_combined.a" ]]; then
@@ -60,7 +61,7 @@ cat > "$APP/Contents/Info.plist" <<PLIST
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>LSMinimumSystemVersion</key>
-    <string>13.0</string>
+    <string>14.0</string>
     <!-- Меню-бар приложение без иконки в Dock -->
     <key>LSUIElement</key>
     <true/>

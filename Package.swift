@@ -4,7 +4,10 @@ import PackageDescription
 let package = Package(
     name: "VoiceCapture",
     platforms: [
-        .macOS(.v13)
+        .macOS(.v14)
+    ],
+    dependencies: [
+        .package(url: "https://github.com/FluidInference/FluidAudio.git", exact: "0.15.5")
     ],
     targets: [
         // C-обёртка над собранной статической библиотекой whisper.cpp.
@@ -24,7 +27,10 @@ let package = Package(
         ),
         .executableTarget(
             name: "VoiceCapture",
-            dependencies: ["CWhisper"],
+            dependencies: [
+                "CWhisper",
+                .product(name: "FluidAudio", package: "FluidAudio"),
+            ],
             path: "Sources/VoiceCapture",
             linkerSettings: [
                 .linkedFramework("AppKit"),

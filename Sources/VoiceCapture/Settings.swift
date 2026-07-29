@@ -2,13 +2,15 @@ import Foundation
 
 /// Backend распознавания речи.
 enum RecognitionBackend: String, Codable, CaseIterable {
-    case local  // whisper.cpp локально (по умолчанию)
+    case local  // whisper.cpp локально
+    case fluidAudio  // Parakeet TDT v3 через FluidAudio/Core ML, live-preview
     case groq  // облачный Groq Whisper
     case both  // параллельно Local + Groq, кто первый — тот и победил
 
     var displayName: String {
         switch self {
         case .local: return "Локально (whisper.cpp)"
+        case .fluidAudio: return "FluidAudio (Parakeet v3 — live)"
         case .groq: return "Groq (облако)"
         case .both: return "Совместно (Groq + Local — кто первый)"
         }

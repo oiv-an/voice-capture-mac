@@ -5,6 +5,7 @@ final class StatusController {
     enum State {
         case idle
         case recording
+        case liveText(String)
         case processing
         case done(String)
         case error(String)
@@ -25,7 +26,7 @@ final class StatusController {
         guard window == nil else { return }
 
         let w = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 320, height: 64),
+            contentRect: NSRect(x: 0, y: 0, width: 620, height: 64),
             styleMask: [.borderless],
             backing: .buffered,
             defer: false
@@ -49,8 +50,9 @@ final class StatusController {
         dot.layer?.cornerRadius = 6
         container.addSubview(dot)
 
-        // Текст: одна строка по центру окна по вертикали. Высота строки ~20, центр = (64-20)/2 = 22.
-        label.frame = NSRect(x: 42, y: 22, width: 262, height: 20)
+        // Текст: одна строка по центру окна по вертикали. Ширины хватает для live-транскрипта.
+        label.frame = NSRect(x: 42, y: 22, width: 562, height: 20)
+        label.autoresizingMask = [.width]
         label.font = NSFont.systemFont(ofSize: 14, weight: .medium)
         label.textColor = .white
         label.alignment = .left
@@ -72,9 +74,26 @@ final class StatusController {
         w.setFrameOrigin(NSPoint(x: x, y: y))
     }
 
+    private func setWindowWidth(_ width: CGFloat) {
+        guard let window else { return }
+        var frame = window.frame
+        frame.size.width = width
+        window.setFrame(frame, display: true)
+        label.frame.size.width = width - 58
+    }
+
     private func render(_ state: State) {
         ensureWindow()
         hideTimer?.invalidate()
+
+        // Широкая плашка нужна только для FluidAudio live-текста.
+        // Обычные Recording/Processing/Error остаются компактными, как раньше.
+        switch state {
+        case .liveText:
+            setWindowWidth(620)
+        default:
+            setWindowWidth(320)
+        }
 
         switch state {
         case .idle:
@@ -83,6 +102,9 @@ final class StatusController {
         case .recording:
             dot.layer?.backgroundColor = NSColor.systemRed.cgColor
             label.stringValue = "Запись… (отпустите клавиши)"
+        case .liveText(let text):
+            dot.layer?.backgroundColor = NSColor.systemRed.cgColor
+            label.stringValue = text.isEmpty ? "Слушаю…" : text
         case .processing:
             dot.layer?.backgroundColor = NSColor.systemYellow.cgColor
             label.stringValue = "Распознавание…"

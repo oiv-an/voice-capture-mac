@@ -24,10 +24,12 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
 
     private var downloadTask: URLSessionDownloadTask?
     private var downloadingModel: WhisperModelInfo?
+    private var pendingWhisperModelID: String
 
     init(settings: AppSettings, onSave: @escaping (AppSettings) -> Void) {
         self.settings = settings
         self.onSave = onSave
+        self.pendingWhisperModelID = settings.localModel
 
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 500, height: 600),
@@ -61,14 +63,15 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         }
 
         backendPopup.addItems(withTitles: RecognitionBackend.allCases.map { $0.displayName })
+        if !isAppleSilicon {
+            let fluidIndex = RecognitionBackend.allCases.firstIndex(of: .fluidAudio)!
+            backendPopup.item(at: fluidIndex)?.isEnabled = false
+        }
         backendPopup.target = self
         backendPopup.action = #selector(backendChanged)
         addRow("Распознавание:", backendPopup)
 
-        // Модель — из каталога, с пометкой статуса
-        for m in WhisperModelInfo.catalog {
-            modelPopup.addItem(withTitle: "\(m.title) (\(m.approxSize))")
-        }
+        // Содержимое списка зависит от backend: Whisper-каталог или Parakeet v3.
         modelPopup.target = self
         modelPopup.action = #selector(modelChanged)
         addRow("Локальная модель:", modelPopup)
@@ -163,6 +166,19 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
 
     // MARK: - Values
 
+    private var selectedBackend: RecognitionBackend {
+        let index = max(0, backendPopup.indexOfSelectedItem)
+        return RecognitionBackend.allCases[min(index, RecognitionBackend.allCases.count - 1)]
+    }
+
+    private var isAppleSilicon: Bool {
+        #if arch(arm64)
+            return true
+        #else
+            return false
+        #endif
+    }
+
     private func selectedModel() -> WhisperModelInfo {
         let idx = max(0, modelPopup.indexOfSelectedItem)
         return WhisperModelInfo.catalog[min(idx, WhisperModelInfo.catalog.count - 1)]
@@ -172,9 +188,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         if let idx = RecognitionBackend.allCases.firstIndex(of: settings.backend) {
             backendPopup.selectItem(at: idx)
         }
-        if let idx = WhisperModelInfo.catalog.firstIndex(where: { $0.id == settings.localModel }) {
-            modelPopup.selectItem(at: idx)
-        }
+        rebuildModelPopup()
         languagePopup.selectItem(withTitle: settings.language)
         promptTextView.string = settings.initialPrompt
         groqKeyField.stringValue = settings.groqApiKey
@@ -185,24 +199,71 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         updateModelStatus()
     }
 
-    @objc private func backendChanged() { updateEnabled() }
-    @objc private func modelChanged() { updateModelStatus() }
+    @objc private func backendChanged() {
+        // Запоминаем несохранённый выбор Whisper перед переключением на FluidAudio.
+        if modelPopup.numberOfItems == WhisperModelInfo.catalog.count {
+            pendingWhisperModelID = selectedModel().id
+        }
+        rebuildModelPopup()
+        updateEnabled()
+    }
+
+    @objc private func modelChanged() {
+        if selectedBackend != .fluidAudio {
+            pendingWhisperModelID = selectedModel().id
+        }
+        updateModelStatus()
+    }
+
+    private func rebuildModelPopup() {
+        modelPopup.removeAllItems()
+
+        if selectedBackend == .fluidAudio {
+            modelPopup.addItem(
+                withTitle:
+                    "Parakeet TDT v3 — multilingual live (\(FluidAudioRecognizer.approxDownloadSize))"
+            )
+            return
+        }
+
+        for model in WhisperModelInfo.catalog {
+            modelPopup.addItem(withTitle: "\(model.title) (\(model.approxSize))")
+        }
+        if let index = WhisperModelInfo.catalog.firstIndex(where: { $0.id == pendingWhisperModelID }
+        ) {
+            modelPopup.selectItem(at: index)
+        }
+    }
 
     private func updateEnabled() {
-        // 0 = Локально, 1 = Groq, 2 = Совместно (.both).
-        let idx = backendPopup.indexOfSelectedItem
-        let localOn = idx == 0 || idx == 2  // локальные поля нужны для Local и Совместно
-        let groqOn = idx == 1 || idx == 2  // Groq-поля нужны для Groq и Совместно
+        let backend = selectedBackend
+        let whisperOn = backend == .local || backend == .both
+        let fluidOn = backend == .fluidAudio
+        let groqOn = backend == .groq || backend == .both
 
-        modelPopup.isEnabled = localOn
-        downloadButton.isEnabled = localOn
-        promptTextView.isEditable = localOn
-        promptTextView.isSelectable = localOn
+        modelPopup.isEnabled = whisperOn
+        downloadButton.isEnabled = whisperOn || fluidOn
+        languagePopup.isEnabled = !fluidOn
+        promptTextView.isEditable = whisperOn
+        promptTextView.isSelectable = whisperOn
         groqKeyField.isEnabled = groqOn
         groqModelField.isEnabled = groqOn
+        localDelayField.isEnabled = backend == .both
+        updateModelStatus()
     }
 
     private func updateModelStatus() {
+        if selectedBackend == .fluidAudio {
+            modelStatusLabel.stringValue =
+                FluidAudioRecognizer.isModelDownloaded
+                ? "✓ Parakeet v3 скачана" : "Parakeet v3 не скачана"
+            modelStatusLabel.textColor =
+                FluidAudioRecognizer.isModelDownloaded ? .systemGreen : .systemOrange
+            downloadButton.title =
+                FluidAudioRecognizer.isModelDownloaded ? "Перекачать" : "Скачать"
+            return
+        }
+
         let m = selectedModel()
         if m.isDownloaded() {
             modelStatusLabel.stringValue = "✓ Скачана"
@@ -218,6 +279,11 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     // MARK: - Download
 
     @objc private func downloadTapped() {
+        if selectedBackend == .fluidAudio {
+            downloadFluidAudioModel()
+            return
+        }
+
         if downloadTask != nil {
             // Отмена
             downloadTask?.cancel()
@@ -240,6 +306,40 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         let task = session.downloadTask(with: model.downloadURL)
         downloadTask = task
         task.resume()
+    }
+
+    private func downloadFluidAudioModel() {
+        downloadButton.isEnabled = false
+        progressBar.isHidden = false
+        progressBar.doubleValue = 0
+        modelStatusLabel.stringValue = "Подготовка FluidAudio…"
+        modelStatusLabel.textColor = .secondaryLabelColor
+
+        let forceDownload = FluidAudioRecognizer.isModelDownloaded
+        Task { [weak self] in
+            guard let self = self else { return }
+            do {
+                try await FluidAudioRecognizer.downloadModel(force: forceDownload) {
+                    [weak self] fraction, status in
+                    DispatchQueue.main.async {
+                        self?.progressBar.doubleValue = fraction
+                        self?.modelStatusLabel.stringValue = status
+                    }
+                }
+                await MainActor.run {
+                    self.progressBar.isHidden = true
+                    self.downloadButton.isEnabled = true
+                    self.updateModelStatus()
+                }
+            } catch {
+                await MainActor.run {
+                    self.progressBar.isHidden = true
+                    self.downloadButton.isEnabled = true
+                    self.modelStatusLabel.stringValue = "Ошибка: \(error.localizedDescription)"
+                    self.modelStatusLabel.textColor = .systemRed
+                }
+            }
+        }
     }
 
     // URLSessionDownloadDelegate
@@ -298,12 +398,16 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     // MARK: - Actions
 
     @objc private func openModelsFolder() {
-        NSWorkspace.shared.open(AppSettings.modelsDirectory)
+        let directory =
+            selectedBackend == .fluidAudio
+            ? FluidAudioRecognizer.modelDirectory
+            : AppSettings.modelsDirectory
+        NSWorkspace.shared.open(directory)
     }
 
     @objc private func saveTapped() {
-        settings.backend = RecognitionBackend.allCases[max(0, backendPopup.indexOfSelectedItem)]
-        settings.localModel = selectedModel().id
+        settings.backend = selectedBackend
+        settings.localModel = pendingWhisperModelID
         settings.language = languagePopup.titleOfSelectedItem ?? settings.language
         settings.initialPrompt = promptTextView.string
         settings.groqApiKey = groqKeyField.stringValue

@@ -52,9 +52,9 @@ DEFINES=(
   -DWHISPER_VERSION="\"$WHISPER_VER\""
 )
 
-# Deployment target: должен совпадать с platforms в Package.swift (.macOS(.v13)),
+# Deployment target должен совпадать с platforms в Package.swift (.macOS(.v14)),
 # иначе линковщик ругается "object file was built for newer macOS version".
-MACOS_MIN="13.0"
+MACOS_MIN="14.0"
 
 CFLAGS=(-O3 -fPIC -std=c11 -mmacosx-version-min="$MACOS_MIN" "${DEFINES[@]}" "${INCLUDES[@]}")
 CXXFLAGS=(-O3 -fPIC -std=c++17 -mmacosx-version-min="$MACOS_MIN" "${DEFINES[@]}" "${INCLUDES[@]}")

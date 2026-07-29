@@ -84,6 +84,12 @@ final class AudioRecorder {
         return result
     }
 
+    /// Потокобезопасный snapshot текущей записи для FluidAudio live-preview.
+    /// Копирование происходит только по таймеру preview, а не на каждом audio callback.
+    func currentSamples() -> [Float] {
+        sampleQueue.sync { capturedSamples }
+    }
+
     /// RMS и пиковая амплитуда сигнала.
     static func levels(_ samples: [Float]) -> (rms: Float, peak: Float) {
         guard !samples.isEmpty else { return (0, 0) }

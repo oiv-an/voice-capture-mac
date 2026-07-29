@@ -1,367 +1,262 @@
-# VoiceCapture 3.1 — голосовой ввод для macOS
+# VoiceCapture 3.2 — быстрый голосовой ввод для macOS
 
-Нативное меню-бар приложение для macOS на **Swift + AppKit**. Распознаёт речь
-и вставляет распознанный текст в активное приложение по горячей клавише.
+Нативное menu bar-приложение на **Swift + AppKit**: зажимаешь **⌘ + ⌃**, говоришь,
+отпускаешь — готовый текст вставляется в активное приложение.
 
-**Принцип работы (hold-to-talk):**
-1. Зажми **⌘ + ⌃ (Cmd + Control)**.
-2. Говори — идёт запись с микрофона.
-3. Отпусти клавиши → речь распознаётся → текст копируется в буфер и
-   автоматически вставляется (Cmd + V).
+Главное обновление 3.2 — локальный движок **FluidAudio / NVIDIA Parakeet TDT v3**.
+Он работает на Apple Neural Engine, поддерживает русский и показывает распознанный
+текст прямо во время речи.
 
-По умолчанию работает **совместный режим** (`both`): запрос сразу уходит в
-облако **Groq** (обычно мгновенный ответ), а если Groq не успел за заданную
-задержку — параллельно стартует локальный `whisper.cpp`, и побеждает первый
-успешный результат. Локальная модель по умолчанию — **large-v3-turbo** (быстрая
-и точная, ~1.6 ГБ). Можно работать и **полностью офлайн** на локальной модели
-(приватно, ничего не уходит в облако) — режим и модель выбираются в «Настройках».
+## Что нового в 3.2
 
----
+- **FluidAudio / Parakeet TDT v3** — новый локальный backend в выпадающем меню.
+- **Live-транскрипт** — текст появляется в нижнем оверлее во время удержания хоткея.
+- После отпускания выполняется финальный проход, текст копируется и автоматически вставляется.
+- Parakeet поддерживает **25 европейских языков**, включая русский, и определяет язык автоматически.
+- Модель размером около **500 MB** скачивается и компилируется прямо из настроек.
+- Инференс работает локально через **Core ML + Apple Neural Engine** — без отправки голоса в облако.
+- Добавлены статус скачивания, повторная загрузка, открытие папки и удаление FluidAudio-модели.
+- FluidAudio SDK зафиксирован на версии **0.15.5**.
+- Обычные backend-ы `whisper.cpp`, Groq и совместный режим сохранены без изменений.
 
-## ✨ Что нового в 3.1
+## Как это работает
 
-- **Совместный режим распознавания (`both`)** — Groq + локальный whisper «гонкой»:
-  Groq отвечает почти мгновенно, локальный whisper подключается с задержкой как
-  бесплатный офлайн-фолбэк. Побеждает первый успешный результат.
-- **Настраиваемая задержка** запуска локальной модели в совместном режиме
-  (поле в «Настройках», дефолт 2 сек) — чтобы лишний раз не греть CPU.
-- **Дефолтная модель — large-v3-turbo** (~1.6 ГБ) вместо large-v3 (~3.1 ГБ):
-  быстрее и легче при сопоставимом качестве.
-- **История распознаваний** — последние 10 в меню-баре, клик копирует текст.
-- **Счётчик** распознаваний и слов за всё время (в меню-баре).
-- **Перезапуск приложения** прямо из меню (`⌘R`) — если залипло.
-- **Стабильная авто-вставка**, в т.ч. в браузерах; защита от запуска второго
-  экземпляра (flock).
+### FluidAudio live
 
----
+1. Открой **Настройки…**.
+2. Выбери **FluidAudio (Parakeet v3 — live)**.
+3. Нажми **Скачать** и дождись загрузки/оптимизации модели.
+4. Нажми **Сохранить**.
+5. Зажми **⌘ + ⌃** и говори — live-текст появится в оверлее примерно через 0,5–1 секунду.
+6. Отпусти клавиши — финальный текст вставится в активное поле.
 
-## 🚀 Быстрый старт (скачать готовое приложение)
+### Другие режимы
 
-Не хочешь собирать из исходников? Скачай готовый `.app`:
+- **Локально (whisper.cpp)** — полностью офлайн, распознавание после отпускания хоткея.
+- **Groq (облако)** — быстрое облачное распознавание через пользовательский API-ключ.
+- **Совместно** — Groq стартует сразу, локальный Whisper подключается с заданной задержкой;
+  побеждает первый успешный результат.
 
-1. **Скачай** последний релиз → [Releases](https://github.com/oiv-an/voice-capture-mac/releases/latest)
-   (файл `VoiceCapture-3.1-macOS-arm64.zip`, ~0.5 МБ — модель скачивается отдельно).
-2. **Распакуй** и перетащи `VoiceCapture.app` в папку `Программы` (`/Applications`).
-3. **Сними карантин** (приложение подписано ad-hoc, без Apple Developer ID):
-   ```bash
-   xattr -dr com.apple.quarantine /Applications/VoiceCapture.app
-   ```
-   Или: правый клик по приложению → **«Открыть»** → **«Открыть»** (один раз).
-4. **Скачай модель** large-v3-turbo (~1.6 ГБ) — один раз:
-   ```bash
-   mkdir -p ~/Library/Application\ Support/VoiceCapture/Models
-   curl -L --progress-bar \
-     -o ~/Library/Application\ Support/VoiceCapture/Models/ggml-large-v3-turbo.bin \
-     https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo.bin
-   ```
-5. **Запусти**, выдай права (Микрофон + Универсальный доступ — см. раздел 4),
-   зажми **⌘ + ⌃** и говори.
+## Быстрый старт
 
-> Бинарь собран под **Apple Silicon (arm64)**. На Intel-Mac собирай из исходников (раздел 3).
-
----
-
-## 1. Требования
-
-| Требование            | Значение                                                               |
-| --------------------- | ---------------------------------------------------------------------- |
-| **macOS**             | 13.0 (Ventura) или новее                                               |
-| **Процессор**         | Apple Silicon (M1+) или Intel x86_64                                   |
-| **Xcode / Toolchain** | Xcode 15+ (нужен `swift` 5.9+ и `clang++`). Хватает Command Line Tools |
-| **Свободное место**   | ~2 ГБ (модель large-v3-turbo ≈ 1.6 ГБ + бинарь/либы)                   |
-| **Права доступа**     | Микрофон + Accessibility (Универсальный доступ)                        |
-
-Проверь наличие тулчейна:
+1. Скачай последний релиз:
+   [VoiceCapture Releases](https://github.com/oiv-an/voice-capture-mac/releases/latest).
+2. Распакуй `VoiceCapture-3.2-macOS-arm64.zip`.
+3. Перетащи `VoiceCapture.app` в `/Applications`.
+4. Сними карантин, так как приложение подписано ad-hoc:
 
 ```bash
-swift --version      # должно быть 5.9+
-clang++ --version
+xattr -dr com.apple.quarantine /Applications/VoiceCapture.app
 ```
 
-Если нет — поставь Command Line Tools:
+5. Запусти приложение и выдай два разрешения:
+   - **Микрофон**;
+   - **Accessibility / Универсальный доступ**.
+6. Выбери движок в **Настройки…**, скачай нужную локальную модель и начинай диктовку.
+
+## Требования
+
+| Требование                  | Значение                                               |
+| --------------------------- | ------------------------------------------------------ |
+| macOS                       | **14.0 Sonoma или новее**                              |
+| Процессор                   | **Apple Silicon M1+** для готового релиза и FluidAudio |
+| Права                       | Microphone + Accessibility                             |
+| FluidAudio-модель           | ~500 MB                                                |
+| Whisper-модель по умолчанию | large-v3-turbo, ~1.6 GB                                |
+
+> Релизный ZIP собирается под `arm64`. FluidAudio/Parakeet рассчитан на Apple Silicon.
+
+## Первый запуск и разрешения
+
+### Микрофон
+
+**Системные настройки → Конфиденциальность и безопасность → Микрофон → VoiceCapture**.
+
+### Accessibility
+
+Нужен для глобального хоткея и эмуляции `Cmd+V`:
+
+**Системные настройки → Конфиденциальность и безопасность → Универсальный доступ → VoiceCapture**.
+
+После выдачи разрешения перезапусти приложение.
+
+### Gatekeeper
+
+Приложение пока не подписано Apple Developer ID и не нотаризовано. Если macOS блокирует запуск:
 
 ```bash
-xcode-select --install
+xattr -dr com.apple.quarantine /Applications/VoiceCapture.app
+open /Applications/VoiceCapture.app
 ```
 
-> `cmake` и `Homebrew` **не нужны** — `whisper.cpp` собирается напрямую через
-> `clang++` с фреймворком Accelerate.
+## Модели
 
----
+### FluidAudio / Parakeet TDT v3
 
-## 2. Установка
+Скачивается из окна настроек. Файлы хранятся в:
 
-### 2.1. Клонирование
-
-```bash
-git clone https://github.com/oiv-an/voice-capture-mac.git VoiceCapture
-cd VoiceCapture
+```text
+~/Library/Application Support/FluidAudio/Models/
 ```
 
-Репозиторий уже содержит исходники `whisper.cpp` в `Vendor/whisper.cpp/`.
+В menu bar при активном FluidAudio появляется пункт **«Удалить модель FluidAudio»**.
 
-### 2.2. Сборка нативной библиотеки whisper.cpp
+### whisper.cpp
 
-Один раз (или после обновления `Vendor/whisper.cpp`):
+Whisper-модели хранятся в:
 
-```bash
-./build_whisper.sh
+```text
+~/Library/Application Support/VoiceCapture/Models/
 ```
 
-Результат: `Vendor/install/lib/libwhisper_combined.a` + заголовки в
-`Vendor/install/include/`.
-
-### 2.3. Загрузка модели large-v3-turbo (~1.6 ГБ)
-
-Модель хранится в папке поддержки приложения:
-`~/Library/Application Support/VoiceCapture/Models/`
-
-Скрипт сам создаёт папку и скачивает нужный файл:
+Скачать модель можно из настроек или скриптом:
 
 ```bash
 ./download_model.sh large-v3-turbo
 ```
 
-Это скачает `ggml-large-v3-turbo.bin` с Hugging Face:
-`https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo.bin`
+Доступные варианты: `tiny`, `base`, `small`, `medium`, `large-v3`, `large-v3-turbo`.
 
-Альтернатива — скачать вручную:
+## Настройки
 
-```bash
-mkdir -p ~/Library/Application\ Support/VoiceCapture/Models
-curl -L --progress-bar \
-  -o ~/Library/Application\ Support/VoiceCapture/Models/ggml-large-v3-turbo.bin \
-  https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo.bin
+Файл настроек:
+
+```text
+~/Library/Application Support/VoiceCapture/settings.json
 ```
 
-> Можно выбрать другую модель: `large-v3` (≈3.1 ГБ, максимум точности),
-> `medium` (≈1.5 ГБ) или `small` (≈466 МБ, быстрее/легче).
-> Активная модель выбирается в окне «Настройки» приложения.
+Основные параметры:
 
----
+- `backend`: `local` | `fluidAudio` | `groq` | `both`;
+- `localModel`: файл выбранной Whisper-модели;
+- `language`: `ru` | `en` | `auto` для Whisper/Groq;
+- `initialPrompt`: prompt для Whisper/Groq;
+- `groqApiKey`, `groqModel`;
+- `autoPaste`;
+- `localStartDelay` для совместного режима.
 
-## 3. Сборка и запуск
+FluidAudio определяет язык автоматически; `language` и `initialPrompt` для него не используются.
 
-### Вариант A — быстрый запуск из исходников (для разработки/отладки)
+## Сборка из исходников
+
+### Требования для разработки
+
+- Xcode / Swift toolchain с поддержкой Swift 6 package dependencies;
+- `clang++`;
+- интернет для загрузки SwiftPM-зависимости FluidAudio.
+
+`cmake` и Homebrew для сборки `whisper.cpp` не нужны.
+
+### Сборка
 
 ```bash
-swift build -c release          # или: swift build  (debug)
-./dev_run.sh                    # пересобирает + запускает с логами в консоль
-```
-
-`dev_run.sh` запускает бинарь напрямую — хоткеи работают сразу, без сборки
-`.app`. Для остановки — `Ctrl+C`.
-
-### Вариант B — финальный `.app`-бандл (для обычного запуска двойным кликом)
-
-```bash
+git clone https://github.com/oiv-an/voice-capture-mac.git VoiceCapture
+cd VoiceCapture
+./build_whisper.sh
+swift build -c release
 ./build_app.sh
-open dist/VoiceCapture.app
 ```
 
-`build_app.sh` делает всё одной командой:
-1. собирает `whisper.cpp` (если либы ещё нет);
-2. `swift build -c release`;
-3. формирует `dist/VoiceCapture.app` со структурой `Contents/MacOS/` +
-   `Info.plist` (с ключами `NSMicrophoneUsageDescription`, `LSUIElement`,
-   `LSMinimumSystemVersion`);
-4. подписывает ad-hoc подписью (`codesign --force --deep --sign -`), чтобы
-   macOS стабильно выдавал TCC-доступ к микрофону и Accessibility.
+Результат:
 
-После этого `VoiceCapture.app` можно перетащить в `/Applications` и запускать
-двойным кликом. Приложение живёт в меню-баре (иконка микрофона), значка в Dock нет.
-
----
-
-## 4. Первый запуск — выдача прав
-
-При первом запуске macOS запросит доступы. Их нужно выдать **оба**:
-
-### 4.1. Микрофон
-Запрашивается автоматически при первой записи. Если случайно отказал:
-**Системные настройки → Конфиденциальность и безопасность → Микрофон** →
-включить **VoiceCapture**.
-
-### 4.2. Accessibility (Универсальный доступ)
-Нужен для:
-- чтения состояния горячих клавиш (⌘⌃);
-- эмуляции Cmd + V (авто-вставка текста).
-
-**Системные настройки → Конфиденциальность и безопасность → Универсальный
-доступ** → включить **VoiceCapture** → **перезапустить приложение**.
-
-В приложении есть пункт меню **«Проверить доступ (Accessibility)»** — он покажет
-текущий статус и откроет нужный диалог.
-
-### 4.3. Обход Gatekeeper (незаверенная подпись)
-Так как `.app` подписан ad-hoc (без Apple Developer ID), при первом запуске
-скачанного приложения macOS может ругаться «не удаётся проверить разработчика».
-Решения:
-
-```bash
-# снять карантин с бандла
-xattr -dr com.apple.quarantine dist/VoiceCapture.app
+```text
+dist/VoiceCapture.app
 ```
 
-или: **правый клик по `VoiceCapture.app` → «Открыть» → «Открыть»** (один раз).
+`build_app.sh`:
 
----
+1. собирает `whisper.cpp`, если статической библиотеки ещё нет;
+2. выполняет release-сборку SwiftPM;
+3. создаёт `.app` bundle и `Info.plist`;
+4. подписывает бинарник и bundle стабильной ad-hoc подписью;
+5. перезапускает приложение.
 
-## 5. Использование
+## Архитектура
 
-1. Поставь курсор в любое поле ввода (заметки, мессенджер, браузер).
-2. **Зажми и держи ⌘ + ⌃**, говори.
-3. **Отпусти клавиши** — появится индикатор:
-   - 🔴 **«Запись…»** — идёт захват звука;
-   - 🟡 **«Распознавание…»** — модель обрабатывает аудио (large-v3-turbo на CPU:
-     от долей секунды до нескольких секунд, зависит от длины фразы);
-   - 🟢 **готовый текст** — распознано, скопировано в буфер и вставлено.
-
-Если сказать слишком тихо или коротко — покажется подсказка («Тишина…» /
-«Слишком коротко — держите ⌘⌃ дольше»).
-
-Настройки (модель, язык, авто-вставка, промпт для пунктуации, Groq) — пункт
-меню **«Настройки…»**.
-
-### 5.1. Меню в строке состояния
-
-Клик по иконке микрофона в меню-баре открывает меню:
-
-- **Счётчик** — строка `Распознано: N · слов: M` показывает суммарную статистику
-  за всё время (не сбрасывается между перезапусками).
-- **История** — подменю с последними **10** распознаваниями. Клик по записи
-  копирует её текст в буфер обмена; внизу — пункт **«Очистить историю»**.
-  История хранится в
-  `~/Library/Application Support/VoiceCapture/history.json`.
-- **Настройки…** / **Папка моделей…** / **Проверить доступ (Accessibility)**.
-- **Перезапустить** (`⌘R`) — если приложение подвисло и не реагирует на хоткеи,
-  этот пункт корректно перезапускает его (новый процесс + завершение текущего).
-- **Выход** (`⌘Q`).
-
-### 5.2. Режим распознавания по умолчанию
-
-По умолчанию используется **совместный режим** (`both`): запрос сразу уходит в
-Groq (обычно мгновенный), а если Groq не ответил за заданную задержку — параллельно
-стартует локальный whisper, и побеждает первый успешный результат. Локальная модель
-по умолчанию — **`ggml-large-v3-turbo.bin`** (быстрая и точная, ~1.6 ГБ).
-Режим и модель меняются в окне **«Настройки…»**.
-
----
-
-## 6. Troubleshooting
-
-### Бесконечное «Распознавание…», результата нет
-Историческая причина (исправлена в коде) — гонка потоков:
-- `cachedRecognizer` создавался в фоновой задаче и читался из другого потока →
-  гонка данных;
-- прогрев модели и распознавание делили одну **последовательную** `workQueue`,
-  поэтому долгая первичная загрузка модели (3 ГБ с диска в `.app`) блокировала
-  распознавание.
-
-Как сделано правильно сейчас (см. `AppDelegate.swift`):
-- recognizer создаётся **на главном потоке** (`makeRecognizer` вызывается до
-  ухода в фон) — кэш без гонок;
-- прогрев модели вынесен в отдельную очередь **`prewarmQueue`** (qos `.utility`),
-  не мешает распознаванию;
-- добавлен **watchdog**: если распознавание висит дольше 90 секунд, состояние
-  сбрасывается и показывается ошибка, приложение не залипает.
-
-Если всё же завис процесс — убей его принудительно:
-
-```bash
-pkill -9 -f "VoiceCapture"
-```
-
-Проверить, что процесс жив/мёртв:
-
-```bash
-ps aux | grep -i voicecapture | grep -v grep
-```
-
-### Проверка прогрева модели
-Запусти из терминала и смотри лог — должны появиться строки:
-
-```
-[App] Прогрев модели в фоне…
-[App] Модель готова к работе
-```
-
-Если их нет — модель не найдена. Проверь путь:
-
-```bash
-ls -lh ~/Library/Application\ Support/VoiceCapture/Models/
-```
-
-Должен лежать `ggml-large-v3-turbo.bin` (≈1.6 ГБ). Если нет — см. шаг 2.3.
-
-### Хоткеи ⌘⌃ не срабатывают
-- Проверь Accessibility (шаг 4.2) и **перезапусти** приложение после выдачи прав.
-- Хоткеи реализованы через опрос состояния модификаторов (`CGEventSource.flagsState`),
-  поэтому работают сразу после запуска, без клика по иконке.
-
-### Whisper выдаёт случайный текст / «галлюцинации»
-Обычно при слишком тихом входе. В коде есть авто-усиление (auto-gain) и фильтр
-тишины по RMS. Говори ближе к микрофону; проверь уровень входа в Системных
-настройках → Звук → Вход.
-
-### Линковка падает (`ggml_backend_*`, `__cxa_*`, `dl_*`)
-Пересобери библиотеку: `./build_whisper.sh`. Убедись, что в `Package.swift` у
-таргета `CWhisper` есть флаг `-lc++`.
-
----
-
-## 7. Структура проекта
-
-```
+```text
 VoiceCapture/
-├── README.md                    # этот файл
-├── AI_INSTRUCTIONS.md           # контекст для AI-ассистента
-├── Package.swift                # SwiftPM манифест
-├── build_whisper.sh             # сборка whisper.cpp → libwhisper_combined.a
-├── build_app.sh                 # release + упаковка .app + codesign
-├── dev_run.sh                   # быстрый запуск из исходников (разработка)
-├── download_model.sh            # скачивание ggml-моделей
-├── Vendor/
-│   ├── whisper.cpp/             # исходники whisper.cpp
-│   └── install/                 # результат build_whisper.sh (lib + headers)
+├── Package.swift
+├── Package.resolved
+├── build_whisper.sh
+├── build_app.sh
+├── download_model.sh
+├── search.js
 ├── Sources/
-│   ├── CWhisper/                # C-обёртка над whisper.cpp
-│   └── VoiceCapture/            # основной Swift-код
-│       ├── main.swift                  # точка входа (NSApplication.accessory)
-│       ├── AppDelegate.swift           # координатор: menubar, хоткеи, цикл записи
-│       ├── Settings.swift              # модель настроек (Codable JSON)
-│       ├── GlobalHotkeyMonitor.swift   # hold-to-talk (polling модификаторов)
-│       ├── AudioRecorder.swift         # AVAudioEngine 16kHz mono + auto-gain
-│       ├── Recognizer.swift            # протокол Recognizer + prewarm()
-│       ├── LocalWhisperRecognizer.swift# whisper.cpp + initial_prompt
-│       ├── GroqRecognizer.swift        # Groq API (опционально)
-│       ├── ClipboardManager.swift      # NSPasteboard + Cmd+V
-│       ├── StatusController.swift      # плавающий индикатор статуса
-│       ├── RecognitionHistory.swift    # история последних 10 + счётчики (JSON)
-│       └── SettingsWindowController.swift  # окно настроек (AppKit)
-└── dist/VoiceCapture.app        # собранное приложение
+│   ├── CWhisper/
+│   └── VoiceCapture/
+│       ├── main.swift
+│       ├── AppDelegate.swift
+│       ├── Settings.swift
+│       ├── SettingsWindowController.swift
+│       ├── GlobalHotkeyMonitor.swift
+│       ├── AudioRecorder.swift
+│       ├── Recognizer.swift
+│       ├── LocalWhisperRecognizer.swift
+│       ├── FluidAudioRecognizer.swift
+│       ├── GroqRecognizer.swift
+│       ├── ClipboardManager.swift
+│       ├── StatusController.swift
+│       └── RecognitionHistory.swift
+├── Vendor/whisper.cpp/
+└── dist/VoiceCapture.app
 ```
 
----
+### Live-пайплайн FluidAudio
 
-## 8. Распространение (для других пользователей)
+- [`AudioRecorder`](Sources/VoiceCapture/AudioRecorder.swift) пишет 16 kHz mono Float PCM.
+- [`AppDelegate`](Sources/VoiceCapture/AppDelegate.swift) периодически берёт потокобезопасный snapshot записи.
+- [`FluidAudioRecognizer`](Sources/VoiceCapture/FluidAudioRecognizer.swift) распознаёт snapshot через Parakeet TDT v3.
+- [`StatusController`](Sources/VoiceCapture/StatusController.swift) показывает live-текст.
+- После отпускания хоткея выполняется финальный проход по полной записи.
 
-Чтобы человек мог «просто скачать и запустить»:
+Код FluidVoice не копировался. Архитектура live-preview реализована самостоятельно поверх публичного FluidAudio API.
 
-1. Собери релизный бандл: `./build_app.sh`.
-2. Заархивируй `dist/VoiceCapture.app` (например, в `.zip` или `.dmg`).
-3. Получатель распаковывает, при необходимости снимает карантин
-   (`xattr -dr com.apple.quarantine VoiceCapture.app`) и запускает.
-4. Модель `ggml-large-v3-turbo.bin` (~1.6 ГБ) **не кладётся в бандл** (это раздуло бы
-   `.app`). Пользователь скачивает её один раз через `download_model.sh` или
-   прямо из окна «Настройки» приложения (кнопка «Скачать»).
+## Troubleshooting
 
-> Для полноценного распространения без предупреждений Gatekeeper потребуется
-> подпись Apple Developer ID + нотаризация (`notarytool`). Для личного/командного
-> использования достаточно ad-hoc подписи и снятия карантина.
+### FluidAudio скачан, но live-текста нет
 
----
+Убедись, что в настройках выбран и сохранён именно:
 
-## Лицензия
+```text
+FluidAudio (Parakeet v3 — live)
+```
 
-Исходники `whisper.cpp` — под лицензией MIT (см. `Vendor/whisper.cpp/LICENSE`).
+Выбор модели в строке ниже сам по себе не переключает backend.
+
+### После отпускания текст есть, но live-текст задерживается
+
+Первый запуск загружает Core ML-модели в память. После прогрева последующие диктовки быстрее.
+Для нормального preview говори дольше 0,5–1 секунды.
+
+### Хоткей не работает
+
+Проверь Accessibility и перезапусти приложение. В menu bar есть пункт
+**«Проверить доступ (Accessibility)»**.
+
+### Авто-вставка не работает
+
+Проверь Accessibility. Распознанный текст всё равно остаётся в буфере обмена и истории.
+
+### Whisper галлюцинирует на тишине
+
+Приложение фильтрует тихие записи по RMS и нормализует громкость, но качество всё равно
+зависит от микрофона и уровня входа.
+
+## Распространение
+
+Локальные модели не входят в release ZIP:
+
+- Parakeet скачивается из настроек в кэш FluidAudio;
+- Whisper скачивается отдельно в каталог VoiceCapture.
+
+Это держит ZIP приложения компактным. Для распространения без Gatekeeper-предупреждений
+потребуются Apple Developer ID и notarization.
+
+## Лицензии и атрибуция
+
+- `whisper.cpp` — MIT, см. `Vendor/whisper.cpp/LICENSE`.
+- FluidAudio SDK — Apache License 2.0.
+- NVIDIA Parakeet TDT 0.6B v3 и Core ML weights — CC BY 4.0:
+  - https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3
+  - https://huggingface.co/FluidInference/parakeet-tdt-0.6b-v3-coreml
+- FluidVoice использовался как референс поведения, его GPLv3-код в проект не переносился.
