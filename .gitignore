@@ -13,6 +13,9 @@ Vendor/.obj/
 dist/
 *.app
 
+# Release-архивы (публикуются как GitHub Release assets, не в репо)
+VoiceCapture-*-macOS-*.zip
+
 # Models (large, downloaded separately)
 Models/*.bin
 

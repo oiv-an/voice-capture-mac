@@ -41,6 +41,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         setupMenuBar()
         setupHotkeys()
+        recorder.microphoneUID = settings.microphoneUID
 
         // Запрос разрешений при старте.
         AudioRecorder.requestPermission { granted in
@@ -115,7 +116,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     func menuNeedsUpdate(_ menu: NSMenu) {
         menu.removeAllItems()
 
-        menu.addItem(NSMenuItem(title: "VoiceCapture 3.2", action: nil, keyEquivalent: ""))
+        menu.addItem(NSMenuItem(title: "VoiceCapture 3.3", action: nil, keyEquivalent: ""))
         menu.addItem(.separator())
 
         let info = NSMenuItem(
@@ -587,6 +588,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             guard let self = self else { return }
             self.settings = updated
             self.hotkeys.updateSettings(updated)
+            self.recorder.microphoneUID = updated.microphoneUID
             // Настройки изменились — сбрасываем кэш распознавателя (модель/язык могли поменяться).
             self.cachedRecognizer = nil
             self.cachedRecognizerKey = nil

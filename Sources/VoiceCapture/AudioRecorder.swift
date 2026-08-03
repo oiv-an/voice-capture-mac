@@ -1,15 +1,26 @@
 import AVFoundation
+import CoreAudio
 import Foundation
+
+/// Устройство ввода (микрофон) в системе.
+struct AudioInputDevice {
+    let id: AudioDeviceID
+    let uid: String
+    let name: String
+}
 
 /// Записывает аудио с микрофона и возвращает массив Float (16kHz, mono),
 /// готовый для whisper.cpp и для упаковки в WAV для Groq.
 final class AudioRecorder {
-    private let engine = AVAudioEngine()
+    private var engine = AVAudioEngine()
     private var converter: AVAudioConverter?
     private var targetFormat: AVAudioFormat!
     private var capturedSamples: [Float] = []
     private let sampleQueue = DispatchQueue(label: "audio.recorder.samples")
     private(set) var isRecording = false
+
+    /// UID выбранного микрофона. Пусто = системный по умолчанию.
+    var microphoneUID: String = ""
 
     static let targetSampleRate: Double = 16000
 
@@ -41,7 +52,14 @@ final class AudioRecorder {
 
         sampleQueue.sync { capturedSamples.removeAll(keepingCapacity: true) }
 
+        // Пересоздаём engine: AVAudioEngine кэширует формат/устройство входа,
+        // смена микрофона на живом объекте работает ненадёжно.
+        engine = AVAudioEngine()
+
         let input = engine.inputNode
+        if !microphoneUID.isEmpty {
+            applyInputDevice(uid: microphoneUID)
+        }
         let inputFormat = input.inputFormat(forBus: 0)
 
         guard inputFormat.sampleRate > 0 else {
@@ -117,6 +135,120 @@ final class AudioRecorder {
         engine.stop()
         isRecording = false
         sampleQueue.sync { capturedSamples.removeAll() }
+    }
+
+    // MARK: - Устройства ввода (CoreAudio)
+
+    /// Список доступных микрофонов.
+    static func availableInputDevices() -> [AudioInputDevice] {
+        var address = AudioObjectPropertyAddress(
+            mSelector: kAudioHardwarePropertyDevices,
+            mScope: kAudioObjectPropertyScopeGlobal,
+            mElement: kAudioObjectPropertyElementMain
+        )
+        var dataSize: UInt32 = 0
+        guard
+            AudioObjectGetPropertyDataSize(
+                AudioObjectID(kAudioObjectSystemObject), &address, 0, nil, &dataSize) == noErr,
+            dataSize > 0
+        else { return [] }
+
+        let count = Int(dataSize) / MemoryLayout<AudioDeviceID>.size
+        var ids = [AudioDeviceID](repeating: 0, count: count)
+        guard
+            AudioObjectGetPropertyData(
+                AudioObjectID(kAudioObjectSystemObject), &address, 0, nil, &dataSize, &ids) == noErr
+        else { return [] }
+
+        return ids.compactMap { id -> AudioInputDevice? in
+            guard hasInputChannels(id) else { return nil }
+            guard let uid = stringProperty(id, kAudioDevicePropertyDeviceUID) else { return nil }
+            let name = stringProperty(id, kAudioObjectPropertyName) ?? uid
+            return AudioInputDevice(id: id, uid: uid, name: name)
+        }
+    }
+
+    /// Имя системного микрофона по умолчанию (для подписи в UI).
+    static func defaultInputDeviceName() -> String? {
+        var address = AudioObjectPropertyAddress(
+            mSelector: kAudioHardwarePropertyDefaultInputDevice,
+            mScope: kAudioObjectPropertyScopeGlobal,
+            mElement: kAudioObjectPropertyElementMain
+        )
+        var deviceID = AudioDeviceID(0)
+        var size = UInt32(MemoryLayout<AudioDeviceID>.size)
+        guard
+            AudioObjectGetPropertyData(
+                AudioObjectID(kAudioObjectSystemObject), &address, 0, nil, &size, &deviceID)
+                == noErr
+        else { return nil }
+        return stringProperty(deviceID, kAudioObjectPropertyName)
+    }
+
+    private static func hasInputChannels(_ id: AudioDeviceID) -> Bool {
+        var address = AudioObjectPropertyAddress(
+            mSelector: kAudioDevicePropertyStreamConfiguration,
+            mScope: kAudioDevicePropertyScopeInput,
+            mElement: kAudioObjectPropertyElementMain
+        )
+        var size: UInt32 = 0
+        guard AudioObjectGetPropertyDataSize(id, &address, 0, nil, &size) == noErr, size > 0 else {
+            return false
+        }
+        let bufferList = UnsafeMutableRawPointer.allocate(
+            byteCount: Int(size), alignment: MemoryLayout<AudioBufferList>.alignment)
+        defer { bufferList.deallocate() }
+        guard AudioObjectGetPropertyData(id, &address, 0, nil, &size, bufferList) == noErr else {
+            return false
+        }
+        let abl = UnsafeMutableAudioBufferListPointer(
+            bufferList.assumingMemoryBound(to: AudioBufferList.self))
+        for buffer in abl where buffer.mNumberChannels > 0 { return true }
+        return false
+    }
+
+    private static func stringProperty(_ id: AudioDeviceID, _ selector: AudioObjectPropertySelector)
+        -> String?
+    {
+        var address = AudioObjectPropertyAddress(
+            mSelector: selector,
+            mScope: kAudioObjectPropertyScopeGlobal,
+            mElement: kAudioObjectPropertyElementMain
+        )
+        var value: CFString = "" as CFString
+        var size = UInt32(MemoryLayout<CFString>.size)
+        let status = withUnsafeMutablePointer(to: &value) { ptr -> OSStatus in
+            AudioObjectGetPropertyData(id, &address, 0, nil, &size, ptr)
+        }
+        guard status == noErr else { return nil }
+        return value as String
+    }
+
+    /// Привязывает вход AVAudioEngine к конкретному устройству CoreAudio.
+    private func applyInputDevice(uid: String) {
+        guard let device = AudioRecorder.availableInputDevices().first(where: { $0.uid == uid })
+        else {
+            NSLog("[Audio] Микрофон с UID \(uid) не найден — используем системный по умолчанию")
+            return
+        }
+        guard let unit = engine.inputNode.audioUnit else {
+            NSLog("[Audio] Нет audioUnit у inputNode — используем системный микрофон")
+            return
+        }
+        var deviceID = device.id
+        let status = AudioUnitSetProperty(
+            unit,
+            kAudioOutputUnitProperty_CurrentDevice,
+            kAudioUnitScope_Global,
+            0,
+            &deviceID,
+            UInt32(MemoryLayout<AudioDeviceID>.size)
+        )
+        if status == noErr {
+            NSLog("[Audio] Микрофон: \(device.name)")
+        } else {
+            NSLog("[Audio] Не удалось выбрать микрофон \(device.name), статус \(status)")
+        }
     }
 
     // MARK: - Conversion

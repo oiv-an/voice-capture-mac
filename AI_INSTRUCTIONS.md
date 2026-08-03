@@ -1,4 +1,4 @@
-# AI_INSTRUCTIONS — VoiceCapture 3.2.1 (macOS / Swift)
+# AI_INSTRUCTIONS — VoiceCapture 3.3.0 (macOS / Swift)
 
 > **ПРОЧИТАЙ ЭТОТ ФАЙЛ ПЕРВЫМ.** Это стартовая инструкция для AI-ассистента по проекту.
 > Язык общения: **русский**. Тон: инженер-инженеру, без воды.
@@ -144,6 +144,7 @@ open dist/VoiceCapture.app
 - `language`: `ru` | `en` | `auto`
 - `groqApiKey`, `groqModel`
 - `autoPaste`: bool
+- `microphoneUID`: String — CoreAudio device UID выбранного микрофона. Пусто = системный по умолчанию. Выбирается в Настройках («Микрофон»). `AudioRecorder` пересоздаёт `AVAudioEngine` на каждый `start()` и биндит вход через `kAudioOutputUnitProperty_CurrentDevice`.
 - `localStartDelay`: Double (сек) — задержка перед запуском локального whisper в режиме `both` (дефолт 2.0, настраивается в UI, кламп 0…10). Декодирование настроек устойчиво к отсутствующим ключам (кастомный `init(from:)` с `decodeIfPresent ?? default`) — добавление новых полей не сбрасывает settings.json.
 - Режим `both` — «совместный». Стратегия: сразу шлём Groq; если за `localStartDelay` Groq не дал результат — параллельно запускаем локальный whisper. Побеждает первый успешный непустой результат. Если Groq провалился раньше таймера — Local подключается немедленно. Работает только если задан Groq-ключ И скачана локальная модель (`parallelRaceApplicable`). Реализация — `AppDelegate.runParallel(...)`.
 - `fluidAudio` использует отдельный async-пайплайн и не реализует синхронный протокол `Recognizer`. Язык определяется Parakeet автоматически; `language` и `initialPrompt` не применяются.
@@ -152,6 +153,14 @@ open dist/VoiceCapture.app
 ---
 
 ## 8. ТЕКУЩИЕ ЗАДАЧИ / TODO (на момент написания)
+
+### Сделано в 3.3.0
+- [x] **Выбор микрофона в UI** — popup «Микрофон» в настройках, список через CoreAudio (`AudioRecorder.availableInputDevices()`).
+- [x] Первый пункт списка — системный микрофон по умолчанию (его имя показано в скобках).
+- [x] Устройство сохраняется по UID (`microphoneUID`), применяется без перезапуска приложения.
+- [x] `AVAudioEngine` пересоздаётся на каждый `start()` — иначе смена устройства нестабильна (кэш формата входа).
+- [x] Фолбэк на системный микрофон, если сохранённое устройство исчезло.
+- [x] Версия приложения и release bundle обновлены до 3.3.0.
 
 ### Сделано в 3.2.1
 - [x] Live-оверлей переведён с однострочного `NSTextField` на многострочный `NSTextView`.

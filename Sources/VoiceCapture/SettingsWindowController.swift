@@ -10,6 +10,8 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     private let backendPopup = NSPopUpButton()
     private let modelPopup = NSPopUpButton()
     private let languagePopup = NSPopUpButton()
+    private let microphonePopup = NSPopUpButton()
+    private var microphoneDevices: [AudioInputDevice] = []
     private let groqKeyField = NSSecureTextField()
     private let groqModelField = NSTextField()
     private let promptTextView = NSTextView()
@@ -32,7 +34,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         self.pendingWhisperModelID = settings.localModel
 
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 500, height: 600),
+            contentRect: NSRect(x: 0, y: 0, width: 500, height: 650),
             styleMask: [.titled, .closable],
             backing: .buffered,
             defer: false
@@ -50,7 +52,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     private func buildUI() {
         guard let content = window?.contentView else { return }
 
-        var y: CGFloat = 550
+        var y: CGFloat = 600
 
         func addRow(_ title: String, _ control: NSView, height: CGFloat = 26) {
             let label = NSTextField(labelWithString: title)
@@ -99,6 +101,9 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
 
         languagePopup.addItems(withTitles: ["ru", "en", "auto"])
         addRow("Язык:", languagePopup)
+
+        rebuildMicrophonePopup()
+        addRow("Микрофон:", microphonePopup)
 
         // Многострочное поле для промпта (видно весь текст, можно редактировать).
         let promptLabel = NSTextField(labelWithString: "Initial prompt:")
@@ -190,6 +195,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         }
         rebuildModelPopup()
         languagePopup.selectItem(withTitle: settings.language)
+        selectMicrophone(uid: settings.microphoneUID)
         promptTextView.string = settings.initialPrompt
         groqKeyField.stringValue = settings.groqApiKey
         groqModelField.stringValue = settings.groqModel
@@ -213,6 +219,36 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
             pendingWhisperModelID = selectedModel().id
         }
         updateModelStatus()
+    }
+
+    /// Заполняет список микрофонов: первый пункт — системный по умолчанию.
+    private func rebuildMicrophonePopup() {
+        microphoneDevices = AudioRecorder.availableInputDevices()
+        microphonePopup.removeAllItems()
+
+        let defaultName = AudioRecorder.defaultInputDeviceName()
+        microphonePopup.addItem(
+            withTitle: defaultName.map { "Системный по умолчанию (\($0))" }
+                ?? "Системный по умолчанию")
+        for device in microphoneDevices {
+            microphonePopup.addItem(withTitle: device.name)
+        }
+        // Возможны одинаковые имена устройств — NSPopUpButton их схлопывает, поэтому даём tag.
+        for (index, item) in microphonePopup.itemArray.enumerated() { item.tag = index }
+    }
+
+    private func selectMicrophone(uid: String) {
+        if !uid.isEmpty, let idx = microphoneDevices.firstIndex(where: { $0.uid == uid }) {
+            microphonePopup.selectItem(at: idx + 1)
+        } else {
+            microphonePopup.selectItem(at: 0)
+        }
+    }
+
+    private var selectedMicrophoneUID: String {
+        let idx = microphonePopup.indexOfSelectedItem
+        guard idx > 0, idx - 1 < microphoneDevices.count else { return "" }
+        return microphoneDevices[idx - 1].uid
     }
 
     private func rebuildModelPopup() {
@@ -409,6 +445,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         settings.backend = selectedBackend
         settings.localModel = pendingWhisperModelID
         settings.language = languagePopup.titleOfSelectedItem ?? settings.language
+        settings.microphoneUID = selectedMicrophoneUID
         settings.initialPrompt = promptTextView.string
         settings.groqApiKey = groqKeyField.stringValue
         settings.groqModel =

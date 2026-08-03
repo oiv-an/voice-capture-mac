@@ -75,6 +75,9 @@ struct AppSettings: Codable {
     /// Если Groq не ответил за это время — параллельно стартует Local. Дефолт 2.0.
     var localStartDelay: Double = 2.0
 
+    /// UID выбранного микрофона (CoreAudio device UID). Пусто = системный по умолчанию.
+    var microphoneUID: String = ""
+
     // --- Хоткей (hold-to-talk) ---
     /// Требуемые модификаторы для записи. По умолчанию Cmd+Ctrl.
     var hotkeyRequiresCommand: Bool = true
@@ -90,7 +93,7 @@ struct AppSettings: Codable {
 
     private enum CodingKeys: String, CodingKey {
         case backend, localModel, language, initialPrompt
-        case groqApiKey, groqModel, autoPaste, localStartDelay
+        case groqApiKey, groqModel, autoPaste, localStartDelay, microphoneUID
         case hotkeyRequiresCommand, hotkeyRequiresControl
         case hotkeyRequiresOption, hotkeyRequiresShift
     }
@@ -108,6 +111,8 @@ struct AppSettings: Codable {
         autoPaste = (try? c.decodeIfPresent(Bool.self, forKey: .autoPaste)) ?? d.autoPaste
         localStartDelay =
             (try? c.decodeIfPresent(Double.self, forKey: .localStartDelay)) ?? d.localStartDelay
+        microphoneUID =
+            (try? c.decodeIfPresent(String.self, forKey: .microphoneUID)) ?? d.microphoneUID
         hotkeyRequiresCommand =
             (try? c.decodeIfPresent(Bool.self, forKey: .hotkeyRequiresCommand))
             ?? d.hotkeyRequiresCommand
