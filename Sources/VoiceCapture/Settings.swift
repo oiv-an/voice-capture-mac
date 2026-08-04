@@ -17,6 +17,44 @@ enum RecognitionBackend: String, Codable, CaseIterable {
     }
 }
 
+/// Целевой язык локального Apple Translation (исходный текст всегда русский).
+enum TranslationTargetLanguage: String, Codable, CaseIterable {
+    case english = "en"
+    case german = "de"
+    case spanish = "es"
+    case french = "fr"
+    case italian = "it"
+    case portuguese = "pt"
+    case polish = "pl"
+    case ukrainian = "uk"
+    case turkish = "tr"
+    case chineseSimplified = "zh"
+    case japanese = "ja"
+    case korean = "ko"
+
+    var displayName: String {
+        switch self {
+        case .english: return "English"
+        case .german: return "Deutsch"
+        case .spanish: return "Español"
+        case .french: return "Français"
+        case .italian: return "Italiano"
+        case .portuguese: return "Português"
+        case .polish: return "Polski"
+        case .ukrainian: return "Українська"
+        case .turkish: return "Türkçe"
+        case .chineseSimplified: return "简体中文"
+        case .japanese: return "日本語"
+        case .korean: return "한국어"
+        }
+    }
+
+    /// Короткая подпись для логов и оверлея.
+    var badge: String {
+        String(rawValue.split(separator: "-").first ?? Substring(rawValue)).uppercased()
+    }
+}
+
 /// Каталог доступных ggml-моделей whisper для скачивания.
 struct WhisperModelInfo {
     let id: String  // имя файла: ggml-large-v3.bin
@@ -78,12 +116,34 @@ struct AppSettings: Codable {
     /// UID выбранного микрофона (CoreAudio device UID). Пусто = системный по умолчанию.
     var microphoneUID: String = ""
 
+    // --- Apple Translation (macOS 15+) ---
+    /// Целевой язык. Исходный текст фиксированно русский.
+    var translationTarget: TranslationTargetLanguage = .english
+
     // --- Хоткей (hold-to-talk) ---
     /// Требуемые модификаторы для записи. По умолчанию Cmd+Ctrl.
     var hotkeyRequiresCommand: Bool = true
     var hotkeyRequiresControl: Bool = true
     var hotkeyRequiresOption: Bool = false
     var hotkeyRequiresShift: Bool = false
+
+    /// Человекочитаемое отображение текущего hold-to-talk сочетания.
+    var hotkeyDisplayName: String {
+        var symbols: [String] = []
+        if hotkeyRequiresCommand { symbols.append("⌘") }
+        if hotkeyRequiresControl { symbols.append("⌃") }
+        if hotkeyRequiresOption { symbols.append("⌥") }
+        if hotkeyRequiresShift { symbols.append("⇧") }
+        return symbols.isEmpty ? "Не назначен" : symbols.joined(separator: " + ")
+    }
+
+    /// Возвращает хоткей к заводскому сочетанию Cmd+Ctrl.
+    mutating func resetHotkeyToDefault() {
+        hotkeyRequiresCommand = true
+        hotkeyRequiresControl = true
+        hotkeyRequiresOption = false
+        hotkeyRequiresShift = false
+    }
 
     static let appName = "VoiceCapture"
 
@@ -94,6 +154,7 @@ struct AppSettings: Codable {
     private enum CodingKeys: String, CodingKey {
         case backend, localModel, language, initialPrompt
         case groqApiKey, groqModel, autoPaste, localStartDelay, microphoneUID
+        case translationTarget
         case hotkeyRequiresCommand, hotkeyRequiresControl
         case hotkeyRequiresOption, hotkeyRequiresShift
     }
@@ -113,18 +174,26 @@ struct AppSettings: Codable {
             (try? c.decodeIfPresent(Double.self, forKey: .localStartDelay)) ?? d.localStartDelay
         microphoneUID =
             (try? c.decodeIfPresent(String.self, forKey: .microphoneUID)) ?? d.microphoneUID
+        translationTarget =
+            (try? c.decodeIfPresent(TranslationTargetLanguage.self, forKey: .translationTarget))
+            ?? d.translationTarget
         hotkeyRequiresCommand =
             (try? c.decodeIfPresent(Bool.self, forKey: .hotkeyRequiresCommand))
             ?? d.hotkeyRequiresCommand
         hotkeyRequiresControl =
             (try? c.decodeIfPresent(Bool.self, forKey: .hotkeyRequiresControl))
             ?? d.hotkeyRequiresControl
-        hotkeyRequiresOption =
-            (try? c.decodeIfPresent(Bool.self, forKey: .hotkeyRequiresOption))
-            ?? d.hotkeyRequiresOption
+        // Option зарезервирован как дополнительный модификатор Apple Translation.
+        // Старое сохранённое значение намеренно не восстанавливаем.
+        hotkeyRequiresOption = false
         hotkeyRequiresShift =
             (try? c.decodeIfPresent(Bool.self, forKey: .hotkeyRequiresShift))
             ?? d.hotkeyRequiresShift
+        // Миграция старой комбинации, состоявшей только из Option.
+        if !hotkeyRequiresCommand && !hotkeyRequiresControl && !hotkeyRequiresShift {
+            hotkeyRequiresCommand = true
+            hotkeyRequiresControl = true
+        }
     }
 
     // MARK: - Persistence

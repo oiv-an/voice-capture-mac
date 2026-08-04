@@ -11,6 +11,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     private let modelPopup = NSPopUpButton()
     private let languagePopup = NSPopUpButton()
     private let microphonePopup = NSPopUpButton()
+    private let translationLanguagePopup = NSPopUpButton()
     private var microphoneDevices: [AudioInputDevice] = []
     private let groqKeyField = NSSecureTextField()
     private let groqModelField = NSTextField()
@@ -20,6 +21,15 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         checkboxWithTitle: "Авто-вставка (Cmd+V) после распознавания", target: nil, action: nil)
     private let localDelayField = NSTextField()
 
+    private let hotkeyField = NSTextField(labelWithString: "")
+    private let hotkeyChangeButton = NSButton(title: "Изменить", target: nil, action: nil)
+    private let hotkeyResetButton = NSButton(title: "По умолчанию", target: nil, action: nil)
+    private var hotkeyCaptureTimer: Timer?
+    private var hotkeyEscapeMonitor: Any?
+    private var capturedHotkeyFlags: NSEvent.ModifierFlags = []
+    private var isCapturingHotkey = false
+    private let onHotkeyCaptureChanged: (Bool) -> Void
+
     private let downloadButton = NSButton(title: "Скачать модель", target: nil, action: nil)
     private let progressBar = NSProgressIndicator()
     private let modelStatusLabel = NSTextField(labelWithString: "")
@@ -28,13 +38,18 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     private var downloadingModel: WhisperModelInfo?
     private var pendingWhisperModelID: String
 
-    init(settings: AppSettings, onSave: @escaping (AppSettings) -> Void) {
+    init(
+        settings: AppSettings,
+        onSave: @escaping (AppSettings) -> Void,
+        onHotkeyCaptureChanged: @escaping (Bool) -> Void = { _ in }
+    ) {
         self.settings = settings
         self.onSave = onSave
+        self.onHotkeyCaptureChanged = onHotkeyCaptureChanged
         self.pendingWhisperModelID = settings.localModel
 
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 500, height: 650),
+            contentRect: NSRect(x: 0, y: 0, width: 500, height: 750),
             styleMask: [.titled, .closable],
             backing: .buffered,
             defer: false
@@ -52,7 +67,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     private func buildUI() {
         guard let content = window?.contentView else { return }
 
-        var y: CGFloat = 600
+        var y: CGFloat = 700
 
         func addRow(_ title: String, _ control: NSView, height: CGFloat = 26) {
             let label = NSTextField(labelWithString: title)
@@ -105,6 +120,13 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         rebuildMicrophonePopup()
         addRow("Микрофон:", microphonePopup)
 
+        translationLanguagePopup.addItems(
+            withTitles: TranslationTargetLanguage.allCases.map { $0.displayName }
+        )
+        translationLanguagePopup.toolTip =
+            "Apple Translation работает локально на macOS 15+. Для перевода удерживайте ⌥ вместе с хоткеем до конца записи."
+        addRow("Перевод (⌥):", translationLanguagePopup)
+
         // Многострочное поле для промпта (видно весь текст, можно редактировать).
         let promptLabel = NSTextField(labelWithString: "Initial prompt:")
         promptLabel.frame = NSRect(x: 20, y: y, width: 150, height: 24)
@@ -148,9 +170,37 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         content.addSubview(delayHint)
         y -= 14
 
+        let hotkeyLabel = NSTextField(labelWithString: "Хоткей записи:")
+        hotkeyLabel.frame = NSRect(x: 20, y: y, width: 150, height: 24)
+        hotkeyLabel.alignment = .right
+        content.addSubview(hotkeyLabel)
+
+        hotkeyField.frame = NSRect(x: 180, y: y - 1, width: 92, height: 25)
+        hotkeyField.alignment = .center
+        hotkeyField.font = NSFont.systemFont(ofSize: 15, weight: .semibold)
+        hotkeyField.drawsBackground = true
+        hotkeyField.backgroundColor = .controlBackgroundColor
+        hotkeyField.isBezeled = true
+        hotkeyField.bezelStyle = .roundedBezel
+        content.addSubview(hotkeyField)
+
+        hotkeyChangeButton.target = self
+        hotkeyChangeButton.action = #selector(changeHotkeyTapped)
+        hotkeyChangeButton.bezelStyle = .rounded
+        hotkeyChangeButton.frame = NSRect(x: 278, y: y - 4, width: 88, height: 30)
+        content.addSubview(hotkeyChangeButton)
+
+        hotkeyResetButton.target = self
+        hotkeyResetButton.action = #selector(resetHotkeyTapped)
+        hotkeyResetButton.bezelStyle = .rounded
+        hotkeyResetButton.frame = NSRect(x: 370, y: y - 4, width: 110, height: 30)
+        content.addSubview(hotkeyResetButton)
+        y -= 46
+
         let hint = NSTextField(
             wrappingLabelWithString:
-                "Хоткей записи (hold-to-talk): зажмите ⌘⌃ и говорите, отпустите — текст вставится.")
+                "Hold-to-talk: зажмите выбранную комбинацию и говорите, отпустите — текст вставится."
+        )
         hint.frame = NSRect(x: 20, y: y - 16, width: 460, height: 34)
         hint.font = NSFont.systemFont(ofSize: 11)
         hint.textColor = .secondaryLabelColor
@@ -196,11 +246,15 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         rebuildModelPopup()
         languagePopup.selectItem(withTitle: settings.language)
         selectMicrophone(uid: settings.microphoneUID)
+        if let idx = TranslationTargetLanguage.allCases.firstIndex(of: settings.translationTarget) {
+            translationLanguagePopup.selectItem(at: idx)
+        }
         promptTextView.string = settings.initialPrompt
         groqKeyField.stringValue = settings.groqApiKey
         groqModelField.stringValue = settings.groqModel
         autoPasteCheck.state = settings.autoPaste ? .on : .off
         localDelayField.stringValue = String(format: "%g", settings.localStartDelay)
+        updateHotkeyDisplay()
         updateEnabled()
         updateModelStatus()
     }
@@ -431,6 +485,122 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         }
     }
 
+    // MARK: - Hotkey capture
+
+    private func updateHotkeyDisplay() {
+        hotkeyField.stringValue = settings.hotkeyDisplayName
+        hotkeyField.textColor = isCapturingHotkey ? .systemOrange : .labelColor
+        hotkeyChangeButton.title = isCapturingHotkey ? "Отмена" : "Изменить"
+    }
+
+    @objc private func changeHotkeyTapped() {
+        if isCapturingHotkey {
+            stopHotkeyCapture(apply: false)
+            return
+        }
+
+        isCapturingHotkey = true
+        capturedHotkeyFlags = []
+        hotkeyField.stringValue = "Нажмите… (без ⌥)"
+        hotkeyField.textColor = .systemOrange
+        hotkeyChangeButton.title = "Отмена"
+        hotkeyResetButton.isEnabled = false
+        onHotkeyCaptureChanged(true)
+
+        // Escape отменяет захват, если окно активно.
+        hotkeyEscapeMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
+            [weak self] event in
+            guard let self = self, self.isCapturingHotkey else { return event }
+            guard event.keyCode == 53 else { return event }
+            self.stopHotkeyCapture(apply: false)
+            return nil
+        }
+
+        // Модификаторы читаем глобально через polling, как основной hold-to-talk монитор.
+        // Локальный NSEvent.flagsChanged ненадёжен для accessory/menu-bar приложения.
+        let timer = Timer(timeInterval: 0.03, repeats: true) { [weak self] _ in
+            self?.pollHotkeyCapture()
+        }
+        RunLoop.main.add(timer, forMode: .common)
+        hotkeyCaptureTimer = timer
+    }
+
+    @objc private func resetHotkeyTapped() {
+        stopHotkeyCapture(apply: false)
+        settings.resetHotkeyToDefault()
+        updateHotkeyDisplay()
+    }
+
+    private func pollHotkeyCapture() {
+        guard isCapturingHotkey else { return }
+        let cgFlags = CGEventSource.flagsState(.combinedSessionState)
+        var flags: NSEvent.ModifierFlags = []
+        if cgFlags.contains(.maskCommand) { flags.insert(.command) }
+        if cgFlags.contains(.maskControl) { flags.insert(.control) }
+        // Option не захватываем: он зарезервирован под Apple Translation.
+        if cgFlags.contains(.maskShift) { flags.insert(.shift) }
+
+        if !flags.isEmpty {
+            // При последовательном отпускании сохраняем максимальный набор,
+            // а не последнюю оставшуюся клавишу.
+            if hotkeyFlagCount(flags) >= hotkeyFlagCount(capturedHotkeyFlags) {
+                capturedHotkeyFlags = flags
+                hotkeyField.stringValue = displayName(for: flags)
+            }
+            return
+        }
+
+        if !capturedHotkeyFlags.isEmpty {
+            stopHotkeyCapture(apply: true)
+        }
+    }
+
+    private func stopHotkeyCapture(apply: Bool) {
+        guard isCapturingHotkey else { return }
+
+        hotkeyCaptureTimer?.invalidate()
+        hotkeyCaptureTimer = nil
+        if let monitor = hotkeyEscapeMonitor {
+            NSEvent.removeMonitor(monitor)
+        }
+        hotkeyEscapeMonitor = nil
+
+        if apply, !capturedHotkeyFlags.isEmpty {
+            settings.hotkeyRequiresCommand = capturedHotkeyFlags.contains(.command)
+            settings.hotkeyRequiresControl = capturedHotkeyFlags.contains(.control)
+            settings.hotkeyRequiresOption = capturedHotkeyFlags.contains(.option)
+            settings.hotkeyRequiresShift = capturedHotkeyFlags.contains(.shift)
+        }
+
+        capturedHotkeyFlags = []
+        isCapturingHotkey = false
+        hotkeyResetButton.isEnabled = true
+        updateHotkeyDisplay()
+        onHotkeyCaptureChanged(false)
+    }
+
+    private func hotkeyFlagCount(_ flags: NSEvent.ModifierFlags) -> Int {
+        [
+            flags.contains(.command),
+            flags.contains(.control),
+            flags.contains(.option),
+            flags.contains(.shift),
+        ].filter { $0 }.count
+    }
+
+    private func displayName(for flags: NSEvent.ModifierFlags) -> String {
+        var symbols: [String] = []
+        if flags.contains(.command) { symbols.append("⌘") }
+        if flags.contains(.control) { symbols.append("⌃") }
+        if flags.contains(.option) { symbols.append("⌥") }
+        if flags.contains(.shift) { symbols.append("⇧") }
+        return symbols.joined(separator: " + ")
+    }
+
+    func windowWillClose(_ notification: Notification) {
+        stopHotkeyCapture(apply: false)
+    }
+
     // MARK: - Actions
 
     @objc private func openModelsFolder() {
@@ -442,10 +612,16 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     }
 
     @objc private func saveTapped() {
+        stopHotkeyCapture(apply: false)
         settings.backend = selectedBackend
         settings.localModel = pendingWhisperModelID
         settings.language = languagePopup.titleOfSelectedItem ?? settings.language
         settings.microphoneUID = selectedMicrophoneUID
+        let translationIndex = max(0, translationLanguagePopup.indexOfSelectedItem)
+        settings.translationTarget =
+            TranslationTargetLanguage.allCases[
+                min(translationIndex, TranslationTargetLanguage.allCases.count - 1)
+            ]
         settings.initialPrompt = promptTextView.string
         settings.groqApiKey = groqKeyField.stringValue
         settings.groqModel =

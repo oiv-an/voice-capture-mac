@@ -11,8 +11,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private let statusUI = StatusController()
     private var hotkeys: GlobalHotkeyMonitor!
     private var settingsWC: SettingsWindowController?
+    private lazy var appleTranslation = AppleTranslationService()
 
     private var isProcessing = false
+    /// Фиксируется при отпускании основного хоткея: Option должен был удерживаться до конца.
+    private var translateCurrentResult = false
     private let workQueue = DispatchQueue(label: "voicecapture.work", qos: .userInitiated)
     private let prewarmQueue = DispatchQueue(label: "voicecapture.prewarm", qos: .utility)
     // Параллельная очередь для гонки (Local + Groq одновременно на разных потоках).
@@ -42,6 +45,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         setupMenuBar()
         setupHotkeys()
         recorder.microphoneUID = settings.microphoneUID
+        // Устанавливаем невидимый SwiftUI translationTask host заранее, чтобы
+        // первый перевод не гонялся с инициализацией системной сессии.
+        _ = appleTranslation
 
         // Запрос разрешений при старте.
         AudioRecorder.requestPermission { granted in
@@ -120,7 +126,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(.separator())
 
         let info = NSMenuItem(
-            title: "Запись: зажмите ⌘⌃ и говорите", action: nil, keyEquivalent: "")
+            title: "Запись: зажмите \(settings.hotkeyDisplayName) и говорите", action: nil,
+            keyEquivalent: "")
         info.isEnabled = false
         menu.addItem(info)
 
@@ -187,7 +194,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private func setupHotkeys() {
         hotkeys = GlobalHotkeyMonitor(settings: settings)
         hotkeys.onPress = { [weak self] in self?.startRecording() }
-        hotkeys.onRelease = { [weak self] in self?.stopRecordingAndProcess() }
+        hotkeys.onRelease = { [weak self] shouldTranslate in
+            self?.stopRecordingAndProcess(shouldTranslate: shouldTranslate)
+        }
+        hotkeys.onTranslationModifierChanged = { [weak self] active in
+            guard let self = self, self.recorder.isRecording else { return }
+            let badge = active ? self.settings.translationTarget.badge : nil
+            self.statusUI.setTranslationBadge(badge)
+        }
         hotkeys.start()
     }
 
@@ -197,6 +211,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         guard !isProcessing else { return }
         guard !recorder.isRecording else { return }
 
+        translateCurrentResult = false
+        statusUI.setTranslationBadge(nil)
         let useFluidAudio = settings.backend == .fluidAudio
 
         if recorder.start() {
@@ -212,14 +228,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
     }
 
-    private func stopRecordingAndProcess() {
+    private func stopRecordingAndProcess(shouldTranslate: Bool) {
         guard recorder.isRecording else { return }
+        translateCurrentResult = shouldTranslate
         let samples = recorder.stop()
         endFluidLiveSession()
 
         guard samples.count > 1600 else {  // < 0.1с — игнор
-            NSLog("[App] Слишком коротко (\(samples.count) сэмплов) — держите ⌘⌃ дольше")
-            statusUI.show(.error("Слишком коротко — держите ⌘⌃ дольше"))
+            NSLog(
+                "[App] Слишком коротко (\(samples.count) сэмплов) — держите \(settings.hotkeyDisplayName) дольше"
+            )
+            statusUI.show(.error("Слишком коротко — держите \(settings.hotkeyDisplayName) дольше"))
             return
         }
 
@@ -511,8 +530,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     private func handleResult(_ text: String, settings: AppSettings, source: String? = nil) {
-        isProcessing = false
         guard !text.isEmpty else {
+            isProcessing = false
             NSLog("[App] Пустой результат распознавания")
             statusUI.show(.error("Пустой результат"))
             return
@@ -522,11 +541,52 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         } else {
             NSLog("[App] РЕЗУЛЬТАТ: \(text)")
         }
+
+        guard translateCurrentResult else {
+            finishResult(text, settings: settings, source: source)
+            return
+        }
+
+        translateCurrentResult = false
+        guard appleTranslation.isAvailable else {
+            isProcessing = false
+            statusUI.show(.error("Перевод требует macOS 15+"))
+            NSLog("[Translation] macOS < 15 — исходный русский текст оставлен в буфере")
+            clipboard.copy(text)
+            history.add(text: text, source: source ?? "")
+            return
+        }
+
+        statusUI.show(.translating(settings.translationTarget.badge))
+        NSLog("[Translation] ru → \(settings.translationTarget.rawValue): старт")
+        appleTranslation.translate(text, target: settings.translationTarget) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let translated):
+                NSLog("[Translation] РЕЗУЛЬТАТ: \(translated)")
+                let translatedSource = [source, "Apple Translation"].compactMap { $0 }.joined(
+                    separator: " + ")
+                self.finishResult(
+                    translated, settings: settings,
+                    source: translatedSource.isEmpty ? "Apple Translation" : translatedSource)
+            case .failure(let error):
+                self.isProcessing = false
+                NSLog("[Translation] Ошибка: \(error.localizedDescription)")
+                self.statusUI.show(.error("Перевод: \(error.localizedDescription)"))
+                // Русский исходник не теряем: он остаётся в буфере и истории.
+                self.clipboard.copy(text)
+                self.history.add(text: text, source: source ?? "")
+            }
+        }
+    }
+
+    private func finishResult(_ text: String, settings: AppSettings, source: String?) {
+        isProcessing = false
         clipboard.copy(text)
         history.add(text: text, source: source ?? "")
         statusUI.show(.done(text))
         if settings.autoPaste {
-            // Ждём, пока пользователь реально отпустит все модификаторы (⌘⌃),
+            // Ждём, пока пользователь реально отпустит все модификаторы хоткея,
             // иначе Cmd+V «смешается» с залипшими клавишами и вставка не сработает.
             waitForModifiersReleasedThenPaste()
         }
@@ -588,22 +648,51 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     @objc private func openSettings() {
         NSApp.activate(ignoringOtherApps: true)
-        let wc = SettingsWindowController(settings: settings) { [weak self] updated in
-            guard let self = self else { return }
-            self.settings = updated
-            self.hotkeys.updateSettings(updated)
-            self.recorder.microphoneUID = updated.microphoneUID
-            // Настройки изменились — сбрасываем кэш распознавателя (модель/язык могли поменяться).
-            self.cachedRecognizer = nil
-            self.cachedRecognizerKey = nil
-            self.cachedLocalRecognizer = nil
-            self.cachedLocalKey = nil
-            // Перепрогреваем модель под новые настройки (актуально и для параллельного режима).
-            self.prewarmRecognizer()
-        }
+        let wc = SettingsWindowController(
+            settings: settings,
+            onSave: { [weak self] updated in
+                guard let self = self else { return }
+                self.settings = updated
+                self.hotkeys.updateSettings(updated)
+                self.recorder.microphoneUID = updated.microphoneUID
+                // Настройки изменились — сбрасываем кэш распознавателя (модель/язык могли поменяться).
+                self.cachedRecognizer = nil
+                self.cachedRecognizerKey = nil
+                self.cachedLocalRecognizer = nil
+                self.cachedLocalKey = nil
+                // Перепрогреваем модель под новые настройки (актуально и для параллельного режима).
+                self.prewarmRecognizer()
+            },
+            onHotkeyCaptureChanged: { [weak self] isCapturing in
+                guard let self = self else { return }
+                if isCapturing {
+                    self.hotkeys.stop()
+                } else {
+                    // При отмене через Escape пользователь может всё ещё держать
+                    // модификаторы. Не запускаем запись старым хоткеем до их отпускания.
+                    self.resumeHotkeysAfterModifiersReleased()
+                }
+            }
+        )
         self.settingsWC = wc
         wc.showWindow(nil)
         wc.window?.makeKeyAndOrderFront(nil)
+    }
+
+    private func resumeHotkeysAfterModifiersReleased() {
+        let flags = CGEventSource.flagsState(.combinedSessionState)
+        let anyHeld =
+            flags.contains(.maskCommand) || flags.contains(.maskControl)
+            || flags.contains(.maskAlternate) || flags.contains(.maskShift)
+
+        guard anyHeld else {
+            hotkeys.start()
+            return
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { [weak self] in
+            self?.resumeHotkeysAfterModifiersReleased()
+        }
     }
 
     @objc private func openModels() {

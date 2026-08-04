@@ -7,6 +7,7 @@ final class StatusController {
         case recording
         case liveText(String)
         case processing
+        case translating(String)
         case done(String)
         case error(String)
     }
@@ -15,11 +16,23 @@ final class StatusController {
     private let label = NSTextField(labelWithString: "")
     private let liveTextView = NSTextView(frame: .zero)
     private let dot = NSView()
+    private let languageBadge = NSTextField(labelWithString: "")
+    private var translationBadge: String?
+    private var currentState: State = .idle
     private var hideTimer: Timer?
 
     func show(_ state: State) {
         DispatchQueue.main.async { [weak self] in
             self?.render(state)
+        }
+    }
+
+    /// Показывает/скрывает целевой язык вместо красной точки во время записи.
+    func setTranslationBadge(_ badge: String?) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.translationBadge = badge
+            self.updateRecordingIndicator()
         }
     }
 
@@ -49,6 +62,16 @@ final class StatusController {
         dot.wantsLayer = true
         dot.layer?.cornerRadius = 6
         container.addSubview(dot)
+
+        languageBadge.frame = NSRect(x: 10, y: 21, width: 30, height: 22)
+        languageBadge.font = NSFont.systemFont(ofSize: 11, weight: .bold)
+        languageBadge.textColor = .white
+        languageBadge.alignment = .center
+        languageBadge.wantsLayer = true
+        languageBadge.layer?.backgroundColor = NSColor.systemBlue.cgColor
+        languageBadge.layer?.cornerRadius = 6
+        languageBadge.isHidden = true
+        container.addSubview(languageBadge)
 
         label.frame = NSRect(x: 42, y: 22, width: 262, height: 20)
         label.font = NSFont.systemFont(ofSize: 14, weight: .medium)
@@ -154,8 +177,35 @@ final class StatusController {
         dot.frame.origin.y = liveTextView.frame.maxY - 16
     }
 
+    private func updateRecordingIndicator() {
+        ensureWindow()
+        let recordingLike: Bool
+        switch currentState {
+        case .recording, .liveText:
+            recordingLike = true
+        default:
+            recordingLike = false
+        }
+
+        guard recordingLike, let badge = translationBadge else {
+            languageBadge.isHidden = true
+            dot.isHidden = false
+            return
+        }
+
+        dot.isHidden = true
+        languageBadge.stringValue = badge
+        languageBadge.isHidden = false
+        if case .liveText = currentState {
+            languageBadge.frame.origin.y = dot.frame.origin.y - 5
+        } else {
+            languageBadge.frame.origin.y = 21
+        }
+    }
+
     private func render(_ state: State) {
         ensureWindow()
+        currentState = state
         hideTimer?.invalidate()
 
         switch state {
@@ -170,6 +220,9 @@ final class StatusController {
         case .processing:
             dot.layer?.backgroundColor = NSColor.systemYellow.cgColor
             label.stringValue = "Распознавание…"
+        case .translating(let language):
+            dot.layer?.backgroundColor = NSColor.systemBlue.cgColor
+            label.stringValue = "Перевод на \(language)…"
         case .done(let text):
             dot.layer?.backgroundColor = NSColor.systemGreen.cgColor
             let preview = text.count > 60 ? String(text.prefix(60)) + "…" : text
@@ -187,6 +240,7 @@ final class StatusController {
             applyCompactLayout()
         }
 
+        updateRecordingIndicator()
         position()
         window?.orderFrontRegardless()
     }
