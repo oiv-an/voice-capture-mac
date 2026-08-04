@@ -31,5 +31,8 @@ settings.json
 secrets/
 *.secret
 
+# Локальный AI web-search runner: содержит рабочий API-ключ, в репозиторий не идёт
+search.js
+
 # Logs
 *.log
