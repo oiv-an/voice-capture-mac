@@ -154,6 +154,14 @@ open dist/VoiceCapture.app
 
 ## 8. ТЕКУЩИЕ ЗАДАЧИ / TODO (на момент написания)
 
+### Сделано в 3.3.1 (критический фикс записи)
+- [x] **`AudioRecorder` переписан с `AVAudioEngine` на `AVCaptureSession`.** Причина: `inputNode` жёстко привязан к системному устройству по умолчанию. Смена устройства (`auAudioUnit.setDeviceID` ИЛИ `AudioUnitSetProperty` с `kAudioOutputUnitProperty_CurrentDevice`) роняет граф с **-10868** (`AUGraphParser::InitializeActiveNodesInInputChain`). Проверено 5 стратегий обхода (reset, порядок вызовов, setFormat на шине) — все падают.
+- [x] Вторая часть бага: когда системный вход — Bluetooth-гарнитура, macOS подставляет агрегат `CADefaultDeviceAggregate-*`, и tap **не получает ни одного буфера** (запись «шла», но сэмплов 0). Агрегаты теперь отфильтрованы из списка и из фолбэка.
+- [x] `AVCaptureAudioDataOutput.audioSettings` сам ресемплит в 16 kHz mono Float32 → `AVAudioConverter` удалён.
+- [x] Лимит авто-усиления поднят 20x → **60x**: встроенный микрофон MacBook через AVCaptureSession отдаёт сырой peak ~0.003, при 20x запись не проходила фильтр тишины.
+- [x] Порог фильтра тишины в `AppDelegate` снижен 0.003 → **0.0015**.
+- [x] Диагностика в логах: счётчик буферов + явные предупреждения «нет буферов» / «буферы есть, но тишина».
+
 ### Сделано в 3.3.0
 - [x] **Выбор микрофона в UI** — popup «Микрофон» в настройках, список через CoreAudio (`AudioRecorder.availableInputDevices()`).
 - [x] Первый пункт списка — системный микрофон по умолчанию (его имя показано в скобках).

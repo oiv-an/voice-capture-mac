@@ -224,9 +224,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
 
         // Фильтр тишины — иначе whisper галлюцинирует на пустом сигнале.
-        let (rms, _) = AudioRecorder.levels(samples)
-        NSLog("[App] К распознаванию: \(samples.count) сэмплов, RMS=\(String(format: "%.4f", rms))")
-        guard rms > 0.003 else {
+        // Порог низкий (0.0015): сэмплы уже нормализованы, а встроенный микрофон
+        // MacBook через AVCaptureSession отдаёт очень тихий поток.
+        let (rms, peak) = AudioRecorder.levels(samples)
+        NSLog(
+            "[App] К распознаванию: \(samples.count) сэмплов, RMS=\(String(format: "%.4f", rms)) Peak=\(String(format: "%.3f", peak))"
+        )
+        guard rms > 0.0015 else {
             NSLog("[App] Тишина (RMS=\(rms)) — пропуск")
             statusUI.show(.error("Тишина — ничего не сказано"))
             return

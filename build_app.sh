@@ -14,7 +14,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 APP_NAME="VoiceCapture"
 DIST="$ROOT/dist"
 APP="$DIST/$APP_NAME.app"
-VERSION="3.3.0"
+VERSION="3.3.1"
 
 # 1) whisper.cpp
 if [[ ! -f "$ROOT/Vendor/install/lib/libwhisper_combined.a" ]]; then
