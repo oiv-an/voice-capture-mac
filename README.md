@@ -247,7 +247,6 @@ VoiceCapture/
 ├── build_whisper.sh
 ├── build_app.sh
 ├── download_model.sh
-├── search.js
 ├── Sources/
 │   ├── CWhisper/
 │   └── VoiceCapture/

@@ -54,7 +54,8 @@ VoiceCapture/
 ├── README.md                   # инструкция пользователя
 ├── Package.swift               # SwiftPM манифест
 ├── Package.resolved            # зафиксированные версии зависимостей (FluidAudio 0.15.5)
-├── search.js                   # обязательный web-search runner для AI
+├── search.js                   # web-search runner для AI. ЛОКАЛЬНЫЙ, в .gitignore:
+│                               # содержит рабочий API-ключ, в репозиторий не коммитить
 ├── build_whisper.sh            # сборка whisper.cpp → libwhisper_combined.a
 ├── build_app.sh                # swift build release + упаковка .app
 ├── download_model.sh           # скачивание ggml-моделей
