@@ -12,6 +12,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var hotkeys: GlobalHotkeyMonitor!
     private var settingsWC: SettingsWindowController?
     private lazy var appleTranslation = AppleTranslationService()
+    private let todoWidget = TodoWidgetController()
+    /// Фиксируется при отпускании хоткея: ⇧ удерживался → результат идёт в список дел.
+    private var addCurrentResultAsTodo = false
 
     private var isProcessing = false
     /// Фиксируется при отпускании основного хоткея: Option должен был удерживаться до конца.
@@ -45,6 +48,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         setupMenuBar()
         setupHotkeys()
         recorder.microphoneUID = settings.microphoneUID
+        if settings.todoEnabled {
+            todoWidget.show()
+        }
         // Устанавливаем невидимый SwiftUI translationTask host заранее, чтобы
         // первый перевод не гонялся с инициализацией системной сессии.
         _ = appleTranslation
@@ -122,7 +128,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     func menuNeedsUpdate(_ menu: NSMenu) {
         menu.removeAllItems()
 
-        menu.addItem(NSMenuItem(title: "VoiceCapture 3.3", action: nil, keyEquivalent: ""))
+        menu.addItem(NSMenuItem(title: "VoiceCapture 3.5", action: nil, keyEquivalent: ""))
+        let todoState = settings.todoEnabled ? "включён" : "выключен"
+        let todoItem = NSMenuItem(
+            title: "Список дел: \(todoState)", action: #selector(toggleTodoFromMenu),
+            keyEquivalent: "")
+        todoItem.target = self
+        menu.addItem(todoItem)
         menu.addItem(.separator())
 
         let info = NSMenuItem(
@@ -194,8 +206,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private func setupHotkeys() {
         hotkeys = GlobalHotkeyMonitor(settings: settings)
         hotkeys.onPress = { [weak self] in self?.startRecording() }
-        hotkeys.onRelease = { [weak self] shouldTranslate in
-            self?.stopRecordingAndProcess(shouldTranslate: shouldTranslate)
+        hotkeys.onRelease = { [weak self] shouldTranslate, asTodo in
+            self?.stopRecordingAndProcess(
+                shouldTranslate: shouldTranslate,
+                asTodo: asTodo && (self?.settings.todoEnabled ?? false))
+        }
+        hotkeys.onTodoModifierChanged = { [weak self] active in
+            guard let self = self, self.recorder.isRecording else { return }
+            self.statusUI.setTodoMode(self.settings.todoEnabled && active)
         }
         hotkeys.onTranslationModifierChanged = { [weak self] active in
             guard let self = self, self.recorder.isRecording else { return }
@@ -212,7 +230,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         guard !recorder.isRecording else { return }
 
         translateCurrentResult = false
+        addCurrentResultAsTodo = false
         statusUI.setTranslationBadge(nil)
+        statusUI.setTodoMode(false)
         let useFluidAudio = settings.backend == .fluidAudio
 
         if recorder.start() {
@@ -228,9 +248,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
     }
 
-    private func stopRecordingAndProcess(shouldTranslate: Bool) {
+    private func stopRecordingAndProcess(shouldTranslate: Bool, asTodo: Bool) {
         guard recorder.isRecording else { return }
         translateCurrentResult = shouldTranslate
+        addCurrentResultAsTodo = asTodo
         let samples = recorder.stop()
         endFluidLiveSession()
 
@@ -542,6 +563,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             NSLog("[App] РЕЗУЛЬТАТ: \(text)")
         }
 
+        // Режим «в список дел» (⇧): не вставляем и не переводим, а добавляем задачу.
+        if addCurrentResultAsTodo {
+            addCurrentResultAsTodo = false
+            translateCurrentResult = false
+            isProcessing = false
+            TodoStore.shared.add(text)
+            history.add(text: text, source: source ?? "")
+            statusUI.show(.done("📝 В дела: \(text)"))
+            return
+        }
+
         guard translateCurrentResult else {
             finishResult(text, settings: settings, source: source)
             return
@@ -655,6 +687,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 self.settings = updated
                 self.hotkeys.updateSettings(updated)
                 self.recorder.microphoneUID = updated.microphoneUID
+                if updated.todoEnabled {
+                    self.todoWidget.show()
+                } else {
+                    self.todoWidget.hide()
+                    self.statusUI.setTodoMode(false)
+                }
                 // Настройки изменились — сбрасываем кэш распознавателя (модель/язык могли поменяться).
                 self.cachedRecognizer = nil
                 self.cachedRecognizerKey = nil
@@ -775,6 +813,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     @objc private func clearHistory() {
         history.clear()
+    }
+
+    @objc private func toggleTodoFromMenu() {
+        settings.todoEnabled.toggle()
+        settings.save()
+        if settings.todoEnabled {
+            todoWidget.show()
+        } else {
+            todoWidget.hide()
+            statusUI.setTodoMode(false)
+        }
+        hotkeys.updateSettings(settings)
     }
 
     @objc private func quit() {

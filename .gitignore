@@ -36,3 +36,6 @@ search.js
 
 # Logs
 *.log
+
+# Agent task state (local workspace memory)
+CURRENT_TASK.md

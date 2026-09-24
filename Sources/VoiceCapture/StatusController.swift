@@ -18,6 +18,7 @@ final class StatusController {
     private let dot = NSView()
     private let languageBadge = NSTextField(labelWithString: "")
     private var translationBadge: String?
+    private var todoMode = false
     private var currentState: State = .idle
     private var hideTimer: Timer?
 
@@ -32,6 +33,15 @@ final class StatusController {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             self.translationBadge = badge
+            self.updateRecordingIndicator()
+        }
+    }
+
+    /// Бейдж «📝» во время записи: результат уйдёт в список дел.
+    func setTodoMode(_ active: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.todoMode = active
             self.updateRecordingIndicator()
         }
     }
@@ -187,13 +197,16 @@ final class StatusController {
             recordingLike = false
         }
 
-        guard recordingLike, let badge = translationBadge else {
+        let badge: String? = todoMode ? "📝" : translationBadge
+        guard recordingLike, let badge else {
             languageBadge.isHidden = true
             dot.isHidden = false
             return
         }
 
         dot.isHidden = true
+        languageBadge.layer?.backgroundColor =
+            (todoMode ? NSColor.systemGreen : NSColor.systemBlue).cgColor
         languageBadge.stringValue = badge
         languageBadge.isHidden = false
         if case .liveText = currentState {

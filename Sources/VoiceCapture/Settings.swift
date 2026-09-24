@@ -109,6 +109,9 @@ struct AppSettings: Codable {
     /// Автоматически вставлять распознанный текст (Cmd+V) после копирования
     var autoPaste: Bool = true
 
+    /// Включает плавающую шайбу и режим добавления задач через ⇧.
+    var todoEnabled: Bool = true
+
     /// Совместный режим: задержка (сек) перед запуском локального whisper.
     /// Если Groq не ответил за это время — параллельно стартует Local. Дефолт 2.0.
     var localStartDelay: Double = 2.0
@@ -153,7 +156,7 @@ struct AppSettings: Codable {
 
     private enum CodingKeys: String, CodingKey {
         case backend, localModel, language, initialPrompt
-        case groqApiKey, groqModel, autoPaste, localStartDelay, microphoneUID
+        case groqApiKey, groqModel, autoPaste, todoEnabled, localStartDelay, microphoneUID
         case translationTarget
         case hotkeyRequiresCommand, hotkeyRequiresControl
         case hotkeyRequiresOption, hotkeyRequiresShift
@@ -170,6 +173,7 @@ struct AppSettings: Codable {
         groqApiKey = (try? c.decodeIfPresent(String.self, forKey: .groqApiKey)) ?? d.groqApiKey
         groqModel = (try? c.decodeIfPresent(String.self, forKey: .groqModel)) ?? d.groqModel
         autoPaste = (try? c.decodeIfPresent(Bool.self, forKey: .autoPaste)) ?? d.autoPaste
+        todoEnabled = (try? c.decodeIfPresent(Bool.self, forKey: .todoEnabled)) ?? d.todoEnabled
         localStartDelay =
             (try? c.decodeIfPresent(Double.self, forKey: .localStartDelay)) ?? d.localStartDelay
         microphoneUID =
@@ -186,11 +190,10 @@ struct AppSettings: Codable {
         // Option зарезервирован как дополнительный модификатор Apple Translation.
         // Старое сохранённое значение намеренно не восстанавливаем.
         hotkeyRequiresOption = false
-        hotkeyRequiresShift =
-            (try? c.decodeIfPresent(Bool.self, forKey: .hotkeyRequiresShift))
-            ?? d.hotkeyRequiresShift
-        // Миграция старой комбинации, состоявшей только из Option.
-        if !hotkeyRequiresCommand && !hotkeyRequiresControl && !hotkeyRequiresShift {
+        // Shift зарезервирован под режим «в список дел».
+        hotkeyRequiresShift = false
+        // Миграция старой комбинации, состоявшей только из Option/Shift.
+        if !hotkeyRequiresCommand && !hotkeyRequiresControl {
             hotkeyRequiresCommand = true
             hotkeyRequiresControl = true
         }

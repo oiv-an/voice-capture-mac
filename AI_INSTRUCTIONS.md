@@ -196,6 +196,12 @@ open dist/VoiceCapture.app
 
 ## 8. ТЕКУЩИЕ ЗАДАЧИ / TODO (на момент написания)
 
+### Сделано в 3.5.0 (список дел)
+- [x] **Хоткей + ⇧ Shift** → результат не вставляется, а добавляется задачей в `todos.json` (`TodoStore.swift`). В оверлее во время записи — зелёный бейдж «📝». ⇧ исключён из назначаемых модификаторов основного хоткея (UI + принудительно при загрузке настроек).
+- [x] **Плавающая шайба** `TodoWidgetController.swift` (+`TodoWidgetController+List.swift`): `NSPanel` `.nonactivatingPanel`, `.floating`, на всех Spaces; шайба 40px с числом задач, перетаскивается, позиция в `UserDefaults` (`TodoWidgetOrigin`). Hover → панель 360px, якорь — правый верхний угол шайбы.
+- [x] Галочка → задача зачёркнута, **через 5 с удаляется**; снятие галочки в эти 5 с — отмена. Клик по тексту — редактирование, Enter сохраняет, Esc отменяет, пустой текст = удаление.
+- [x] Сборка: CommandLineTools не находит SwiftUIMacros → собирать с `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer ./build_app.sh`.
+
 ### Сделано в 3.4.0 (перевод)
 - [x] **Apple Translation при удержании ⌥** вместе с основным хоткеем — перевод финального транскрипта.
 - [x] Мост `AppleTranslationService`: скрытый `NSHostingView` + SwiftUI `translationTask` (единственный публичный путь к `TranslationSession`).

@@ -19,6 +19,8 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     private let promptScroll = NSScrollView()
     private let autoPasteCheck = NSButton(
         checkboxWithTitle: "Авто-вставка (Cmd+V) после распознавания", target: nil, action: nil)
+    private let todoEnabledCheck = NSButton(
+        checkboxWithTitle: "Список дел (⇧ + хоткей записи)", target: nil, action: nil)
     private let localDelayField = NSTextField()
 
     private let hotkeyField = NSTextField(labelWithString: "")
@@ -159,6 +161,12 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
 
         autoPasteCheck.frame = NSRect(x: 180, y: y, width: 300, height: 24)
         content.addSubview(autoPasteCheck)
+        y -= 34
+
+        todoEnabledCheck.frame = NSRect(x: 180, y: y, width: 300, height: 24)
+        todoEnabledCheck.toolTip =
+            "Показывает шайбу и включает добавление распознанного текста в дела через ⇧."
+        content.addSubview(todoEnabledCheck)
         y -= 40
 
         addRow("Задержка Local (сек):", localDelayField, height: 24)
@@ -253,6 +261,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         groqKeyField.stringValue = settings.groqApiKey
         groqModelField.stringValue = settings.groqModel
         autoPasteCheck.state = settings.autoPaste ? .on : .off
+        todoEnabledCheck.state = settings.todoEnabled ? .on : .off
         localDelayField.stringValue = String(format: "%g", settings.localStartDelay)
         updateHotkeyDisplay()
         updateEnabled()
@@ -537,8 +546,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         var flags: NSEvent.ModifierFlags = []
         if cgFlags.contains(.maskCommand) { flags.insert(.command) }
         if cgFlags.contains(.maskControl) { flags.insert(.control) }
-        // Option не захватываем: он зарезервирован под Apple Translation.
-        if cgFlags.contains(.maskShift) { flags.insert(.shift) }
+        // Option и Shift не захватываем: ⌥ — Apple Translation, ⇧ — список дел.
 
         if !flags.isEmpty {
             // При последовательном отпускании сохраняем максимальный набор,
@@ -627,6 +635,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         settings.groqModel =
             groqModelField.stringValue.isEmpty ? "whisper-large-v3" : groqModelField.stringValue
         settings.autoPaste = autoPasteCheck.state == .on
+        settings.todoEnabled = todoEnabledCheck.state == .on
         // Задержка: парсим число (поддержка запятой как разделителя), клампим в 0…10с.
         let raw = localDelayField.stringValue.replacingOccurrences(of: ",", with: ".")
         if let v = Double(raw) {
