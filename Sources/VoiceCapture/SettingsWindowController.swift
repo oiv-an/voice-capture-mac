@@ -86,6 +86,11 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
             let fluidIndex = RecognitionBackend.allCases.firstIndex(of: .fluidAudio)!
             backendPopup.item(at: fluidIndex)?.isEnabled = false
         }
+        if !GigaAMModelStore.supported,
+            let index = RecognitionBackend.allCases.firstIndex(of: .gigaAM)
+        {
+            backendPopup.item(at: index)?.isEnabled = false
+        }
         backendPopup.target = self
         backendPopup.action = #selector(backendChanged)
         addRow("Распознавание:", backendPopup)
@@ -278,7 +283,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     }
 
     @objc private func modelChanged() {
-        if selectedBackend != .fluidAudio {
+        if selectedBackend != .fluidAudio && selectedBackend != .gigaAM {
             pendingWhisperModelID = selectedModel().id
         }
         updateModelStatus()
@@ -317,6 +322,10 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     private func rebuildModelPopup() {
         modelPopup.removeAllItems()
 
+        if selectedBackend == .gigaAM {
+            modelPopup.addItem(withTitle: "GigaAM v3 E2E RNNT (~425 MB, macOS 15+)")
+            return
+        }
         if selectedBackend == .fluidAudio {
             modelPopup.addItem(
                 withTitle:
@@ -337,7 +346,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     private func updateEnabled() {
         let backend = selectedBackend
         let whisperOn = backend == .local || backend == .both
-        let fluidOn = backend == .fluidAudio
+        let fluidOn = backend == .fluidAudio || backend == .gigaAM
         let groqOn = backend == .groq || backend == .both
 
         modelPopup.isEnabled = whisperOn
@@ -352,6 +361,14 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     }
 
     private func updateModelStatus() {
+        if selectedBackend == .gigaAM {
+            modelStatusLabel.stringValue =
+                GigaAMModelStore.isDownloaded ? "✓ GigaAM готова · русский" : "GigaAM не скачана"
+            modelStatusLabel.textColor =
+                GigaAMModelStore.isDownloaded ? .systemGreen : .systemOrange
+            downloadButton.title = GigaAMModelStore.isDownloaded ? "Перекачать" : "Скачать"
+            return
+        }
         if selectedBackend == .fluidAudio {
             modelStatusLabel.stringValue =
                 FluidAudioRecognizer.isModelDownloaded
@@ -378,6 +395,10 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     // MARK: - Download
 
     @objc private func downloadTapped() {
+        if selectedBackend == .gigaAM {
+            downloadGigaAMModel()
+            return
+        }
         if selectedBackend == .fluidAudio {
             downloadFluidAudioModel()
             return
@@ -405,6 +426,36 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         let task = session.downloadTask(with: model.downloadURL)
         downloadTask = task
         task.resume()
+    }
+
+    private func downloadGigaAMModel() {
+        downloadButton.isEnabled = false
+        backendPopup.isEnabled = false
+        progressBar.isHidden = false
+        progressBar.doubleValue = 0
+        Task { [self] in
+            do {
+                try await GigaAMModelStore.installer.download { [weak self] fraction, status in
+                    DispatchQueue.main.async {
+                        self?.progressBar.doubleValue = fraction
+                        self?.modelStatusLabel.stringValue = status
+                    }
+                }
+                await MainActor.run {
+                    self.updateModelStatus()
+                }
+            } catch {
+                await MainActor.run {
+                    self.modelStatusLabel.stringValue = error.localizedDescription
+                    self.modelStatusLabel.textColor = .systemRed
+                }
+            }
+            await MainActor.run {
+                self.downloadButton.isEnabled = true
+                self.backendPopup.isEnabled = true
+                self.progressBar.isHidden = true
+            }
+        }
     }
 
     private func downloadFluidAudioModel() {
@@ -612,6 +663,10 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     // MARK: - Actions
 
     @objc private func openModelsFolder() {
+        if selectedBackend == .gigaAM {
+            NSWorkspace.shared.open(GigaAMModelStore.directory)
+            return
+        }
         let directory =
             selectedBackend == .fluidAudio
             ? FluidAudioRecognizer.modelDirectory

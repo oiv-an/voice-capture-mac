@@ -36,6 +36,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     // FluidAudio живёт отдельно: его API асинхронный и модель переиспользуется между live/final pass.
     private let fluidRecognizer = FluidAudioRecognizer()
+    private let gigaRecognizer = GigaAMRecognizer()
+    private var liveBackend: RecognitionBackend = .fluidAudio
+    private var liveTask: Task<Void, Never>?
+    private var gigaFinalTask: Task<Void, Never>?
+    private var gigaJobID = 0
     private var fluidPreviewTimer: DispatchSourceTimer?
     private var fluidPreviewInFlight = false
     private var fluidLatestSamples: [Float] = []
@@ -74,6 +79,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private func prewarmRecognizer() {
         let s = settings
 
+        if s.backend == .gigaAM {
+            guard GigaAMModelStore.isDownloaded else { return }
+            Task {
+                do { try await gigaRecognizer.prepare() } catch {
+                    NSLog("[GigaAM] Подготовка: \(error.localizedDescription)")
+                }
+            }
+            return
+        }
         if s.backend == .fluidAudio {
             Task { [weak self] in
                 guard let self = self else { return }
@@ -128,7 +142,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     func menuNeedsUpdate(_ menu: NSMenu) {
         menu.removeAllItems()
 
-        menu.addItem(NSMenuItem(title: "VoiceCapture 3.5", action: nil, keyEquivalent: ""))
+        let version =
+            Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+            ?? "3.6.0"
+        menu.addItem(NSMenuItem(title: "VoiceCapture \(version)", action: nil, keyEquivalent: ""))
         let todoState = settings.todoEnabled ? "включён" : "выключен"
         let todoItem = NSMenuItem(
             title: "Список дел: \(todoState)", action: #selector(toggleTodoFromMenu),
@@ -233,7 +250,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         addCurrentResultAsTodo = false
         statusUI.setTranslationBadge(nil)
         statusUI.setTodoMode(false)
-        let useFluidAudio = settings.backend == .fluidAudio
+        let useFluidAudio = settings.backend == .fluidAudio || settings.backend == .gigaAM
+        liveBackend = settings.backend
+        if liveBackend == .gigaAM && !GigaAMModelStore.isDownloaded {
+            statusUI.show(.error("Сначала скачайте GigaAM в настройках"))
+            return
+        }
 
         if recorder.start() {
             if useFluidAudio {
@@ -279,6 +301,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         isProcessing = true
         statusUI.show(.processing)
 
+        if liveBackend == .gigaAM {
+            var capturedSettings = settings
+            capturedSettings.backend = .gigaAM
+            transcribeGigaFinal(samples: samples, settings: capturedSettings)
+            return
+        }
+
         // Watchdog: если распознавание подвисло — сбрасываем состояние, чтобы app не залип.
         let watchdog = DispatchWorkItem { [weak self] in
             guard let self = self, self.isProcessing else { return }
@@ -288,7 +317,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 90, execute: watchdog)
 
-        let currentSettings = settings
+        var currentSettings = settings
+        currentSettings.backend = liveBackend
 
         if currentSettings.backend == .fluidAudio {
             transcribeFluidFinal(samples: samples, settings: currentSettings, watchdog: watchdog)
@@ -335,7 +365,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         NSLog("[FluidAudio Live] Сессия \(sessionID) началась")
 
         let timer = DispatchSource.makeTimerSource(queue: .main)
-        timer.schedule(deadline: .now() + 0.35, repeating: 0.35)
+        let interval = liveBackend == .gigaAM ? 1.2 : 0.35
+        timer.schedule(deadline: .now() + interval, repeating: interval)
         timer.setEventHandler { [weak self] in
             self?.requestFluidPreview(sessionID: sessionID)
         }
@@ -344,6 +375,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     private func endFluidLiveSession() {
+        liveTask?.cancel()
+        liveTask = nil
         fluidPreviewTimer?.setEventHandler {}
         fluidPreviewTimer?.cancel()
         fluidPreviewTimer = nil
@@ -369,13 +402,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let audioSeconds = String(format: "%.1f", Double(snapshot.count) / 16_000.0)
         NSLog("[FluidAudio Live] Preview #\(pass): \(snapshot.count) samples (\(audioSeconds)s)")
 
-        Task { [weak self] in
+        let backend = liveBackend
+        liveTask = Task { [weak self] in
             guard let self = self else { return }
             do {
-                let text = try await self.fluidRecognizer.transcribe(samples: snapshot)
+                let text: String
+                if backend == .gigaAM {
+                    text = try await self.gigaRecognizer.transcribe(
+                        samples: snapshot, preview: true)
+                } else {
+                    text = try await self.fluidRecognizer.transcribe(samples: snapshot)
+                }
                 await MainActor.run {
                     guard self.fluidSessionID == sessionID, self.recorder.isRecording else {
-                        self.fluidPreviewInFlight = false
                         return
                     }
                     self.fluidPreviewInFlight = false
@@ -391,8 +430,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 }
             } catch {
                 await MainActor.run {
-                    self.fluidPreviewInFlight = false
                     guard self.fluidSessionID == sessionID else { return }
+                    self.fluidPreviewInFlight = false
                     NSLog("[FluidAudio Live] Preview #\(pass) error: \(error.localizedDescription)")
                 }
             }
@@ -426,6 +465,41 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             return current
         }
         return previous
+    }
+
+    private func transcribeGigaFinal(samples: [Float], settings: AppSettings) {
+        gigaJobID += 1
+        let job = gigaJobID
+        // Duration-aware watchdog, with cancellation and stale-result protection.
+        let timeout = max(120, Double(samples.count) / 16000 * 2)
+        let watchdog = DispatchWorkItem { [weak self] in
+            guard let self, self.gigaJobID == job, self.isProcessing else { return }
+            self.gigaJobID += 1
+            self.gigaFinalTask?.cancel()
+            self.isProcessing = false
+            self.statusUI.show(.error("GigaAM: превышено время обработки"))
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + timeout, execute: watchdog)
+        gigaFinalTask = Task { [weak self] in
+            guard let self else { return }
+            do {
+                let text = try await self.gigaRecognizer.transcribe(samples: samples)
+                await MainActor.run {
+                    watchdog.cancel()
+                    guard self.gigaJobID == job else { return }
+                    self.gigaFinalTask = nil
+                    self.handleResult(text, settings: settings, source: "GigaAM v3 E2E RNNT")
+                }
+            } catch {
+                await MainActor.run {
+                    watchdog.cancel()
+                    guard self.gigaJobID == job else { return }
+                    self.gigaFinalTask = nil
+                    self.isProcessing = false
+                    self.statusUI.show(.error(error.localizedDescription))
+                }
+            }
+        }
     }
 
     private func transcribeFluidFinal(
@@ -651,7 +725,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let key: String
         switch s.backend {
         case .local, .both: key = "local|\(s.localModel)|\(s.language)|\(s.initialPrompt)"
-        case .fluidAudio: preconditionFailure("FluidAudio использует отдельный async-пайплайн")
+        case .fluidAudio, .gigaAM:
+            preconditionFailure("Core ML использует отдельный async-пайплайн")
         case .groq: key = "groq|\(s.groqModel)|\(s.language)"
         }
 
@@ -664,8 +739,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         case .local, .both:
             recognizer = LocalWhisperRecognizer(
                 modelURL: s.localModelURL, language: s.language, initialPrompt: s.initialPrompt)
-        case .fluidAudio:
-            preconditionFailure("FluidAudio использует отдельный async-пайплайн")
+        case .fluidAudio, .gigaAM:
+            preconditionFailure("Core ML использует отдельный async-пайплайн")
         case .groq:
             recognizer = GroqRecognizer(
                 apiKey: s.groqApiKey, model: s.groqModel, language: s.language,
@@ -734,6 +809,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @objc private func openModels() {
+        if settings.backend == .gigaAM {
+            NSWorkspace.shared.open(GigaAMModelStore.directory)
+            return
+        }
         let directory =
             settings.backend == .fluidAudio
             ? FluidAudioRecognizer.modelDirectory

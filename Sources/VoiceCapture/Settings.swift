@@ -4,6 +4,7 @@ import Foundation
 enum RecognitionBackend: String, Codable, CaseIterable {
     case local  // whisper.cpp локально
     case fluidAudio  // Parakeet TDT v3 через FluidAudio/Core ML, live-preview
+    case gigaAM  // GigaAM v3 E2E RNNT, русский с пунктуацией
     case groq  // облачный Groq Whisper
     case both  // параллельно Local + Groq, кто первый — тот и победил
 
@@ -11,6 +12,7 @@ enum RecognitionBackend: String, Codable, CaseIterable {
         switch self {
         case .local: return "Локально (whisper.cpp)"
         case .fluidAudio: return "FluidAudio (Parakeet v3 — live)"
+        case .gigaAM: return "GigaAM v3 E2E RNNT (русский — live)"
         case .groq: return "Groq (облако)"
         case .both: return "Совместно (Groq + Local — кто первый)"
         }
