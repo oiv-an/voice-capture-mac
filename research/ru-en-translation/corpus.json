@@ -1,0 +1,430 @@
+{
+  "version": "screening-1",
+  "description": "60 synthetic dictation-style RU→EN cases. Written before inference. References are illustrative, not the only correct translations. No private dictation used.",
+  "warmup": [
+    "Доброе утро! Я отправлю документ после обеда.",
+    "Пожалуйста, проверьте, что новое приложение открывается без ошибок."
+  ],
+  "cases": [
+    {
+      "id": "01",
+      "category": "everyday",
+      "source": "Я буду минут через десять. Закажи мне, пожалуйста, кофе без сахара.",
+      "reference": "I'll be there in about ten minutes. Please order me a coffee without sugar.",
+      "check": "Approximate arrival; request; no sugar."
+    },
+    {
+      "id": "02",
+      "category": "everyday",
+      "source": "Мне не принципиально, где встречаться, лишь бы там было не слишком шумно.",
+      "reference": "I don't mind where we meet, as long as it isn't too noisy.",
+      "check": "Flexible location conditional on low noise."
+    },
+    {
+      "id": "03",
+      "category": "everyday",
+      "source": "Ты не мог бы скинуть мне адрес? Тот, который присылал вчера, не открывается.",
+      "reference": "Could you send me the address? The one you sent yesterday won't open.",
+      "check": "Polite request and earlier address failure; preserve ambiguity address/link."
+    },
+    {
+      "id": "04",
+      "category": "everyday",
+      "source": "Давай не сегодня, а послезавтра. Завтра я тоже занят.",
+      "reference": "Let's do it the day after tomorrow, not today. I'm busy tomorrow too.",
+      "check": "Day after tomorrow, not tomorrow; retain second sentence."
+    },
+    {
+      "id": "05",
+      "category": "everyday",
+      "source": "Я уже вышел, но, похоже, оставил ключи дома. Придётся вернуться.",
+      "reference": "I've already left, but I think I left my keys at home. I'll have to go back.",
+      "check": "Uncertainty about keys, necessity of return."
+    },
+    {
+      "id": "06",
+      "category": "everyday",
+      "source": "Спасибо, что предупредил. А то я бы приехал зря.",
+      "reference": "Thanks for letting me know. Otherwise, I would have made the trip for nothing.",
+      "check": "Counterfactual wasted trip, not actual arrival."
+    },
+    {
+      "id": "07",
+      "category": "business",
+      "source": "Коллеги, давайте перенесём созвон на полчаса позже. До этого времени я не успею подготовить цифры.",
+      "reference": "Team, let's move the call back by half an hour. I won't have the figures ready before then.",
+      "check": "Later by 30 minutes, not earlier; reason."
+    },
+    {
+      "id": "08",
+      "category": "business",
+      "source": "Мы готовы начать в понедельник, если вы подтвердите бюджет до конца пятницы.",
+      "reference": "We're ready to start on Monday if you confirm the budget by the end of Friday.",
+      "check": "Conditional commitment and Friday deadline."
+    },
+    {
+      "id": "09",
+      "category": "business",
+      "source": "Я не обещаю, что закончим сегодня, но постараюсь прислать черновик к вечеру.",
+      "reference": "I can't promise we'll finish today, but I'll try to send a draft by this evening.",
+      "check": "No promise, effort only, draft not final."
+    },
+    {
+      "id": "10",
+      "category": "business",
+      "source": "По срокам мы укладываемся, а вот по бюджету уже выходим за рамки.",
+      "reference": "We're on schedule, but we're already going over budget.",
+      "check": "Schedule okay, budget exceeded."
+    },
+    {
+      "id": "11",
+      "category": "business",
+      "source": "Счёт оплатили вчера. Проверьте, пожалуйста, поступление, а не дату выставления счёта.",
+      "reference": "The invoice was paid yesterday. Please check when the payment arrived, not when the invoice was issued.",
+      "check": "Payment vs issue date distinction."
+    },
+    {
+      "id": "12",
+      "category": "business",
+      "source": "Пока ничего не отправляйте клиенту. Сначала согласуем формулировки внутри команды.",
+      "reference": "Don't send anything to the client yet. Let's agree on the wording within the team first.",
+      "check": "Prohibition until internal wording approval."
+    },
+    {
+      "id": "13",
+      "category": "negation",
+      "source": "Я не говорил, что он не придёт. Я сказал, что он пока не подтвердил участие.",
+      "reference": "I didn't say he wasn't coming. I said he hasn't confirmed his attendance yet.",
+      "check": "Preserve nested negation and distinction not confirmed/not coming."
+    },
+    {
+      "id": "14",
+      "category": "negation",
+      "source": "Не отключай уведомления, пока не убедишься, что резервный канал работает.",
+      "reference": "Don't turn off notifications until you've made sure the backup channel works.",
+      "check": "Do not disable until verification."
+    },
+    {
+      "id": "15",
+      "category": "negation",
+      "source": "Доступ получат все, кроме тех, кто не подтвердил почту.",
+      "reference": "Everyone will get access except those who haven't verified their email address.",
+      "check": "Unverified users excluded, not included."
+    },
+    {
+      "id": "16",
+      "category": "negation",
+      "source": "Скидка действует не на весь заказ, а только на второй товар.",
+      "reference": "The discount applies only to the second item, not to the whole order.",
+      "check": "Only second item discounted."
+    },
+    {
+      "id": "17",
+      "category": "negation",
+      "source": "Если бы я знал об этом раньше, я бы не стал отменять встречу.",
+      "reference": "If I'd known about this earlier, I wouldn't have cancelled the meeting.",
+      "check": "Past counterfactual: meeting was cancelled."
+    },
+    {
+      "id": "18",
+      "category": "negation",
+      "source": "Он вряд ли откажется, но считать это согласием пока нельзя.",
+      "reference": "He's unlikely to refuse, but we can't treat that as agreement yet.",
+      "check": "Likely agreement is not confirmed agreement."
+    },
+    {
+      "id": "19",
+      "category": "numbers",
+      "source": "Переведи, пожалуйста, 1250 рублей, а не 12 500. Комиссия уже включена.",
+      "reference": "Please transfer 1,250 rubles, not 12,500. The fee is already included.",
+      "check": "Exact two amounts, negation, fee included."
+    },
+    {
+      "id": "20",
+      "category": "numbers",
+      "source": "Цена выросла с 80 до 100 долларов, то есть на 25 процентов.",
+      "reference": "The price increased from 80 to 100 dollars, which is a 25 percent increase.",
+      "check": "80→100; 25 percent not 20."
+    },
+    {
+      "id": "21",
+      "category": "numbers",
+      "source": "Встречаемся 7 ноября в 16:30 по Москве, не по местному времени.",
+      "reference": "We're meeting on November 7 at 16:30 Moscow time, not local time.",
+      "check": "November 7, 16:30, Moscow zone."
+    },
+    {
+      "id": "22",
+      "category": "numbers",
+      "source": "Нужно три упаковки по двенадцать штук и ещё две штуки отдельно.",
+      "reference": "We need three packs of twelve, plus two individual items.",
+      "check": "3×12 plus 2; do not silently change quantities."
+    },
+    {
+      "id": "23",
+      "category": "numbers",
+      "source": "Осталось 0,75 литра. Добавь ещё 250 миллилитров, чтобы получился ровно литр.",
+      "reference": "There are 0.75 liters left. Add another 250 milliliters to make exactly one liter.",
+      "check": "Decimal comma understood; correct units and amounts."
+    },
+    {
+      "id": "24",
+      "category": "numbers",
+      "source": "Бюджет — до 150 тысяч рублей в месяц, включая НДС, но без рекламных расходов.",
+      "reference": "The budget is up to 150,000 rubles per month, including VAT but excluding advertising costs.",
+      "check": "Upper limit, monthly, VAT included, ads excluded."
+    },
+    {
+      "id": "25",
+      "category": "technical",
+      "source": "После деплоя авторизация сломалась только в Safari. В Chrome всё работает как раньше.",
+      "reference": "After deployment, authentication broke only in Safari. Everything still works as before in Chrome.",
+      "check": "Safari only; Chrome unaffected."
+    },
+    {
+      "id": "26",
+      "category": "technical",
+      "source": "Не удаляй базу. Откати последнюю миграцию и перезапусти воркер.",
+      "reference": "Don't delete the database. Roll back the last migration and restart the worker.",
+      "check": "Prohibit database deletion; roll back migration; restart worker."
+    },
+    {
+      "id": "27",
+      "category": "technical",
+      "source": "Запрос возвращает 200, но в теле ответа пустой массив. Это не ошибка сети.",
+      "reference": "The request returns 200, but the response body contains an empty array. This isn't a network error.",
+      "check": "200 and empty array, not network failure."
+    },
+    {
+      "id": "28",
+      "category": "technical",
+      "source": "Сначала сделай бэкап, потом накати обновление. Если проверка не пройдёт, верни предыдущую версию.",
+      "reference": "Back up first, then apply the update. If the check fails, restore the previous version.",
+      "check": "Order and conditional rollback."
+    },
+    {
+      "id": "29",
+      "category": "technical",
+      "source": "Проблема не в модели, а в том, что мы каждый раз загружаем её заново.",
+      "reference": "The problem isn't the model; it's that we reload it every time.",
+      "check": "Repeated loading is cause, not model."
+    },
+    {
+      "id": "30",
+      "category": "technical",
+      "source": "Сохрани API key в переменной окружения и не добавляй его в GitHub.",
+      "reference": "Store the API key in an environment variable and don't add it to GitHub.",
+      "check": "Environment variable, no GitHub upload."
+    },
+    {
+      "id": "31",
+      "category": "idiom",
+      "source": "Давай без воды: что конкретно сломалось и когда это можно починить?",
+      "reference": "Let's get straight to the point: what exactly broke, and when can it be fixed?",
+      "check": "Без воды is no fluff, not literal water."
+    },
+    {
+      "id": "32",
+      "category": "idiom",
+      "source": "Не надо изобретать велосипед. Возьмём готовое решение и проверим на практике.",
+      "reference": "There's no need to reinvent the wheel. Let's use an existing solution and try it out.",
+      "check": "Idiom plus practical trial."
+    },
+    {
+      "id": "33",
+      "category": "idiom",
+      "source": "Я пока не в теме. Введи меня в курс дела в двух словах.",
+      "reference": "I'm not up to speed yet. Give me a quick rundown.",
+      "check": "Brief briefing, no literal two-word constraint."
+    },
+    {
+      "id": "34",
+      "category": "idiom",
+      "source": "На бумаге всё красиво, но вживую это работает через раз.",
+      "reference": "It looks good on paper, but in practice it only works some of the time.",
+      "check": "Unreliable real-world behavior."
+    },
+    {
+      "id": "35",
+      "category": "idiom",
+      "source": "Не руби с плеча. Давай сначала разберёмся, почему клиент отказался.",
+      "reference": "Don't act rashly. Let's first find out why the client declined.",
+      "check": "Don't act rashly, not violence; reason for decline."
+    },
+    {
+      "id": "36",
+      "category": "idiom",
+      "source": "Эта задача сейчас не горит. Лучше сначала закроем то, что блокирует оплату.",
+      "reference": "This task isn't urgent. Let's first resolve what's blocking payment.",
+      "check": "Not urgent, priority payment blocker."
+    },
+    {
+      "id": "37",
+      "category": "disfluency",
+      "source": "Ну, я, в общем, хотел уточнить: мы завтра встречаемся или всё-таки переносим?",
+      "reference": "Well, I just wanted to check: are we meeting tomorrow, or are we rescheduling after all?",
+      "check": "Question, tomorrow or reschedule; no invented decision."
+    },
+    {
+      "id": "38",
+      "category": "disfluency",
+      "source": "Отправь это Сергею, ой, нет, Андрею. Сергею пока не надо.",
+      "reference": "Send this to Sergey—sorry, no, to Andrey. Don't send it to Sergey yet.",
+      "check": "Self-correction changes recipient to Andrey; Sergey excluded."
+    },
+    {
+      "id": "39",
+      "category": "disfluency",
+      "source": "Давай на пятницу, точнее, на четверг после обеда, если у тебя получится.",
+      "reference": "Let's make it Friday—actually, Thursday afternoon, if that works for you.",
+      "check": "Corrected day Thursday; conditional availability."
+    },
+    {
+      "id": "40",
+      "category": "disfluency",
+      "source": "Я это, как его, уже проверял. Сам перевод нормальный, тормозит именно загрузка.",
+      "reference": "I've already checked that, um, thing. The translation itself is fine; it's the loading that's slow.",
+      "check": "Loading slow, translation okay; no invented object."
+    },
+    {
+      "id": "41",
+      "category": "disfluency",
+      "source": "Смотри, мне не нужен идеальный текст, мне нужно, чтобы смысл не терялся и ничего не придумывалось.",
+      "reference": "Look, I don't need perfect wording. I need the meaning preserved without anything being made up.",
+      "check": "Meaning/fidelity priority over polish."
+    },
+    {
+      "id": "42",
+      "category": "disfluency",
+      "source": "Там было пятнадцать, нет, пятьдесят заявок. Из них оплачены только восемь.",
+      "reference": "There were fifteen—no, fifty applications. Only eight of them have been paid for.",
+      "check": "Corrected total 50, paid 8."
+    },
+    {
+      "id": "43",
+      "category": "unpunctuated",
+      "source": "пожалуйста не отправляй заказ сегодня я ещё не проверил адрес доставки",
+      "reference": "Please don't ship the order today. I haven't checked the delivery address yet.",
+      "check": "Do not ship today; address unchecked."
+    },
+    {
+      "id": "44",
+      "category": "unpunctuated",
+      "source": "если завтра будет дождь встречаемся внутри если нет то на террасе",
+      "reference": "If it rains tomorrow, we'll meet inside; otherwise, on the terrace.",
+      "check": "Two conditional locations."
+    },
+    {
+      "id": "45",
+      "category": "unpunctuated",
+      "source": "нет я имел в виду не удалить файл а переименовать его старую копию оставить",
+      "reference": "No, I meant rename the file, not delete it. Keep the old copy.",
+      "check": "Rename not delete; keep copy."
+    },
+    {
+      "id": "46",
+      "category": "unpunctuated",
+      "source": "мы можем начать бесплатно но поддержка после первого месяца будет платной",
+      "reference": "We can start for free, but support will be paid after the first month.",
+      "check": "Free start, paid support after first month."
+    },
+    {
+      "id": "47",
+      "category": "unpunctuated",
+      "source": "я не против просто давай сначала посчитаем сколько это будет стоить в месяц",
+      "reference": "I'm not against it; let's just work out the monthly cost first.",
+      "check": "Not opposed, calculate monthly cost first."
+    },
+    {
+      "id": "48",
+      "category": "unpunctuated",
+      "source": "запиши пожалуйста купить молоко без лактозы яйца и хлеб без глютена",
+      "reference": "Please write down: buy lactose-free milk, eggs, and gluten-free bread.",
+      "check": "Milk lactose-free; bread gluten-free; eggs included."
+    },
+    {
+      "id": "49",
+      "category": "entities",
+      "source": "Отправь письмо Анне Смирновой и поставь Илью в копию. Ольге пока не отправляй.",
+      "reference": "Email Anna Smirnova and copy Ilya. Don't send it to Olga yet.",
+      "check": "Anna recipient, Ilya CC, Olga excluded; reasonable transliteration accepted."
+    },
+    {
+      "id": "50",
+      "category": "entities",
+      "source": "В поле email оставь test@example.com, а ссылку https://example.com/pay не меняй.",
+      "reference": "Leave test@example.com in the email field and don't change the link https://example.com/pay.",
+      "check": "Email and URL unchanged."
+    },
+    {
+      "id": "51",
+      "category": "entities",
+      "source": "Заказ AB-1042 нужно доставить в офис 305, а не в квартиру 305.",
+      "reference": "Order AB-1042 needs to be delivered to office 305, not apartment 305.",
+      "check": "ID and room number exact; office not apartment."
+    },
+    {
+      "id": "52",
+      "category": "entities",
+      "source": "Перенеси задачу из To Do в In Progress, но не отмечай её как Done.",
+      "reference": "Move the task from To Do to In Progress, but don't mark it as Done.",
+      "check": "Exact three status labels; no completion."
+    },
+    {
+      "id": "53",
+      "category": "entities",
+      "source": "Файл report_final_v2.pdf — актуальный. Старый report_final.pdf можно оставить в архиве.",
+      "reference": "The file report_final_v2.pdf is the current one. The old report_final.pdf can stay in the archive.",
+      "check": "Both filenames exact; v2 current, old archived not deleted."
+    },
+    {
+      "id": "54",
+      "category": "entities",
+      "source": "Скажи менеджеру: тариф Pro оставляем, а дополнительные места отключаем со следующего месяца.",
+      "reference": "Tell the manager we're keeping the Pro plan but removing the extra seats starting next month.",
+      "check": "Keep Pro, disable extra seats next month."
+    },
+    {
+      "id": "55",
+      "category": "paragraph",
+      "source": "Я посмотрел оба варианта. Первый дешевле, но там нет выгрузки данных. Второй дороже на 20 долларов в месяц, зато позволяет забрать всю историю. Для нас это важнее, поэтому я бы выбрал второй, если не найдём других ограничений.",
+      "reference": "I've looked at both options. The first is cheaper, but it doesn't offer data export. The second costs 20 dollars more per month but lets us export the entire history. That's more important to us, so I'd choose the second unless we find other limitations.",
+      "check": "Both options, monthly +20, export priority, conditional preference not final decision."
+    },
+    {
+      "id": "56",
+      "category": "paragraph",
+      "source": "Вчера клиент попросил вернуть деньги, потому что дважды оплатил один и тот же заказ. Одну оплату нужно оставить, вторую вернуть на ту же карту. Сам заказ отменять не надо. После возврата отправьте ему подтверждение по почте.",
+      "reference": "Yesterday the client requested a refund because they paid for the same order twice. Keep one payment and refund the other to the same card. Don't cancel the order itself. After the refund, send them confirmation by email.",
+      "check": "Duplicate payment, refund only one to same card, keep order, email confirmation."
+    },
+    {
+      "id": "57",
+      "category": "paragraph",
+      "source": "Сейчас приложение сначала распознаёт русскую речь, а потом переводит текст на английский. Мне не нужно ускорять распознавание. Я хочу, чтобы перевод точнее передавал смысл и не заставлял ждать по десять секунд после каждой короткой фразы.",
+      "reference": "The app currently recognizes Russian speech first and then translates the text into English. I don't need to speed up recognition. I want the translation to convey the meaning more accurately without making me wait ten seconds after every short phrase.",
+      "check": "ASR then translation; improve translation not ASR; ten seconds undesirable, not measured claim."
+    },
+    {
+      "id": "58",
+      "category": "paragraph",
+      "source": "Я договорился с подрядчиком, что первую часть мы оплачиваем после демонстрации, а оставшуюся — только после исправления замечаний. Это не предоплата. Если демонстрацию перенесут, срок первой оплаты тоже сдвигается.",
+      "reference": "I agreed with the contractor that we'll pay the first installment after the demo and the remainder only after the issues are fixed. This isn't an advance payment. If the demo is postponed, the first payment date moves too.",
+      "check": "Two payment conditions, not advance, linked delay."
+    },
+    {
+      "id": "59",
+      "category": "paragraph",
+      "source": "Пожалуйста, проверь не только начало, но и конец перевода. В прошлый раз первые два предложения были нормальными, а последнее вообще исчезло. Для меня лучше немного корявый английский, чем красивый текст, в котором потерялась половина условий.",
+      "reference": "Please check not just the beginning but also the end of the translation. Last time the first two sentences were fine, but the last one disappeared entirely. I'd rather have slightly awkward English than polished text that loses half the conditions.",
+      "check": "Beginning and end check; prior last-sentence omission; fidelity over fluency."
+    },
+    {
+      "id": "60",
+      "category": "paragraph",
+      "source": "Давайте пока ничего не менять в рабочем приложении. Сначала сравним переводчики на одинаковых фразах, отдельно посмотрим качество и скорость. Если новая модель окажется быстрее, но начнёт путать отрицания или суммы, такой вариант нам не подходит.",
+      "reference": "Let's not change anything in the production app yet. First, we'll compare the translators on the same phrases and assess quality and speed separately. If a new model is faster but starts getting negations or amounts wrong, it won't work for us.",
+      "check": "No production changes yet; same phrases; speed cannot excuse negation/amount errors."
+    }
+  ]
+}

@@ -1,0 +1,482 @@
+{
+  "01": {
+    "A": "apple",
+    "B": "t5",
+    "C": "madlad",
+    "D": "hy",
+    "E": "yandex",
+    "F": "opus"
+  },
+  "02": {
+    "A": "apple",
+    "B": "yandex",
+    "C": "opus",
+    "D": "hy",
+    "E": "t5",
+    "F": "madlad"
+  },
+  "03": {
+    "A": "hy",
+    "B": "yandex",
+    "C": "t5",
+    "D": "opus",
+    "E": "apple",
+    "F": "madlad"
+  },
+  "04": {
+    "A": "t5",
+    "B": "madlad",
+    "C": "hy",
+    "D": "apple",
+    "E": "opus",
+    "F": "yandex"
+  },
+  "05": {
+    "A": "opus",
+    "B": "madlad",
+    "C": "yandex",
+    "D": "t5",
+    "E": "hy",
+    "F": "apple"
+  },
+  "06": {
+    "A": "opus",
+    "B": "yandex",
+    "C": "t5",
+    "D": "hy",
+    "E": "apple",
+    "F": "madlad"
+  },
+  "07": {
+    "A": "madlad",
+    "B": "apple",
+    "C": "hy",
+    "D": "yandex",
+    "E": "opus",
+    "F": "t5"
+  },
+  "08": {
+    "A": "opus",
+    "B": "yandex",
+    "C": "madlad",
+    "D": "apple",
+    "E": "t5",
+    "F": "hy"
+  },
+  "09": {
+    "A": "madlad",
+    "B": "hy",
+    "C": "t5",
+    "D": "opus",
+    "E": "apple",
+    "F": "yandex"
+  },
+  "10": {
+    "A": "hy",
+    "B": "apple",
+    "C": "yandex",
+    "D": "opus",
+    "E": "t5",
+    "F": "madlad"
+  },
+  "11": {
+    "A": "yandex",
+    "B": "madlad",
+    "C": "opus",
+    "D": "apple",
+    "E": "t5",
+    "F": "hy"
+  },
+  "12": {
+    "A": "madlad",
+    "B": "yandex",
+    "C": "opus",
+    "D": "apple",
+    "E": "t5",
+    "F": "hy"
+  },
+  "13": {
+    "A": "apple",
+    "B": "t5",
+    "C": "yandex",
+    "D": "madlad",
+    "E": "opus",
+    "F": "hy"
+  },
+  "14": {
+    "A": "opus",
+    "B": "hy",
+    "C": "apple",
+    "D": "t5",
+    "E": "madlad",
+    "F": "yandex"
+  },
+  "15": {
+    "A": "madlad",
+    "B": "t5",
+    "C": "hy",
+    "D": "opus",
+    "E": "apple",
+    "F": "yandex"
+  },
+  "16": {
+    "A": "hy",
+    "B": "apple",
+    "C": "yandex",
+    "D": "madlad",
+    "E": "opus",
+    "F": "t5"
+  },
+  "17": {
+    "A": "t5",
+    "B": "opus",
+    "C": "hy",
+    "D": "yandex",
+    "E": "madlad",
+    "F": "apple"
+  },
+  "18": {
+    "A": "yandex",
+    "B": "t5",
+    "C": "opus",
+    "D": "madlad",
+    "E": "hy",
+    "F": "apple"
+  },
+  "19": {
+    "A": "hy",
+    "B": "t5",
+    "C": "madlad",
+    "D": "yandex",
+    "E": "apple",
+    "F": "opus"
+  },
+  "20": {
+    "A": "opus",
+    "B": "hy",
+    "C": "yandex",
+    "D": "t5",
+    "E": "madlad",
+    "F": "apple"
+  },
+  "21": {
+    "A": "madlad",
+    "B": "apple",
+    "C": "hy",
+    "D": "t5",
+    "E": "yandex",
+    "F": "opus"
+  },
+  "22": {
+    "A": "yandex",
+    "B": "hy",
+    "C": "opus",
+    "D": "apple",
+    "E": "t5",
+    "F": "madlad"
+  },
+  "23": {
+    "A": "apple",
+    "B": "opus",
+    "C": "hy",
+    "D": "t5",
+    "E": "madlad",
+    "F": "yandex"
+  },
+  "24": {
+    "A": "yandex",
+    "B": "t5",
+    "C": "madlad",
+    "D": "hy",
+    "E": "opus",
+    "F": "apple"
+  },
+  "25": {
+    "A": "yandex",
+    "B": "madlad",
+    "C": "t5",
+    "D": "apple",
+    "E": "opus",
+    "F": "hy"
+  },
+  "26": {
+    "A": "yandex",
+    "B": "hy",
+    "C": "t5",
+    "D": "madlad",
+    "E": "apple",
+    "F": "opus"
+  },
+  "27": {
+    "A": "t5",
+    "B": "yandex",
+    "C": "hy",
+    "D": "opus",
+    "E": "madlad",
+    "F": "apple"
+  },
+  "28": {
+    "A": "yandex",
+    "B": "madlad",
+    "C": "apple",
+    "D": "hy",
+    "E": "opus",
+    "F": "t5"
+  },
+  "29": {
+    "A": "hy",
+    "B": "t5",
+    "C": "opus",
+    "D": "apple",
+    "E": "madlad",
+    "F": "yandex"
+  },
+  "30": {
+    "A": "yandex",
+    "B": "madlad",
+    "C": "hy",
+    "D": "opus",
+    "E": "t5",
+    "F": "apple"
+  },
+  "31": {
+    "A": "yandex",
+    "B": "t5",
+    "C": "madlad",
+    "D": "apple",
+    "E": "hy",
+    "F": "opus"
+  },
+  "32": {
+    "A": "apple",
+    "B": "hy",
+    "C": "opus",
+    "D": "yandex",
+    "E": "madlad",
+    "F": "t5"
+  },
+  "33": {
+    "A": "opus",
+    "B": "hy",
+    "C": "madlad",
+    "D": "apple",
+    "E": "yandex",
+    "F": "t5"
+  },
+  "34": {
+    "A": "t5",
+    "B": "opus",
+    "C": "madlad",
+    "D": "yandex",
+    "E": "hy",
+    "F": "apple"
+  },
+  "35": {
+    "A": "apple",
+    "B": "opus",
+    "C": "t5",
+    "D": "madlad",
+    "E": "yandex",
+    "F": "hy"
+  },
+  "36": {
+    "A": "t5",
+    "B": "yandex",
+    "C": "hy",
+    "D": "apple",
+    "E": "opus",
+    "F": "madlad"
+  },
+  "37": {
+    "A": "apple",
+    "B": "opus",
+    "C": "yandex",
+    "D": "hy",
+    "E": "t5",
+    "F": "madlad"
+  },
+  "38": {
+    "A": "madlad",
+    "B": "yandex",
+    "C": "t5",
+    "D": "opus",
+    "E": "apple",
+    "F": "hy"
+  },
+  "39": {
+    "A": "madlad",
+    "B": "hy",
+    "C": "opus",
+    "D": "yandex",
+    "E": "apple",
+    "F": "t5"
+  },
+  "40": {
+    "A": "hy",
+    "B": "yandex",
+    "C": "apple",
+    "D": "opus",
+    "E": "madlad",
+    "F": "t5"
+  },
+  "41": {
+    "A": "opus",
+    "B": "apple",
+    "C": "t5",
+    "D": "yandex",
+    "E": "madlad",
+    "F": "hy"
+  },
+  "42": {
+    "A": "hy",
+    "B": "madlad",
+    "C": "yandex",
+    "D": "t5",
+    "E": "apple",
+    "F": "opus"
+  },
+  "43": {
+    "A": "apple",
+    "B": "yandex",
+    "C": "t5",
+    "D": "madlad",
+    "E": "opus",
+    "F": "hy"
+  },
+  "44": {
+    "A": "opus",
+    "B": "apple",
+    "C": "t5",
+    "D": "madlad",
+    "E": "hy",
+    "F": "yandex"
+  },
+  "45": {
+    "A": "opus",
+    "B": "apple",
+    "C": "yandex",
+    "D": "madlad",
+    "E": "t5",
+    "F": "hy"
+  },
+  "46": {
+    "A": "yandex",
+    "B": "madlad",
+    "C": "t5",
+    "D": "opus",
+    "E": "apple",
+    "F": "hy"
+  },
+  "47": {
+    "A": "hy",
+    "B": "opus",
+    "C": "t5",
+    "D": "apple",
+    "E": "yandex",
+    "F": "madlad"
+  },
+  "48": {
+    "A": "yandex",
+    "B": "opus",
+    "C": "t5",
+    "D": "madlad",
+    "E": "hy",
+    "F": "apple"
+  },
+  "49": {
+    "A": "yandex",
+    "B": "opus",
+    "C": "madlad",
+    "D": "t5",
+    "E": "apple",
+    "F": "hy"
+  },
+  "50": {
+    "A": "madlad",
+    "B": "opus",
+    "C": "yandex",
+    "D": "hy",
+    "E": "apple",
+    "F": "t5"
+  },
+  "51": {
+    "A": "yandex",
+    "B": "hy",
+    "C": "opus",
+    "D": "madlad",
+    "E": "apple",
+    "F": "t5"
+  },
+  "52": {
+    "A": "apple",
+    "B": "madlad",
+    "C": "t5",
+    "D": "opus",
+    "E": "hy",
+    "F": "yandex"
+  },
+  "53": {
+    "A": "opus",
+    "B": "hy",
+    "C": "madlad",
+    "D": "apple",
+    "E": "t5",
+    "F": "yandex"
+  },
+  "54": {
+    "A": "madlad",
+    "B": "hy",
+    "C": "t5",
+    "D": "yandex",
+    "E": "apple",
+    "F": "opus"
+  },
+  "55": {
+    "A": "t5",
+    "B": "madlad",
+    "C": "hy",
+    "D": "opus",
+    "E": "apple",
+    "F": "yandex"
+  },
+  "56": {
+    "A": "t5",
+    "B": "madlad",
+    "C": "yandex",
+    "D": "opus",
+    "E": "hy",
+    "F": "apple"
+  },
+  "57": {
+    "A": "yandex",
+    "B": "apple",
+    "C": "t5",
+    "D": "hy",
+    "E": "madlad",
+    "F": "opus"
+  },
+  "58": {
+    "A": "apple",
+    "B": "yandex",
+    "C": "t5",
+    "D": "opus",
+    "E": "hy",
+    "F": "madlad"
+  },
+  "59": {
+    "A": "opus",
+    "B": "apple",
+    "C": "t5",
+    "D": "yandex",
+    "E": "hy",
+    "F": "madlad"
+  },
+  "60": {
+    "A": "madlad",
+    "B": "apple",
+    "C": "yandex",
+    "D": "hy",
+    "E": "opus",
+    "F": "t5"
+  }
+}

@@ -1,0 +1,1033 @@
+[
+  {
+    "id": "01",
+    "category": "everyday",
+    "scores": {
+      "apple": 0,
+      "t5": 1,
+      "madlad": 1,
+      "hy": 1,
+      "yandex": 0,
+      "opus": 1
+    },
+    "notes": {
+      "t5": "Неполное I'll be in; потеря приблизительности времени.",
+      "madlad": "Неполное I'll be in, sugar-free менее естественно, чем without sugar; потеря приблизительности.",
+      "hy": "Добавлено back: возвращение не задано исходником.",
+      "opus": "Приблизительное время стало точным, добавлена причинная связка so."
+    }
+  },
+  {
+    "id": "02",
+    "category": "everyday",
+    "scores": {
+      "apple": 0,
+      "yandex": 0,
+      "opus": 2,
+      "hy": 0,
+      "t5": 2,
+      "madlad": 0
+    },
+    "notes": {
+      "opus": "Не принципиально ошибочно передано как личный принцип не встречаться.",
+      "t5": "Неестественная и нарушенная конструкция just if it wasnt; условие передано ненадёжно."
+    }
+  },
+  {
+    "id": "03",
+    "category": "everyday",
+    "scores": {
+      "hy": 0,
+      "yandex": 0,
+      "t5": 3,
+      "opus": 2,
+      "apple": 3,
+      "madlad": 0
+    },
+    "notes": {
+      "t5": "Просьба превращена в отрицательное утверждение; slapped вместо отправить.",
+      "opus": "Полностью пропущено второе предложение о вчерашнем адресе.",
+      "apple": "Перепутан отправитель: I sent вместо you sent."
+    }
+  },
+  {
+    "id": "04",
+    "category": "everyday",
+    "scores": {
+      "t5": 3,
+      "madlad": 0,
+      "hy": 3,
+      "apple": 0,
+      "opus": 3,
+      "yandex": 1
+    },
+    "notes": {
+      "t5": "Послезавтра заменено на завтра, пропущена занятость завтра.",
+      "hy": "Послезавтра заменено на завтра, создавая противоречие с занятостью завтра.",
+      "opus": "Потеряно всё предложение о переносе на послезавтра.",
+      "yandex": "Let's not today — грамматически неполная конструкция, смысл сохранён."
+    }
+  },
+  {
+    "id": "05",
+    "category": "everyday",
+    "scores": {
+      "opus": 2,
+      "madlad": 2,
+      "yandex": 0,
+      "t5": 2,
+      "hy": 0,
+      "apple": 0
+    },
+    "notes": {
+      "opus": "Пропущено решение о необходимости вернуться.",
+      "madlad": "Пропущено решение о необходимости вернуться.",
+      "t5": "Пропущено решение о необходимости вернуться; первая фраза менее точна."
+    }
+  },
+  {
+    "id": "06",
+    "category": "everyday",
+    "scores": {
+      "opus": 0,
+      "yandex": 0,
+      "t5": 2,
+      "hy": 0,
+      "apple": 0,
+      "madlad": 3
+    },
+    "notes": {
+      "t5": "I'd be in vain не передаёт контрфактическую напрасную поездку.",
+      "madlad": "Инвертировано условие: wouldn't have come in vain вместо otherwise would have come in vain."
+    }
+  },
+  {
+    "id": "07",
+    "category": "business",
+    "scores": {
+      "madlad": 2,
+      "apple": 0,
+      "hy": 2,
+      "yandex": 0,
+      "opus": 1,
+      "t5": 2
+    },
+    "notes": {
+      "madlad": "Созвон переведён как bell, не телефонный разговор.",
+      "hy": "Созвон стал встречей; by that time ещё не готовы вместо объяснения необходимости переноса меняет временную связь.",
+      "opus": "Co-workers и gonna меняют нейтральный рабочий регистр; основной смысл сохранён.",
+      "t5": "Неестественное callphone, нарушенная грамматика и полностью пропущена причина переноса."
+    }
+  },
+  {
+    "id": "08",
+    "category": "business",
+    "scores": {
+      "opus": 0,
+      "yandex": 0,
+      "madlad": 0,
+      "apple": 0,
+      "t5": 1,
+      "hy": 0
+    },
+    "notes": {
+      "t5": "until late Friday хуже передаёт дедлайн by the end of Friday."
+    }
+  },
+  {
+    "id": "09",
+    "category": "business",
+    "scores": {
+      "madlad": 1,
+      "hy": 0,
+      "t5": 3,
+      "opus": 1,
+      "apple": 0,
+      "yandex": 0
+    },
+    "notes": {
+      "madlad": "Потерян явно заданный коллективный субъект we у завершения.",
+      "t5": "Собственное намерение заменено командой адресату; черновик превратился в drafter.",
+      "opus": "Сегодня сужено до tonight, к вечеру передано как by tonight."
+    }
+  },
+  {
+    "id": "10",
+    "category": "business",
+    "scores": {
+      "hy": 0,
+      "apple": 0,
+      "yandex": 0,
+      "opus": 1,
+      "t5": 2,
+      "madlad": 1
+    },
+    "notes": {
+      "opus": "We're getting on time неестественно, но противопоставление сохранено.",
+      "t5": "Budget is out of reach означает недостижимый бюджет, а не превышение расходов.",
+      "madlad": "Out of budget допускает отсутствие средств, менее точно, чем over budget."
+    }
+  },
+  {
+    "id": "11",
+    "category": "business",
+    "scores": {
+      "yandex": 1,
+      "madlad": 1,
+      "opus": 1,
+      "apple": 1,
+      "t5": 3,
+      "hy": 0
+    },
+    "notes": {
+      "yandex": "Receipt двусмысленно: скорее чек, чем факт поступления платежа.",
+      "madlad": "Receipt двусмысленно: скорее чек, чем факт поступления платежа.",
+      "opus": "Receipt и date of the bill менее точно различают поступление и выставление.",
+      "apple": "Receipt двусмысленно: скорее чек, чем факт поступления платежа.",
+      "t5": "Факт оплаты заменён командой check, потеряны смысл поступления и дата выставления."
+    }
+  },
+  {
+    "id": "12",
+    "category": "business",
+    "scores": {
+      "madlad": 1,
+      "yandex": 0,
+      "opus": 1,
+      "apple": 0,
+      "t5": 1,
+      "hy": 2
+    },
+    "notes": {
+      "madlad": "First we agree — неестественное время вместо предложения согласовать.",
+      "opus": "Language вместо wording и неестественная временная конструкция; суть сохранена.",
+      "t5": "So far и first we agree неестественны; запрет сохранён.",
+      "hy": "Формулировки для клиента превратились в сообщения, которые будут отправляться внутри команды."
+    }
+  },
+  {
+    "id": "13",
+    "category": "negation",
+    "scores": {
+      "apple": 0,
+      "t5": 2,
+      "yandex": 0,
+      "madlad": 0,
+      "opus": 2,
+      "hy": 0
+    },
+    "notes": {
+      "t5": "Артефакты HTML и нарушенная грамматика мешают передать различие отказа/неподтверждения.",
+      "opus": "Полностью пропущено уточнение, что участие не подтверждено."
+    }
+  },
+  {
+    "id": "14",
+    "category": "negation",
+    "scores": {
+      "opus": 2,
+      "hy": 0,
+      "apple": 0,
+      "t5": 2,
+      "madlad": 0,
+      "yandex": 0
+    },
+    "notes": {
+      "opus": "Канал связи превращён в canal; notices хуже notifications.",
+      "t5": "Backup canal — неверный термин, disconnect the notification неестественно."
+    }
+  },
+  {
+    "id": "15",
+    "category": "negation",
+    "scores": {
+      "madlad": 0,
+      "t5": 2,
+      "hy": 0,
+      "opus": 1,
+      "apple": 1,
+      "yandex": 0
+    },
+    "notes": {
+      "t5": "All will be accessed меняет получение доступа на действие над людьми.",
+      "opus": "Confirmed the mail не уточняет email-верификацию.",
+      "apple": "Confirmed the mail не уточняет email-верификацию."
+    }
+  },
+  {
+    "id": "16",
+    "category": "negation",
+    "scores": {
+      "hy": 0,
+      "apple": 0,
+      "yandex": 0,
+      "madlad": 0,
+      "opus": 0,
+      "t5": 1
+    },
+    "notes": {
+      "t5": "Second goods — грамматически неверное обозначение второго товара."
+    }
+  },
+  {
+    "id": "17",
+    "category": "negation",
+    "scores": {
+      "t5": 1,
+      "opus": 2,
+      "hy": 0,
+      "yandex": 0,
+      "madlad": 0,
+      "apple": 0
+    },
+    "notes": {
+      "t5": "Строчная i; смысл сохранён.",
+      "opus": "Пропущен объект отмены — встреча."
+    }
+  },
+  {
+    "id": "18",
+    "category": "negation",
+    "scores": {
+      "yandex": 0,
+      "t5": 2,
+      "opus": 1,
+      "madlad": 0,
+      "hy": 0,
+      "apple": 0
+    },
+    "notes": {
+      "t5": "Refuse заменено на retract, не названо согласие; логика потеряна.",
+      "opus": "Вероятность отказа заменена категоричным he's not gonna say no."
+    }
+  },
+  {
+    "id": "19",
+    "category": "numbers",
+    "scores": {
+      "hy": 3,
+      "t5": 3,
+      "madlad": 2,
+      "yandex": 3,
+      "apple": 0,
+      "opus": 2
+    },
+    "notes": {
+      "hy": "Перевести деньги ошибочно translate, а не transfer; добавлена цена.",
+      "t5": "Выдумана сумма 3.4 million долларов вместо 12500 рублей.",
+      "madlad": "Пропущено, что комиссия включена.",
+      "yandex": "Денежный перевод ошибочно translate вместо transfer.",
+      "opus": "Пропущено, что комиссия включена."
+    }
+  },
+  {
+    "id": "20",
+    "category": "numbers",
+    "scores": {
+      "opus": 1,
+      "hy": 0,
+      "yandex": 0,
+      "t5": 3,
+      "madlad": 0,
+      "apple": 0
+    },
+    "notes": {
+      "opus": "Which is 25 percent не уточняет, что это величина роста.",
+      "t5": "Искажены сумма 100 и процент25: 1,35 percent."
+    }
+  },
+  {
+    "id": "21",
+    "category": "numbers",
+    "scores": {
+      "madlad": 0,
+      "apple": 0,
+      "hy": 0,
+      "t5": 3,
+      "yandex": 0,
+      "opus": 1
+    },
+    "notes": {
+      "t5": "Потеряно время16:30, добавлено неопределённое a.m и искажена временная зона.",
+      "opus": "Пропущено time после Moscow, но зона понятна."
+    }
+  },
+  {
+    "id": "22",
+    "category": "numbers",
+    "scores": {
+      "yandex": 0,
+      "hy": 0,
+      "opus": 3,
+      "apple": 0,
+      "t5": 1,
+      "madlad": 1
+    },
+    "notes": {
+      "opus": "Двенадцать единиц превратились в 12 grand; неясно количество отдельных единиц.",
+      "t5": "Two more separates неестественно; основной счёт сохранён.",
+      "madlad": "Не указано, что ещё две — отдельные единицы, а не упаковки."
+    }
+  },
+  {
+    "id": "23",
+    "category": "numbers",
+    "scores": {
+      "apple": 0,
+      "opus": 0,
+      "hy": 0,
+      "t5": 3,
+      "madlad": 2,
+      "yandex": 0
+    },
+    "notes": {
+      "t5": "Выдуман текст про автомобиль, потерян целевой один литр.",
+      "madlad": "Пропущен текущий остаток0.75литра."
+    }
+  },
+  {
+    "id": "24",
+    "category": "numbers",
+    "scores": {
+      "yandex": 0,
+      "t5": 0,
+      "madlad": 0,
+      "hy": 0,
+      "opus": 0,
+      "apple": 0
+    },
+    "notes": {}
+  },
+  {
+    "id": "25",
+    "category": "technical",
+    "scores": {
+      "yandex": 0,
+      "madlad": 0,
+      "t5": 2,
+      "apple": 0,
+      "opus": 2,
+      "hy": 0
+    },
+    "notes": {
+      "t5": "Deployment заменён на debugging — другой этап работы.",
+      "opus": "Деплой стал debut, пропущено, что Chrome работает."
+    }
+  },
+  {
+    "id": "26",
+    "category": "technical",
+    "scores": {
+      "yandex": 0,
+      "hy": 2,
+      "t5": 3,
+      "madlad": 2,
+      "apple": 0,
+      "opus": 3
+    },
+    "notes": {
+      "hy": "Cancel migration не равно откатить уже применённую миграцию.",
+      "t5": "Remove вместо rollback может означать удаление файла; worker заменён hawker.",
+      "madlad": "Unroll migration — неверный технический глагол вместо rollback.",
+      "opus": "Worker заменён crow; reset migration не гарантирует откат."
+    }
+  },
+  {
+    "id": "27",
+    "category": "technical",
+    "scores": {
+      "t5": 3,
+      "yandex": 0,
+      "hy": 1,
+      "opus": 0,
+      "madlad": 0,
+      "apple": 0
+    },
+    "notes": {
+      "t5": "HTTP-код200 искажён до20.",
+      "hy": "Response itself вместо response body теряет точность, но суть ошибки сохранена."
+    }
+  },
+  {
+    "id": "28",
+    "category": "technical",
+    "scores": {
+      "yandex": 0,
+      "madlad": 0,
+      "apple": 2,
+      "hy": 0,
+      "opus": 3,
+      "t5": 3
+    },
+    "notes": {
+      "apple": "Roll up update — неверное техническое действие вместо apply update.",
+      "opus": "Обновление заменено reset, полностью потерян условный откат.",
+      "t5": "Условие failed check заменено на отсутствие проверки; patch up update неточно."
+    }
+  },
+  {
+    "id": "29",
+    "category": "technical",
+    "scores": {
+      "hy": 0,
+      "t5": 0,
+      "opus": 2,
+      "apple": 0,
+      "madlad": 0,
+      "yandex": 1
+    },
+    "notes": {
+      "opus": "Не названо действие loading/reloading, вместо него неопределённое doing it.",
+      "yandex": "Осталось непереведённое слово заново."
+    }
+  },
+  {
+    "id": "30",
+    "category": "technical",
+    "scores": {
+      "yandex": 0,
+      "madlad": 0,
+      "hy": 1,
+      "opus": 2,
+      "t5": 2,
+      "apple": 0
+    },
+    "notes": {
+      "hy": "Избыточное variable within environment variables; смысл понятен.",
+      "opus": "Variable environment вместо environment variable — другой смысл термина.",
+      "t5": "Variable environment вместо environment variable — другой смысл термина."
+    }
+  },
+  {
+    "id": "31",
+    "category": "idiom",
+    "scores": {
+      "yandex": 0,
+      "t5": 2,
+      "madlad": 2,
+      "apple": 2,
+      "hy": 2,
+      "opus": 1
+    },
+    "notes": {
+      "t5": "Без воды переведено буквально, идиома потеряна.",
+      "madlad": "Без воды переведено буквально, идиома потеряна.",
+      "apple": "Без воды переведено буквально, идиома потеряна.",
+      "hy": "Выдумана предыдущая беседа о воде вместо просьбы говорить по делу.",
+      "opus": "Пропущена просьба говорить без лишних слов, вопрос сохранён."
+    }
+  },
+  {
+    "id": "32",
+    "category": "idiom",
+    "scores": {
+      "apple": 2,
+      "hy": 0,
+      "opus": 3,
+      "yandex": 0,
+      "madlad": 2,
+      "t5": 2
+    },
+    "notes": {
+      "apple": "Буквальный велосипед вместо устойчивого reinvent the wheel.",
+      "opus": "Потеряны запрет изобретать заново и использование готового решения.",
+      "madlad": "Буквальный велосипед вместо устойчивого reinvent the wheel.",
+      "t5": "Буквальный велосипед и менее естественная грамматика; идиома не передана."
+    }
+  },
+  {
+    "id": "33",
+    "category": "idiom",
+    "scores": {
+      "opus": 2,
+      "hy": 2,
+      "madlad": 2,
+      "apple": 1,
+      "yandex": 0,
+      "t5": 2
+    },
+    "notes": {
+      "opus": "Пропущена просьба ввести в курс дела.",
+      "hy": "Неосведомлённость заменена нерелевантностью человека теме; буквальные два слова.",
+      "madlad": "I'm not in the subject и in two words калькируют идиомы.",
+      "apple": "Off topic означает отклонение от темы, а не недостаток осведомлённости; просьба верна.",
+      "t5": "Буквальные on the subject/two words вместо понятной краткой вводной."
+    }
+  },
+  {
+    "id": "34",
+    "category": "idiom",
+    "scores": {
+      "t5": 2,
+      "opus": 3,
+      "madlad": 2,
+      "yandex": 0,
+      "hy": 0,
+      "apple": 1
+    },
+    "notes": {
+      "t5": "Lively once не передаёт ненадёжность работы на практике.",
+      "opus": "Утверждает, что работает, потеряв ключевой смысл через раз.",
+      "madlad": "Only once означает всего один раз, а не периодически.",
+      "apple": "In person вместо in practice неестественно; ненадёжность сохранена."
+    }
+  },
+  {
+    "id": "35",
+    "category": "idiom",
+    "scores": {
+      "apple": 2,
+      "opus": 2,
+      "t5": 2,
+      "madlad": 3,
+      "yandex": 0,
+      "hy": 2
+    },
+    "notes": {
+      "apple": "Буквальное cut off the shoulder вместо не принимать поспешных решений.",
+      "opus": "Пропущено предостережение не действовать сгоряча.",
+      "t5": "Пропущено предостережение не действовать сгоряча.",
+      "madlad": "Только don't be rude, потеряна основная просьба разобраться в отказе.",
+      "hy": "Don't just accept it — другое направление действия, не просьба избежать резкого решения."
+    }
+  },
+  {
+    "id": "36",
+    "category": "idiom",
+    "scores": {
+      "t5": 2,
+      "yandex": 0,
+      "hy": 2,
+      "apple": 2,
+      "opus": 1,
+      "madlad": 2
+    },
+    "notes": {
+      "t5": "Буквальное not burning вместо не срочно.",
+      "hy": "Not currently active не означает отсутствие срочности; статус задачи искажён.",
+      "apple": "Буквальное not burning вместо не срочно.",
+      "opus": "Burning task необычно, но через burning issue срочность можно понять.",
+      "madlad": "Буквальное not burning вместо не срочно."
+    }
+  },
+  {
+    "id": "37",
+    "category": "disfluency",
+    "scores": {
+      "apple": 1,
+      "opus": 2,
+      "yandex": 0,
+      "hy": 0,
+      "t5": 3,
+      "madlad": 0
+    },
+    "notes": {
+      "apple": "Still postponing слегка меняет проверку альтернативы на продолжающееся откладывание.",
+      "opus": "Конкретная альтернатива переноса заменена неопределённым what we're doing.",
+      "t5": "Неясное are they still going on, потеряна альтернатива переноса."
+    }
+  },
+  {
+    "id": "38",
+    "category": "disfluency",
+    "scores": {
+      "madlad": 2,
+      "yandex": 3,
+      "t5": 3,
+      "opus": 3,
+      "apple": 0,
+      "hy": 3
+    },
+    "notes": {
+      "madlad": "Сохранена поправка адресата, но пропущено явное не отправлять Сергею пока.",
+      "yandex": "Переставлены адресаты: исправление теперь на Сергея вместо Андрея.",
+      "t5": "Искажены имена и действие, нет понятного итогового адресата.",
+      "opus": "Неясный адресат из-за перечисления и ошибочное обращение Sergei don't do it.",
+      "hy": "Полностью потерян правильный адресат Андрей."
+    }
+  },
+  {
+    "id": "39",
+    "category": "disfluency",
+    "scores": {
+      "madlad": 0,
+      "hy": 1,
+      "opus": 2,
+      "yandex": 1,
+      "apple": 0,
+      "t5": 0
+    },
+    "notes": {
+      "hy": "Точное исправление заменено предпочтением better yet.",
+      "opus": "Исправление четверг превращено в альтернативу Friday or Thursday.",
+      "yandex": "Не переведено точнее, хотя дни и условие сохранены."
+    }
+  },
+  {
+    "id": "40",
+    "category": "disfluency",
+    "scores": {
+      "hy": 1,
+      "yandex": 0,
+      "apple": 2,
+      "opus": 1,
+      "madlad": 3,
+      "t5": 3
+    },
+    "notes": {
+      "hy": "Скорость загрузки описана общим issue, без явного slow.",
+      "apple": "Паразитическая фраза как его превратилась в like him.",
+      "opus": "Loading сужено до download, хотя скачивание не указано.",
+      "madlad": "Добавлен человек like him; неясно, что именно тормозит.",
+      "t5": "Добавлен человек as he did, перевод представлен причиной торможения загрузки."
+    }
+  },
+  {
+    "id": "41",
+    "category": "disfluency",
+    "scores": {
+      "opus": 1,
+      "apple": 1,
+      "t5": 2,
+      "yandex": 0,
+      "madlad": 0,
+      "hy": 0
+    },
+    "notes": {
+      "opus": "Meaningful не гарантирует сохранение исходного смысла.",
+      "apple": "Неестественная отрицательная конструкция, но намерение читается.",
+      "t5": "Нужда говорящего заменена желанием адресата you want."
+    }
+  },
+  {
+    "id": "42",
+    "category": "disfluency",
+    "scores": {
+      "hy": 0,
+      "madlad": 0,
+      "yandex": 0,
+      "t5": 2,
+      "apple": 0,
+      "opus": 0
+    },
+    "notes": {
+      "t5": "Paid out означает выплаты по заявкам, а не оплаченные заявки."
+    }
+  },
+  {
+    "id": "43",
+    "category": "unpunctuated",
+    "scores": {
+      "apple": 0,
+      "yandex": 0,
+      "t5": 2,
+      "madlad": 1,
+      "opus": 0,
+      "hy": 0
+    },
+    "notes": {
+      "t5": "Артефакт havenaEURTM и gotten a check вместо проверки адреса.",
+      "madlad": "Пропущен артикль send order, пунктуация не восстановлена."
+    }
+  },
+  {
+    "id": "44",
+    "category": "unpunctuated",
+    "scores": {
+      "opus": 2,
+      "apple": 0,
+      "t5": 1,
+      "madlad": 1,
+      "hy": 0,
+      "yandex": 0
+    },
+    "notes": {
+      "opus": "If it's not on the terrace превращает отсутствие дождя в условие расположения.",
+      "t5": "Не отделено if not — возможна неверная привязка условия; основной смысл угадывается.",
+      "madlad": "Без разделения if not условие двусмысленно."
+    }
+  },
+  {
+    "id": "45",
+    "category": "unpunctuated",
+    "scores": {
+      "opus": 3,
+      "apple": 3,
+      "yandex": 0,
+      "madlad": 3,
+      "t5": 3,
+      "hy": 3
+    },
+    "notes": {
+      "opus": "Переименовать как old copy вместо сохранить старую копию.",
+      "apple": "Переименовывается старая копия, а не исходный файл; keep передано обрывком.",
+      "madlad": "Изменён объект переименования на старую копию.",
+      "t5": "Переименовать как old copy вместо сохранить старую копию.",
+      "hy": "Изменён объект переименования на старую копию, добавлен backup."
+    }
+  },
+  {
+    "id": "46",
+    "category": "unpunctuated",
+    "scores": {
+      "yandex": 0,
+      "madlad": 0,
+      "t5": 1,
+      "opus": 1,
+      "apple": 0,
+      "hy": 1
+    },
+    "notes": {
+      "t5": "Пропущен артикль after first month, смысл сохранён.",
+      "opus": "Start free менее естественно, смысл сохранён.",
+      "hy": "Бесплатный старт сужен до бесплатной поддержки."
+    }
+  },
+  {
+    "id": "47",
+    "category": "unpunctuated",
+    "scores": {
+      "hy": 0,
+      "opus": 1,
+      "t5": 1,
+      "apple": 0,
+      "yandex": 0,
+      "madlad": 1
+    },
+    "notes": {
+      "opus": "Count вместо calculate и gonna менее естественны в этой фразе.",
+      "t5": "Let's заменено на let me: совместный расчёт стал индивидуальным.",
+      "madlad": "I'm okay менее точно передаёт отсутствие возражений, нарушена пунктуация."
+    }
+  },
+  {
+    "id": "48",
+    "category": "unpunctuated",
+    "scores": {
+      "yandex": 1,
+      "opus": 2,
+      "t5": 3,
+      "madlad": 1,
+      "hy": 3,
+      "apple": 0
+    },
+    "notes": {
+      "yandex": "Не разделены milk и eggs, возможна ошибочная привязка lactose-free.",
+      "opus": "Потеряно купить, lactose eggs соединены без разделения.",
+      "t5": "Запиши превратилось в sign up, другое действие.",
+      "madlad": "Write to buy и отсутствие разделителей затрудняют чтение списка.",
+      "hy": "Просьба записать список заменена просьбой купить, добавлено also."
+    }
+  },
+  {
+    "id": "49",
+    "category": "entities",
+    "scores": {
+      "yandex": 1,
+      "opus": 3,
+      "madlad": 2,
+      "t5": 3,
+      "apple": 0,
+      "hy": 2
+    },
+    "notes": {
+      "yandex": "Put Ilya in the copy — калька вместо CC, адресаты сохранены.",
+      "opus": "Илья заменён на Elijah и полностью потерян запрет отправлять Ольге.",
+      "madlad": "Don't send Olga буквально не отправлять человека вместо письма; неестественное CC.",
+      "t5": "Запрет отправлять Ольге заменён непонятным утверждением Olga not yet sent you.",
+      "hy": "CC заменено созданием отдельной копии письма для Ильи."
+    }
+  },
+  {
+    "id": "50",
+    "category": "entities",
+    "scores": {
+      "madlad": 0,
+      "opus": 1,
+      "yandex": 0,
+      "hy": 0,
+      "apple": 0,
+      "t5": 3
+    },
+    "notes": {
+      "opus": "Поле email стало общим text field, повелительная форма ослаблена.",
+      "t5": "URL испорчен: исчезло .com, изменено имя хоста."
+    }
+  },
+  {
+    "id": "51",
+    "category": "entities",
+    "scores": {
+      "yandex": 0,
+      "hy": 0,
+      "opus": 0,
+      "madlad": 0,
+      "apple": 0,
+      "t5": 3
+    },
+    "notes": {
+      "t5": "Номер офиса305 заменён на+35; потерян номер квартиры."
+    }
+  },
+  {
+    "id": "52",
+    "category": "entities",
+    "scores": {
+      "apple": 0,
+      "madlad": 0,
+      "t5": 1,
+      "opus": 0,
+      "hy": 0,
+      "yandex": 0
+    },
+    "notes": {
+      "t5": "From To Do in In Progress и cite вместо mark неестественны, метки и запрет сохранены."
+    }
+  },
+  {
+    "id": "53",
+    "category": "entities",
+    "scores": {
+      "opus": 2,
+      "hy": 0,
+      "madlad": 0,
+      "apple": 0,
+      "t5": 3,
+      "yandex": 0
+    },
+    "notes": {
+      "opus": "Актуальный заменён на valid: валидность не означает последнюю версию.",
+      "t5": "Оба имени файлов испорчены."
+    }
+  },
+  {
+    "id": "54",
+    "category": "entities",
+    "scores": {
+      "madlad": 1,
+      "hy": 0,
+      "t5": 3,
+      "yandex": 1,
+      "apple": 1,
+      "opus": 1
+    },
+    "notes": {
+      "madlad": "Pro rate is left неестественно, действие оставить читается.",
+      "t5": "Отключение дополнительных мест заменено отключением адресата you; план keep неясен.",
+      "yandex": "Тариф осталось по-русски.",
+      "apple": "Leave the tariff и places менее точны, чем keep plan/extra seats.",
+      "opus": "Rate и shut down seats менее естественны для тарифного плана."
+    }
+  },
+  {
+    "id": "55",
+    "category": "paragraph",
+    "scores": {
+      "t5": 3,
+      "madlad": 1,
+      "hy": 0,
+      "opus": 3,
+      "apple": 2,
+      "yandex": 1
+    },
+    "notes": {
+      "t5": "Искажена разница цены: for20/month вместо +20; HTML-артефакт и вопросительная интонация.",
+      "madlad": "Get all the history менее естественно, но экспорт и все условия понятны.",
+      "opus": "На20дороже стало ценой20; история данных превращена в story away.",
+      "apple": "Выгрузка стала upload вместо export/download; history превратилось в story.",
+      "yandex": "Data unloading и pick up history кальки, условия сохранены."
+    }
+  },
+  {
+    "id": "56",
+    "category": "paragraph",
+    "scores": {
+      "t5": 3,
+      "madlad": 1,
+      "yandex": 0,
+      "opus": 1,
+      "hy": 0,
+      "apple": 1
+    },
+    "notes": {
+      "t5": "Same card заменено card of this day, no need not cancel делает запрет ненадёжным.",
+      "madlad": "After the return и by mail менее точны для refund/email, ключевые условия сохранены.",
+      "opus": "Пропущено вчера и добавлено me, by mail неоднозначно.",
+      "apple": "Payment must be left, after the return и by mail неестественны/двусмысленны."
+    }
+  },
+  {
+    "id": "57",
+    "category": "paragraph",
+    "scores": {
+      "yandex": 0,
+      "apple": 1,
+      "t5": 1,
+      "hy": 1,
+      "madlad": 0,
+      "opus": 2
+    },
+    "notes": {
+      "apple": "Me заменено на you, потребность говорящего стала общей.",
+      "t5": "Грамматические ошибки translate/translation conveyed, основная мысль сохранена.",
+      "hy": "Russian speech заменено Russian language; сравнительная точность стала просто точностью.",
+      "opus": "Неясный субъект make it wait и language вместо speech ухудшают передачу задержки."
+    }
+  },
+  {
+    "id": "58",
+    "category": "paragraph",
+    "scores": {
+      "apple": 2,
+      "yandex": 2,
+      "t5": 3,
+      "opus": 2,
+      "hy": 0,
+      "madlad": 3
+    },
+    "notes": {
+      "apple": "Correcting comments вместо исправления недостатков по замечаниям.",
+      "yandex": "Correcting comments вместо устранения замечаний к работе.",
+      "t5": "Потеряна оставшаяся часть оплаты и её отдельное условие, временная связь неясна.",
+      "opus": "First part of us и comments corrected искажают объект оплаты/исправления.",
+      "madlad": "Потеряны отсутствие предоплаты и перенос платежа вместе с демонстрацией."
+    }
+  },
+  {
+    "id": "59",
+    "category": "paragraph",
+    "scores": {
+      "opus": 2,
+      "apple": 2,
+      "t5": 2,
+      "yandex": 0,
+      "hy": 0,
+      "madlad": 0
+    },
+    "notes": {
+      "opus": "Корявый английский ошибочно brown English.",
+      "apple": "Перевод текста назван transfer вместо translation.",
+      "t5": "Corked English не передаёт корявость, нарушена сравнительная конструкция."
+    }
+  },
+  {
+    "id": "60",
+    "category": "paragraph",
+    "scores": {
+      "madlad": 1,
+      "apple": 1,
+      "yandex": 1,
+      "hy": 1,
+      "opus": 2,
+      "t5": 2
+    },
+    "notes": {
+      "madlad": "Working application и separately look калькированы, смысл сохранён.",
+      "apple": "Work application вместо production/working app двусмысленно, основная мысль сохранена.",
+      "yandex": "Working application и separately look калькированы, смысл сохранён.",
+      "hy": "Начнёт путать стало still tends; добавлено утверждение об уже существующем дефекте.",
+      "opus": "Отрицания как грамматическая конструкция превратились в denials.",
+      "t5": "Нарушенная грамматика negative or sum is no suitable затрудняет передачу критерия."
+    }
+  }
+]

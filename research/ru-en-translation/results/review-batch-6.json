@@ -1,0 +1,132 @@
+[
+  {
+    "id": "51",
+    "source": "Заказ AB-1042 нужно доставить в офис 305, а не в квартиру 305.",
+    "check": "ID and room number exact; office not apartment.",
+    "variants": {
+      "A": "Order AB-1042 must be delivered to office 305, not to apartment 305.",
+      "B": "The order with the reference AB-1042 should be delivered to office 305, not to apartment 305.",
+      "C": "The order for AB-1042 should be delivered to the office 305 instead of the apartment 305.",
+      "D": "The AB-1042 order should be delivered to office 305, not apartment 305.",
+      "E": "Order AB-1042 should be delivered to office 305, not to apartment 305.",
+      "F": "AB-1042 is to be delivered in the office of +35, not into an apartment."
+    }
+  },
+  {
+    "id": "52",
+    "source": "Перенеси задачу из To Do в In Progress, но не отмечай её как Done.",
+    "check": "Exact three status labels; no completion.",
+    "variants": {
+      "A": "Move the task from To Do to In Progress, but do not mark it as Done.",
+      "B": "Move the task from To Do to In Progress, but do not mark it as Done.",
+      "C": "Transfer the task from To Do in In Progress, but don't cite it as Done.",
+      "D": "Move the task from To Do to In Progress, but don't mark it as Done.",
+      "E": "Move the task from To Do to In Progress. But don’t mark it as Done.",
+      "F": "Move the task from To Do to In Progress, but do not mark it as Done."
+    }
+  },
+  {
+    "id": "53",
+    "source": "Файл report_final_v2.pdf — актуальный. Старый report_final.pdf можно оставить в архиве.",
+    "check": "Both filenames exact; v2 current, old archived not deleted.",
+    "variants": {
+      "A": "The file report_final_v2.pdf is a valid file. The old report_final.pdf can be kept in the archive.",
+      "B": "The file report_final_v2.pdf is currently up-to-date. The old report_final.pdf can be kept in the archive.",
+      "C": "The report_final_v2.pdf file is up to date. The old report_final.pdf can be kept in the archive.",
+      "D": "The file report_final_v2.pdf is up to date. The old report_final.pdf can be left in the archive.",
+      "E": "File report_finals _v2.pdf - current, Old Reporting/findPDF can be left in archive",
+      "F": "The file report_final_v2.pdf is up to date. The old report_final.pdf can be kept in the archive."
+    }
+  },
+  {
+    "id": "54",
+    "source": "Скажи менеджеру: тариф Pro оставляем, а дополнительные места отключаем со следующего месяца.",
+    "check": "Keep Pro, disable extra seats next month.",
+    "variants": {
+      "A": "Tell the manager: Pro rate is left, and additional seats are disabled from next month.",
+      "B": "Tell the manager that we will keep the Pro tariff, but we will discontinue the additional seats starting from next month.",
+      "C": "Tell the manager: we leave a pro tariff and you will disconnect from next month.",
+      "D": "Tell the manager: we are keeping the Pro тариф, and we are disabling additional seats starting next month.",
+      "E": "Tell the manager: we leave the Pro tariff, and we turn off additional places from next month.",
+      "F": "Tell the manager, we'll keep the Pro rate, and we'll shut down the extra seats from next month."
+    }
+  },
+  {
+    "id": "55",
+    "source": "Я посмотрел оба варианта. Первый дешевле, но там нет выгрузки данных. Второй дороже на 20 долларов в месяц, зато позволяет забрать всю историю. Для нас это важнее, поэтому я бы выбрал второй, если не найдём других ограничений.",
+    "check": "Both options, monthly +20, export priority, conditional preference not final decision.",
+    "variants": {
+      "A": "I've looked at both options. The first is cheaper, but there isn`t data unloading here! Second more expensive for $20 a month and allows you to take the entire history back up? For us it matters most so i would choose second if we don&apos;T find other restrictions",
+      "B": "I looked at both options. The first is cheaper, but there is no data download. The second is more expensive by $ 20 per month, but allows you to get all the history. For us, this is more important, so I would choose the second, unless we find other limitations.",
+      "C": "I’ve looked at both options. The first option is cheaper, but it doesn’t allow for data download. The second option is more expensive by $20 per month, but it allows for the download of all the history data. For us, this is more important. So, I would choose the second option, provided that we don’t find any other limitations.",
+      "D": "I looked at both options, the first one is cheaper, but there's no data discharge, the second one is worth $20 a month, but it's taking the whole story away, so it's more important for us, so I'd choose the second one if we don't find other limits.",
+      "E": "I looked at both options. The first one is cheaper, but there is no data upload. The second one is more expensive by 20 dollars a month, but it allows you to take the whole story. It's more important for us, so I would choose the second one if we don't find other restrictions.",
+      "F": "I looked at both options. The first one is cheaper, but there is no data unloading there. The second one is 20 dollars more expensive per month, but it allows you to pick up the entire history. For us, this is more important, so I would choose the second one if we don't find any other limitations."
+    }
+  },
+  {
+    "id": "56",
+    "source": "Вчера клиент попросил вернуть деньги, потому что дважды оплатил один и тот же заказ. Одну оплату нужно оставить, вторую вернуть на ту же карту. Сам заказ отменять не надо. После возврата отправьте ему подтверждение по почте.",
+    "check": "Duplicate payment, refund only one to same card, keep order, email confirmation.",
+    "variants": {
+      "A": "Yesterday the client asked to return money because twice paid for one and that same order. One payment must be left, another is returned on a card of this day; no need not cancel it itself after returning you send him confirmation by mail",
+      "B": "Yesterday, a customer asked for a refund because he paid twice for the same order. One payment should be kept, the second returned to the same card. The order itself does not need to be cancelled. After the return, send him a confirmation by mail.",
+      "C": "Yesterday a client asked to return the money because they paid for the same order twice. One payment should be kept, the second one should be returned to the same card. There is no need to cancel the order itself. After the refund, send him a confirmation by email.",
+      "D": "The client asked me to return the money because he paid the same order twice, and one payment should be kept, the other one returned to the same card, the order itself should not be cancelled, and after returning it send him a confirmation by mail.",
+      "E": "Yesterday, the customer asked to have the money returned, because he paid for the same order twice. One payment should be kept, and the other should be returned to the same card. The order itself doesn’t need to be canceled. After returning the money, please send him a confirmation email.",
+      "F": "Yesterday, the client asked for a refund because he paid for the same order twice. One payment must be left, the second must be returned to the same card. You don't need to cancel the order itself. After the return, send him a confirmation by mail."
+    }
+  },
+  {
+    "id": "57",
+    "source": "Сейчас приложение сначала распознаёт русскую речь, а потом переводит текст на английский. Мне не нужно ускорять распознавание. Я хочу, чтобы перевод точнее передавал смысл и не заставлял ждать по десять секунд после каждой короткой фразы.",
+    "check": "ASR then translation; improve translation not ASR; ten seconds undesirable, not measured claim.",
+    "variants": {
+      "A": "Now the application first recognizes Russian speech and then translates the text into English. I don't need to speed up recognition. I want the translation to convey the meaning more accurately and not make me wait ten seconds after each short phrase.",
+      "B": "Now the application first recognizes Russian speech, and then translates the text into English. I don't need to speed up the recognition. I want the translation to convey the meaning more accurately and not make you wait ten seconds after each short phrase.",
+      "C": "Now the app first recognizes Russian speech, and then translate text into English. I don't need to accelerate recognition!I want translation more accurately conveyed meaning without forcing me wait ten seconds after each short phrase",
+      "D": "Currently, the app first recognizes the Russian language, and then translates the text into English. I don’t need to speed up the recognition process. I want the translation to convey the meaning accurately, without having to wait for ten seconds after each short sentence is translated.",
+      "E": "Now the app first recognizes Russian speech and then translates text into English. I don’t need to speed up the recognition. I want the translation to convey the meaning more accurately and not make me wait ten seconds after each short phrase.",
+      "F": "Now the application recognizes the Russian language first, and then translates the text into English. I don't need to speed up the recognition. I want the translation to be more precise and not to make it wait ten seconds after each short sentence."
+    }
+  },
+  {
+    "id": "58",
+    "source": "Я договорился с подрядчиком, что первую часть мы оплачиваем после демонстрации, а оставшуюся — только после исправления замечаний. Это не предоплата. Если демонстрацию перенесут, срок первой оплаты тоже сдвигается.",
+    "check": "Two payment conditions, not advance, linked delay.",
+    "variants": {
+      "A": "I agreed with the contractor that we will pay the first part after the demonstration, and the rest only after correcting the comments. It's not a prepayment. If the demonstration is postponed, the date of the first payment is also postponed.",
+      "B": "I agreed with the contractor that we will pay for the first part after the demonstration, and the remaining part only after correcting the comments. This is not an advance payment. If the demonstration is postponed, the deadline for the first payment will also be shifted.",
+      "C": "I agreed with the contractor that we pay for first part after demonstration, and only to correct comments. This is not a prepayment ; if demo postpones it will also change in terms of payment period",
+      "D": "I've arranged with the contractor that the first part of us is paid after the demonstration, and the rest is paid after the comments are corrected, and that's not a prepaid, and if the demonstration is postponed, the first payment is moved.",
+      "E": "I’ve agreed with the contractor that we will pay for the first part after the demonstration is completed. The remaining part will be paid only after the issues mentioned in the feedback are resolved. This isn’t an advance payment. If the demonstration needs to be postponed, then the deadline for paying for the first part will also be postponed.",
+      "F": "I agreed with the contractor that the first part of the payment will be made after the demonstration, and the remaining part will be paid only after correction of the comments."
+    }
+  },
+  {
+    "id": "59",
+    "source": "Пожалуйста, проверь не только начало, но и конец перевода. В прошлый раз первые два предложения были нормальными, а последнее вообще исчезло. Для меня лучше немного корявый английский, чем красивый текст, в котором потерялась половина условий.",
+    "check": "Beginning and end check; prior last-sentence omission; fidelity over fluency.",
+    "variants": {
+      "A": "Please check not only the beginning but the end of the translation, but the first two sentences were normal last time, and the last sentence disappeared at all. I prefer a little brown English rather than a beautiful text that lost half the terms.",
+      "B": "Please check not only the beginning, but also the end of the transfer. Last time the first two sentences were normal, and the last one disappeared altogether. For me, a little sloppy English is better than a beautiful text in which half of the conditions are lost.",
+      "C": "Please check not only the beginning, but also end of translation. Last time first two sentences were normal and last one disappeared altogether for me a little corked English than beautiful text in which half conditions have been lost",
+      "D": "Please check not only the beginning, but also the end of the translation. Last time, the first two sentences were fine, but the last one disappeared altogether. For me, it's better to have a little clumsy English than a beautiful text in which half the conditions are lost.",
+      "E": "Please make sure to check not only the beginning of the translation, but also the end. Last time, the first two sentences were correct. However, the last sentence disappeared completely. For me, it’s better to have a slightly messy English text than a perfectly polished text, where half of the conditions are lost.",
+      "F": "Please check not only the beginning but also the end of the translation. Last time the first two sentences were normal and the last one disappeared altogether. I prefer a little bit of broken English to a nice text in which half of the terms are lost."
+    }
+  },
+  {
+    "id": "60",
+    "source": "Давайте пока ничего не менять в рабочем приложении. Сначала сравним переводчики на одинаковых фразах, отдельно посмотрим качество и скорость. Если новая модель окажется быстрее, но начнёт путать отрицания или суммы, такой вариант нам не подходит.",
+    "check": "No production changes yet; same phrases; speed cannot excuse negation/amount errors.",
+    "variants": {
+      "A": "Let's not change anything in the working application for now. First we will compare the translators on the same phrases, separately look at the quality and speed. If the new model is faster, but begins to confuse negations or sums, this option is not suitable for us.",
+      "B": "Let's not change anything in the work application for now. First, let's compare translators on the same phrases, let's look at the quality and speed separately. If the new model turns out to be faster, but starts confusing negations or amounts, this option is not suitable for us.",
+      "C": "Let's not change anything in the working application for now. First, let's compare the translators on the same phrases, separately look at the quality and speed. If the new model turns out to be faster, but starts to confuse negations or sums, this option is not suitable for us.",
+      "D": "Let’s not change anything in the working application for now. First, let’s compare the translators when they’re working with identical sentences. We need to evaluate the quality and speed of each option separately. If the new model is faster, but still tends to mix up negations and sums, then this option isn’t suitable for us.",
+      "E": "Let's not change anything in the working application for now. First, compare translators with the same phrases, let's look at the quality and speed separately. If the new model is faster, but it starts to confuse denials or amounts, that's not the way to go.",
+      "F": "Let's not change anything in the working application. First compare translators on identical phrase, separately look at quality and speed! If a new model turns out to be faster but begins confusing negative or sum is no suitable option for us"
+    }
+  }
+]

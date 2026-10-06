@@ -1,0 +1,132 @@
+[
+  {
+    "id": "01",
+    "source": "Я буду минут через десять. Закажи мне, пожалуйста, кофе без сахара.",
+    "check": "Approximate arrival; request; no sugar.",
+    "variants": {
+      "A": "I'll be there in about ten minutes. Please order me a coffee without sugar.",
+      "B": "I'll be in ten minutes, please order me a coffee without sugar.",
+      "C": "I'll be in ten minutes. Order me some sugar-free coffee, please.",
+      "D": "I will be back in about ten minutes. Please order me coffee without sugar.",
+      "E": "I will be there in about ten minutes. Please order me coffee without sugar.",
+      "F": "I'll be there in ten minutes, so please order me a coffee without sugar."
+    }
+  },
+  {
+    "id": "02",
+    "source": "Мне не принципиально, где встречаться, лишь бы там было не слишком шумно.",
+    "check": "Flexible location conditional on low noise.",
+    "variants": {
+      "A": "I don't really care where to meet, as long as it's not too noisy there.",
+      "B": "I don't care where to meet, as long as it's not too noisy there.",
+      "C": "It's not my principle to meet up there, just so it's not too noisy.",
+      "D": "I don’t really care where we meet, as long as it isn’t too noisy.",
+      "E": "I'm not really interested in where to meet, just if it wasnt too loud.",
+      "F": "I don't care where we meet, as long as it's not too noisy."
+    }
+  },
+  {
+    "id": "03",
+    "source": "Ты не мог бы скинуть мне адрес? Тот, который присылал вчера, не открывается.",
+    "check": "Polite request and earlier address failure; preserve ambiguity address/link.",
+    "variants": {
+      "A": "Could you please send me the address? The one that was sent to me yesterday doesn’t work.",
+      "B": "Could you send me the address? The one you sent yesterday isn't opening.",
+      "C": "You could not have slapped me the address that you sent yesterday, and it didn't open.",
+      "D": "Could you please text me the address?",
+      "E": "Could you send me the address? The one I sent yesterday won't open.",
+      "F": "Can you give me the address? The one you sent yesterday doesn't open."
+    }
+  },
+  {
+    "id": "04",
+    "source": "Давай не сегодня, а послезавтра. Завтра я тоже занят.",
+    "check": "Day after tomorrow, not tomorrow; retain second sentence.",
+    "variants": {
+      "A": "Let's not go today, but tomorrow.",
+      "B": "Not today, the day after tomorrow, I'm busy tomorrow too.",
+      "C": "Let’s not do it today. Instead, let’s do it tomorrow. I’ll be busy tomorrow too.",
+      "D": "Let's not do it today, but the day after tomorrow. I'm busy tomorrow, too.",
+      "E": "I'm busy tomorrow too.",
+      "F": "Let's not today, but the day after tomorrow. I'm busy tomorrow too."
+    }
+  },
+  {
+    "id": "05",
+    "source": "Я уже вышел, но, похоже, оставил ключи дома. Придётся вернуться.",
+    "check": "Uncertainty about keys, necessity of return.",
+    "variants": {
+      "A": "I've already left, but I think I left my keys at home.",
+      "B": "I've already left, but I think I left the keys at home.",
+      "C": "I have already left, but it seems I left the keys at home. I'll have to go back.",
+      "D": "I'm out, but it looks like my keys are left at home.",
+      "E": "I’ve already left, but it seems like I left the keys at home. I’ll have to go back.",
+      "F": "I've already left, but I think I left the keys at home. I'll have to go back."
+    }
+  },
+  {
+    "id": "06",
+    "source": "Спасибо, что предупредил. А то я бы приехал зря.",
+    "check": "Counterfactual wasted trip, not actual arrival.",
+    "variants": {
+      "A": "Thanks for the heads-up, or I'd have come for nothing.",
+      "B": "Thanks for the warning. Otherwise I would have come for nothing.",
+      "C": "Thank you for warning, or I'd be in vain.",
+      "D": "Thank you for warning me. Otherwise, I would have come here in vain.",
+      "E": "Thank you for warning me. Otherwise I would have come for nothing.",
+      "F": "Thanks for warning me, I wouldn't have come here in vain."
+    }
+  },
+  {
+    "id": "07",
+    "source": "Коллеги, давайте перенесём созвон на полчаса позже. До этого времени я не успею подготовить цифры.",
+    "check": "Later by 30 minutes, not earlier; reason.",
+    "variants": {
+      "A": "Colleagues, let us postpone the bell for half an hour, because I will not have time to prepare the figures by then.",
+      "B": "Colleagues, let's postpone the call for half an hour later. I won't have time to prepare the numbers until then.",
+      "C": "Colleagues, let’s postpone the meeting for half an hour. By that time, I won’t have been able to prepare the necessary figures yet.",
+      "D": "Colleagues, let's reschedule the call for half an hour later. I won't have time to prepare the numbers before that.",
+      "E": "Co-workers, let's move the call to half an hour later, and I'm not gonna be able to get the numbers ready until then.",
+      "F": "Colleagues, let'll take the callphone half an hour later."
+    }
+  },
+  {
+    "id": "08",
+    "source": "Мы готовы начать в понедельник, если вы подтвердите бюджет до конца пятницы.",
+    "check": "Conditional commitment and Friday deadline.",
+    "variants": {
+      "A": "We're ready to start Monday if you approve the budget by the end of Friday.",
+      "B": "We are ready to start on Monday if you confirm the budget by the end of Friday.",
+      "C": "We're ready to start on Monday if you confirm the budget by the end of Friday.",
+      "D": "We are ready to start on Monday if you confirm the budget by the end of Friday.",
+      "E": "We are ready to start on Monday if you confirm the budget until late Friday.",
+      "F": "We are ready to start on Monday, provided that you confirm the budget by the end of Friday."
+    }
+  },
+  {
+    "id": "09",
+    "source": "Я не обещаю, что закончим сегодня, но постараюсь прислать черновик к вечеру.",
+    "check": "No promise, effort only, draft not final.",
+    "variants": {
+      "A": "I don't promise to finish today, but I'll try to send a draft by evening.",
+      "B": "I don’t promise that we’ll finish today, but I’ll try to send the draft text by evening.",
+      "C": "I don't promise to finish today, but try and send the drafter back in by night.",
+      "D": "I don't promise we'll finish tonight, but I'll try to send a draft by tonight.",
+      "E": "I don't promise that we'll finish today, but I'll try to send the draft by the evening.",
+      "F": "I don't promise that we will finish today, but I will try to send a draft by evening."
+    }
+  },
+  {
+    "id": "10",
+    "source": "По срокам мы укладываемся, а вот по бюджету уже выходим за рамки.",
+    "check": "Schedule okay, budget exceeded.",
+    "variants": {
+      "A": "In terms of timing, we manage to get everything done on schedule. But in terms of budget, we actually go over the limits.",
+      "B": "We are meeting the deadlines, but we are already going beyond the budget.",
+      "C": "We are meeting the deadlines, but we are going over budget.",
+      "D": "We're getting on time, but we're already going beyond budget.",
+      "E": "We are on timetables, but the budget is already out of reach.",
+      "F": "We are on schedule, but we are already out of budget."
+    }
+  }
+]

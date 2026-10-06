@@ -1,0 +1,132 @@
+[
+  {
+    "id": "21",
+    "source": "Встречаемся 7 ноября в 16:30 по Москве, не по местному времени.",
+    "check": "November 7, 16:30, Moscow zone.",
+    "variants": {
+      "A": "We meet on November 7 at 4:30 pm Moscow time, not local time.",
+      "B": "Let's meet on November 7 at 16:30 Moscow time, not local time.",
+      "C": "We meet on November 7th at 4:30 PM, according to Moscow time. It’s not the local time.",
+      "D": "We meet on November 7 at about a.m, not local time in Moscow",
+      "E": "We meet on November 7 at 16:30 Moscow time, not local time.",
+      "F": "We meet on November 7, 4:30 p.m. Moscow, not local time."
+    }
+  },
+  {
+    "id": "22",
+    "source": "Нужно три упаковки по двенадцать штук и ещё две штуки отдельно.",
+    "check": "3×12 plus 2; do not silently change quantities.",
+    "variants": {
+      "A": "You need three packs of twelve and two more pieces separately.",
+      "B": "We need three packs, with twelve units each. There are also two additional units that need to be purchased separately.",
+      "C": "I need three 12 grand packages and two more separate ones.",
+      "D": "We need three packages of twelve pieces and two more pieces separately.",
+      "E": "We need three packages of twelve pieces and two more separates.",
+      "F": "You need three packs of twelve and two more separately."
+    }
+  },
+  {
+    "id": "23",
+    "source": "Осталось 0,75 литра. Добавь ещё 250 миллилитров, чтобы получился ровно литр.",
+    "check": "Decimal comma understood; correct units and amounts.",
+    "variants": {
+      "A": "There are 0.75 liters left. Add another 250 milliliters to make exactly a liter.",
+      "B": "You have 0.75 liters left, add another 250 milliliters to make it exactly a liter.",
+      "C": "There are still 0.75 liters left. Add another 250 milliliters to get exactly 1 liter.",
+      "D": "It was 0.75 liters left, plus another two hundred and fifty milliliters to get a straight line of the car in it'll be used for this purpose!",
+      "E": "Add another 250 milliliters to make it exactly one liter.",
+      "F": "There are 0.75 liters left. Add another 250 milliliters to make exactly a liter."
+    }
+  },
+  {
+    "id": "24",
+    "source": "Бюджет — до 150 тысяч рублей в месяц, включая НДС, но без рекламных расходов.",
+    "check": "Upper limit, monthly, VAT included, ads excluded.",
+    "variants": {
+      "A": "Budget — up to 150 thousand rubles a month, including VAT, but excluding advertising expenses.",
+      "B": "Budget - up to 150 thousand rubles per month, including VAT but without advertising costs.",
+      "C": "Budget - up to 150 thousand rubles per month, including VAT, but without advertising costs.",
+      "D": "The budget is up to 150,000 rubles per month. This includes VAT, but it does not include advertising expenses.",
+      "E": "The budget is up to 150,000 roubles per month, including VAT, but without advertising costs.",
+      "F": "The budget is up to 150 thousand rubles per month, including VAT, but without advertising costs."
+    }
+  },
+  {
+    "id": "25",
+    "source": "После деплоя авторизация сломалась только в Safari. В Chrome всё работает как раньше.",
+    "check": "Safari only; Chrome unaffected.",
+    "variants": {
+      "A": "After the deployment, authorization broke only in Safari. In Chrome, everything works as before.",
+      "B": "After the deployment, the authorization broke only in Safari. In Chrome everything works as before.",
+      "C": "After the debugging, authorization broke only in Safari. In Chrome everything works as before",
+      "D": "After the deployment, the authorization broke only in Safari. Everything works as before in Chrome.",
+      "E": "After the debut, the authorization only broke at Safari.",
+      "F": "After the deployment, the authorization failed only in Safari. In Chrome, everything works just fine as before."
+    }
+  },
+  {
+    "id": "26",
+    "source": "Не удаляй базу. Откати последнюю миграцию и перезапусти воркер.",
+    "check": "Prohibit database deletion; roll back migration; restart worker.",
+    "variants": {
+      "A": "Do not delete the database. Roll back the last migration and restart the worker.",
+      "B": "Don’t delete the database. Cancel the last migration and restart the worker.",
+      "C": "Don't delete the base. Remove last migration and restart a hawker",
+      "D": "Do not delete the database. Unroll the last migration and restart the worker.",
+      "E": "Don't delete the database. Roll back the last migration and restart the worker.",
+      "F": "Don't delete the base, reset the last migration and restart the crow."
+    }
+  },
+  {
+    "id": "27",
+    "source": "Запрос возвращает 200, но в теле ответа пустой массив. Это не ошибка сети.",
+    "check": "200 and empty array, not network failure.",
+    "variants": {
+      "A": "The request returns 20, but the answer body is empty array. It's not a network error",
+      "B": "The request returns 200, but the response body is an empty array. This is not a network error.",
+      "C": "The request returns 200, but the response itself is an empty array. This is not a network-related error.",
+      "D": "The request returns 200, but the body has an empty array. It's not a network error.",
+      "E": "The request returns 200, but the response body is an empty array. This is not a network error.",
+      "F": "The request returns 200, but there is an empty array in the response body. This is not a network error."
+    }
+  },
+  {
+    "id": "28",
+    "source": "Сначала сделай бэкап, потом накати обновление. Если проверка не пройдёт, верни предыдущую версию.",
+    "check": "Order and conditional rollback.",
+    "variants": {
+      "A": "First make a backup, then apply the update. If the check fails, revert to the previous version.",
+      "B": "First make a backup, then run the update. If the check fails, revert to the previous version.",
+      "C": "First make a backup, then roll up the update. If the check does not pass, return the previous version.",
+      "D": "First, create a backup. Then, perform an update. If the check fails, go back to the previous version.",
+      "E": "First, take a backup, then reset it.",
+      "F": "First make a backup, then patch up the update. If you do not check it out again return your previous version"
+    }
+  },
+  {
+    "id": "29",
+    "source": "Проблема не в модели, а в том, что мы каждый раз загружаем её заново.",
+    "check": "Repeated loading is cause, not model.",
+    "variants": {
+      "A": "The problem isn’t with the model itself, but rather with the fact that we always have to reload it from scratch every time we need to use it.",
+      "B": "The problem is not the model, but that we load it again every time.",
+      "C": "The problem isn't the model, but we're doing it again every time.",
+      "D": "The problem is not in the model, but in the fact that we reload it every time.",
+      "E": "The problem is not the model, but that we reload it every time.",
+      "F": "The problem is not in the model, but in the fact that we load it заново each time."
+    }
+  },
+  {
+    "id": "30",
+    "source": "Сохрани API key в переменной окружения и не добавляй его в GitHub.",
+    "check": "Environment variable, no GitHub upload.",
+    "variants": {
+      "A": "Save the API key in an environment variable and do not add it to GitHub.",
+      "B": "Save the API key in the environment variable and do not add it to GitHub.",
+      "C": "Keep the API key in a variable within the environment variables, and do not add it to GitHub.",
+      "D": "Save the API key in the variable environment and don't add it to GitHub.",
+      "E": "Keep the API key in a variable environment and don't add it to GitHub.",
+      "F": "Save the API key in the environment variable and do not add it to GitHub."
+    }
+  }
+]

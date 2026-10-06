@@ -1,0 +1,132 @@
+[
+  {
+    "id": "31",
+    "source": "Давай без воды: что конкретно сломалось и когда это можно починить?",
+    "check": "Без воды is no fluff, not literal water.",
+    "variants": {
+      "A": "Let's get to the point: what exactly broke and when can it be fixed?",
+      "B": "Let's go without water: what exactly broke and when can it be repaired?",
+      "C": "Let's go without water: what exactly broke and when can it be repaired?",
+      "D": "Let's do without water: what exactly is broken and when can it be repaired?",
+      "E": "Let’s not talk about water anymore. What exactly has broken, and when can it be repaired?",
+      "F": "What exactly broke down and when can it be fixed?"
+    }
+  },
+  {
+    "id": "32",
+    "source": "Не надо изобретать велосипед. Возьмём готовое решение и проверим на практике.",
+    "check": "Idiom plus practical trial.",
+    "variants": {
+      "A": "No need to invent a bicycle. Let's take a ready-made solution and test it in practice.",
+      "B": "There’s no need to invent something completely new. Instead, let’s take an existing solution and test it in practice.",
+      "C": "We'll make a decision and we'll check it out.",
+      "D": "There is no need to reinvent the wheel. Let's take a ready-made solution and test it in practice.",
+      "E": "We don't have to invent a bicycle. Let's take a ready-made solution and test it in practice.",
+      "F": "We don't have to invent a bicycle. Take the ready solution and test in practice"
+    }
+  },
+  {
+    "id": "33",
+    "source": "Я пока не в теме. Введи меня в курс дела в двух словах.",
+    "check": "Brief briefing, no literal two-word constraint.",
+    "variants": {
+      "A": "I'm not really on the subject yet.",
+      "B": "I’m not really relevant to this topic right now. Please explain the situation to me in two words.",
+      "C": "I'm not in the subject yet. Introduce me to the matter in two words.",
+      "D": "I'm off topic yet. Bring me up to speed in a nutshell.",
+      "E": "I'm not in the loop yet. Brief me in a nutshell.",
+      "F": "I'm not on the subject yet. Let me know in two words about this case,"
+    }
+  },
+  {
+    "id": "34",
+    "source": "На бумаге всё красиво, но вживую это работает через раз.",
+    "check": "Unreliable real-world behavior.",
+    "variants": {
+      "A": "It's beautiful on paper, but it works lively once.",
+      "B": "It's beautiful on paper, but it works in person.",
+      "C": "On paper it looks nice, but in practice it works only once.",
+      "D": "On paper it's all nice, but in reality it works intermittently.",
+      "E": "On paper, it looks great. But in reality, it doesn’t work all the time.",
+      "F": "Everything is beautiful on paper, but it works in person once in a while."
+    }
+  },
+  {
+    "id": "35",
+    "source": "Не руби с плеча. Давай сначала разберёмся, почему клиент отказался.",
+    "check": "Don't act rashly, not violence; reason for decline.",
+    "variants": {
+      "A": "Don't cut it off the shoulder. Let's first figure out why the client refused.",
+      "B": "Let's first figure out why the client refused.",
+      "C": "Let's first figure out why the client refused.",
+      "D": "Don't be so rude.",
+      "E": "Don't jump to conclusions. Let's first figure out why the client refused.",
+      "F": "Don’t just accept it without thinking. Let’s first figure out why the client refused."
+    }
+  },
+  {
+    "id": "36",
+    "source": "Эта задача сейчас не горит. Лучше сначала закроем то, что блокирует оплату.",
+    "check": "Not urgent, priority payment blocker.",
+    "variants": {
+      "A": "This task is not burning now. It's better to close what blocks the payment first",
+      "B": "This task is not urgent now. It is better to close what is blocking the payment first.",
+      "C": "This task isn’t currently active. It’s better to first address those factors that are preventing payment from taking place.",
+      "D": "This task is not burning now. It's better to close what blocks payment first.",
+      "E": "This is not a burning task, but we'd better close what's blocking the payment first.",
+      "F": "This task is not burning right now. Better first close what blocks payment."
+    }
+  },
+  {
+    "id": "37",
+    "source": "Ну, я, в общем, хотел уточнить: мы завтра встречаемся или всё-таки переносим?",
+    "check": "Question, tomorrow or reschedule; no invented decision.",
+    "variants": {
+      "A": "Well, in general, I wanted to clarify: are we meeting tomorrow or are we still postponing?",
+      "B": "Well, I was just wondering if we're meeting tomorrow or what we're doing?",
+      "C": "Well, I just wanted to clarify: are we meeting tomorrow or are we rescheduling after all?",
+      "D": "Well, I wanted to clarify one thing: should we meet tomorrow, or should we postpone it instead?",
+      "E": "Well, I'm actually trying to make a point: we meet tomorrow or are they still going on?",
+      "F": "Well, I just wanted to ask you, are we meeting tomorrow or are we postponing?"
+    }
+  },
+  {
+    "id": "38",
+    "source": "Отправь это Сергею, ой, нет, Андрею. Сергею пока не надо.",
+    "check": "Self-correction changes recipient to Andrey; Sergey excluded.",
+    "variants": {
+      "A": "Send it to Sergey, no, to Andrey.",
+      "B": "Send this to Andrey, oh no, to Sergey. Sergey doesn't need it yet.",
+      "C": "Send this to Sergio, oh no. Andrea... Serhie is not going anywhere yet",
+      "D": "Send it to Sergei, oh, no, Andrei, Sergei, don't do it yet.",
+      "E": "Send it to Sergei, oh, no, to Andrey. Sergei doesn't need it yet.",
+      "F": "Please send this to Sergey. Oh no, not Sergey. It’s not necessary to send it to Sergey yet."
+    }
+  },
+  {
+    "id": "39",
+    "source": "Давай на пятницу, точнее, на четверг после обеда, если у тебя получится.",
+    "check": "Corrected day Thursday; conditional availability.",
+    "variants": {
+      "A": "Let's go on Friday, or rather Thursday afternoon, if you can.",
+      "B": "Let’s schedule it for Friday, or better yet, for Thursday after noon, if you can arrange it that way.",
+      "C": "Let's do Friday, or Thursday afternoon, if you can.",
+      "D": "Let's do it for Friday, точнее, for Thursday after lunch, if it works for you.",
+      "E": "Let's do it on Friday, or rather on Thursday afternoon, if you can.",
+      "F": "Let's go on Friday, or rather Thursday after lunch if you can."
+    }
+  },
+  {
+    "id": "40",
+    "source": "Я это, как его, уже проверял. Сам перевод нормальный, тормозит именно загрузка.",
+    "check": "Loading slow, translation okay; no invented object.",
+    "variants": {
+      "A": "I’ve already checked it. The translation itself is fine. What’s causing the issue is the loading process itself.",
+      "B": "I already checked that. The translation itself is fine, it's the loading that's slow.",
+      "C": "I've already checked it like him. The translation itself is normal, it is the loading that slows down.",
+      "D": "I've already checked it, and the translation itself is normal, and it's the download that's slowing down.",
+      "E": "I, like him, already checked. The translation itself is normal, slows down the loading.",
+      "F": "I've checked it, as he did. The translation itself is normal and inhibits the loading process"
+    }
+  }
+]

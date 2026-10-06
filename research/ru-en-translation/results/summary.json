@@ -1,0 +1,633 @@
+{
+  "apple": {
+    "latency_all": {
+      "n": 180,
+      "median_s": 0.06809377082390711,
+      "p95_s": 0.10457236460351849,
+      "max_s": 0.11612374999094754
+    },
+    "latency_first_pass": {
+      "n": 60,
+      "median_s": 0.06792335418867879,
+      "p95_s": 0.10445464377698954,
+      "max_s": 0.11493954167235643
+    },
+    "short": {
+      "n": 162,
+      "median_s": 0.06730718750623055,
+      "p95_s": 0.0793156062689377,
+      "max_s": 0.10000445833429694
+    },
+    "paragraph": {
+      "n": 18,
+      "median_s": 0.10512314582592808,
+      "p95_s": 0.11511717292014509,
+      "max_s": 0.11612374999094754
+    },
+    "error_count": 0,
+    "truncated_count": 0,
+    "changed_on_repeat": 0,
+    "quality_counts": {
+      "0": 39,
+      "1": 10,
+      "2": 9,
+      "3": 2
+    },
+    "quality_penalty_sum": 34,
+    "vs_apple": {
+      "better": 0,
+      "same_score": 60,
+      "worse": 0
+    },
+    "bleu": 43.51135584097211,
+    "chrfpp": 66.32651935692377,
+    "bleu_signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.6.0",
+    "chrf_signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.6.0",
+    "categories": {
+      "business": {
+        "penalty_sum": 1,
+        "major_or_critical": 0
+      },
+      "disfluency": {
+        "penalty_sum": 4,
+        "major_or_critical": 1
+      },
+      "entities": {
+        "penalty_sum": 1,
+        "major_or_critical": 0
+      },
+      "everyday": {
+        "penalty_sum": 3,
+        "major_or_critical": 1
+      },
+      "idiom": {
+        "penalty_sum": 10,
+        "major_or_critical": 4
+      },
+      "negation": {
+        "penalty_sum": 1,
+        "major_or_critical": 0
+      },
+      "numbers": {
+        "penalty_sum": 0,
+        "major_or_critical": 0
+      },
+      "paragraph": {
+        "penalty_sum": 9,
+        "major_or_critical": 3
+      },
+      "technical": {
+        "penalty_sum": 2,
+        "major_or_critical": 1
+      },
+      "unpunctuated": {
+        "penalty_sum": 3,
+        "major_or_critical": 1
+      }
+    },
+    "loaded": null,
+    "resources": {
+      "jobs": 182,
+      "model": "apple",
+      "process_elapsed_s": 19.07577558333287,
+      "type": "summary"
+    }
+  },
+  "yandex": {
+    "latency_all": {
+      "n": 180,
+      "median_s": 0.5043632085144054,
+      "p95_s": 1.253933283954392,
+      "max_s": 1.5766219579963945
+    },
+    "latency_first_pass": {
+      "n": 60,
+      "median_s": 0.4934227710182313,
+      "p95_s": 1.2302256214374208,
+      "max_s": 1.519952042028308
+    },
+    "short": {
+      "n": 162,
+      "median_s": 0.4915537500055507,
+      "p95_s": 0.6398015857412247,
+      "max_s": 0.7532224580063485
+    },
+    "paragraph": {
+      "n": 18,
+      "median_s": 1.2832312085083686,
+      "p95_s": 1.5387492874113378,
+      "max_s": 1.5766219579963945
+    },
+    "error_count": 0,
+    "truncated_count": 0,
+    "changed_on_repeat": 0,
+    "quality_counts": {
+      "0": 48,
+      "1": 9,
+      "2": 1,
+      "3": 2
+    },
+    "quality_penalty_sum": 17,
+    "vs_apple": {
+      "better": 17,
+      "same_score": 36,
+      "worse": 7
+    },
+    "bleu": 44.297293233848656,
+    "chrfpp": 67.83440660007415,
+    "bleu_signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.6.0",
+    "chrf_signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.6.0",
+    "categories": {
+      "business": {
+        "penalty_sum": 1,
+        "major_or_critical": 0
+      },
+      "disfluency": {
+        "penalty_sum": 4,
+        "major_or_critical": 1
+      },
+      "entities": {
+        "penalty_sum": 2,
+        "major_or_critical": 0
+      },
+      "everyday": {
+        "penalty_sum": 1,
+        "major_or_critical": 0
+      },
+      "idiom": {
+        "penalty_sum": 0,
+        "major_or_critical": 0
+      },
+      "negation": {
+        "penalty_sum": 0,
+        "major_or_critical": 0
+      },
+      "numbers": {
+        "penalty_sum": 3,
+        "major_or_critical": 1
+      },
+      "paragraph": {
+        "penalty_sum": 4,
+        "major_or_critical": 1
+      },
+      "technical": {
+        "penalty_sum": 1,
+        "major_or_critical": 0
+      },
+      "unpunctuated": {
+        "penalty_sum": 1,
+        "major_or_critical": 0
+      }
+    },
+    "loaded": {
+      "model": "yandex",
+      "type": "loaded",
+      "load_s": 4.40900729194982,
+      "chat_template": "<s>{%- set names = {'assistant': ' Ассистент:', 'user': ' Пользователь:'} %}\n\n{%- macro __render_user_message(message) %}\n{{ names.user }} {{ message.content + '\\n\\n' }}\n{%- endmacro %}\n\n{%- macro __render_assistant_message(message) %}\n    {{- names.assistant }}{{ ' ' + message.content + '\\n\\n' }}\n{%- endmacro %}\n\n{%- if not add_generation_prompt is defined %}\n{%- set add_generation_prompt = false %}\n{%- endif %}\n\n{%- for message in messages %}\n    {%- if message['role'] == 'user' %}\n        {{- __render_user_message(message) }}\n    {%- endif %}\n\n    {%- if message.role == 'assistant' and not loop.last %}\n        {{- __render_assistant_message(message) }}\n    {%- endif %}\n\n    {%- if loop.last %}\n        {{- ' Ассистент:[SEP]' }}\n    {%- endif %}\n\n{%- endfor %}",
+      "command": [
+        "dist/translation-screening/llama/llama-b11433/llama-server",
+        "-m",
+        "dist/translation-screening/models/yandex/YandexGPT-5-Lite-8B-instruct-Q4_K_M.gguf",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "18765",
+        "-ngl",
+        "99",
+        "-c",
+        "4096",
+        "-np",
+        "1",
+        "-t",
+        "8",
+        "--jinja",
+        "--no-warmup"
+      ]
+    },
+    "resources": {
+      "model": "yandex",
+      "type": "summary",
+      "peak_rss_bytes": 6108774400
+    }
+  },
+  "hy": {
+    "latency_all": {
+      "n": 180,
+      "median_s": 0.18067710401373915,
+      "p95_s": 0.45424896697222705,
+      "max_s": 0.540650416049175
+    },
+    "latency_first_pass": {
+      "n": 60,
+      "median_s": 0.17762970848707482,
+      "p95_s": 0.4474920919485157,
+      "max_s": 0.5090185000444762
+    },
+    "short": {
+      "n": 162,
+      "median_s": 0.17352035403018817,
+      "p95_s": 0.2373384604201419,
+      "max_s": 0.2864109170041047
+    },
+    "paragraph": {
+      "n": 18,
+      "median_s": 0.4577999165339861,
+      "p95_s": 0.5237586142378859,
+      "max_s": 0.540650416049175
+    },
+    "error_count": 0,
+    "truncated_count": 0,
+    "changed_on_repeat": 0,
+    "quality_counts": {
+      "0": 39,
+      "1": 8,
+      "2": 8,
+      "3": 5
+    },
+    "quality_penalty_sum": 39,
+    "vs_apple": {
+      "better": 14,
+      "same_score": 32,
+      "worse": 14
+    },
+    "bleu": 27.67634145355406,
+    "chrfpp": 57.9166829006863,
+    "bleu_signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.6.0",
+    "chrf_signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.6.0",
+    "categories": {
+      "business": {
+        "penalty_sum": 4,
+        "major_or_critical": 2
+      },
+      "disfluency": {
+        "penalty_sum": 5,
+        "major_or_critical": 1
+      },
+      "entities": {
+        "penalty_sum": 2,
+        "major_or_critical": 1
+      },
+      "everyday": {
+        "penalty_sum": 4,
+        "major_or_critical": 1
+      },
+      "idiom": {
+        "penalty_sum": 8,
+        "major_or_critical": 4
+      },
+      "negation": {
+        "penalty_sum": 0,
+        "major_or_critical": 0
+      },
+      "numbers": {
+        "penalty_sum": 3,
+        "major_or_critical": 1
+      },
+      "paragraph": {
+        "penalty_sum": 2,
+        "major_or_critical": 0
+      },
+      "technical": {
+        "penalty_sum": 4,
+        "major_or_critical": 1
+      },
+      "unpunctuated": {
+        "penalty_sum": 7,
+        "major_or_critical": 2
+      }
+    },
+    "loaded": {
+      "model": "hy",
+      "type": "loaded",
+      "load_s": 0.5255919580231421,
+      "chat_template": "{% if messages[0]['role'] == 'system' %}{% set loop_messages = messages[1:] %}{% set system_message = messages[0]['content'] %}<｜hy_begin▁of▁sentence｜>{{ system_message }}<｜hy_place▁holder▁no▁3｜>{% else %}{% set loop_messages = messages %}<｜hy_begin▁of▁sentence｜>{% endif %}{% for message in loop_messages %}{% if message['role'] == 'user' %}<｜hy_User｜>{{ message['content'] }}{% elif message['role'] == 'assistant' %}<｜hy_Assistant｜>{{ message['content'] }}<｜hy_place▁holder▁no▁2｜>{% endif %}{% endfor %}{% if add_generation_prompt %}<｜hy_Assistant｜>{% else %}<｜hy_place▁holder▁no▁8｜>{% endif %}",
+      "command": [
+        "dist/translation-screening/llama/llama-b11433/llama-server",
+        "-m",
+        "dist/translation-screening/models/hy/HY-MT1.5-1.8B-Q4_K_M.gguf",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "18765",
+        "-ngl",
+        "99",
+        "-c",
+        "4096",
+        "-np",
+        "1",
+        "-t",
+        "8",
+        "--jinja",
+        "--no-warmup"
+      ]
+    },
+    "resources": {
+      "model": "hy",
+      "type": "summary",
+      "peak_rss_bytes": 1860534272
+    }
+  },
+  "opus": {
+    "latency_all": {
+      "n": 180,
+      "median_s": 0.09188008296769112,
+      "p95_s": 0.2415723026701015,
+      "max_s": 0.323395958985202
+    },
+    "latency_first_pass": {
+      "n": 60,
+      "median_s": 0.09133929200470448,
+      "p95_s": 0.2506867434829472,
+      "max_s": 0.323395958985202
+    },
+    "short": {
+      "n": 162,
+      "median_s": 0.08819427096750587,
+      "p95_s": 0.13566065443446856,
+      "max_s": 0.16602349997265264
+    },
+    "paragraph": {
+      "n": 18,
+      "median_s": 0.2450448960007634,
+      "p95_s": 0.2928114001406356,
+      "max_s": 0.323395958985202
+    },
+    "error_count": 0,
+    "truncated_count": 0,
+    "changed_on_repeat": 0,
+    "quality_counts": {
+      "0": 10,
+      "1": 19,
+      "2": 21,
+      "3": 10
+    },
+    "quality_penalty_sum": 91,
+    "vs_apple": {
+      "better": 4,
+      "same_score": 19,
+      "worse": 37
+    },
+    "bleu": 32.42493127110618,
+    "chrfpp": 53.45255116612415,
+    "bleu_signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.6.0",
+    "chrf_signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.6.0",
+    "categories": {
+      "business": {
+        "penalty_sum": 5,
+        "major_or_critical": 0
+      },
+      "disfluency": {
+        "penalty_sum": 9,
+        "major_or_critical": 3
+      },
+      "entities": {
+        "penalty_sum": 7,
+        "major_or_critical": 2
+      },
+      "everyday": {
+        "penalty_sum": 10,
+        "major_or_critical": 4
+      },
+      "idiom": {
+        "penalty_sum": 12,
+        "major_or_critical": 4
+      },
+      "negation": {
+        "penalty_sum": 8,
+        "major_or_critical": 3
+      },
+      "numbers": {
+        "penalty_sum": 7,
+        "major_or_critical": 2
+      },
+      "paragraph": {
+        "penalty_sum": 12,
+        "major_or_critical": 5
+      },
+      "technical": {
+        "penalty_sum": 12,
+        "major_or_critical": 5
+      },
+      "unpunctuated": {
+        "penalty_sum": 9,
+        "major_or_critical": 3
+      }
+    },
+    "loaded": {
+      "model": "opus",
+      "type": "loaded",
+      "load_s": 4.840257167001255,
+      "parameter_count": 76672000,
+      "dtype": "float32"
+    },
+    "resources": {
+      "model": "opus",
+      "type": "summary",
+      "peak_rss_bytes": 830291968,
+      "mps_current_allocated_bytes": 308924672,
+      "mps_driver_allocated_bytes": 1168900096
+    }
+  },
+  "t5": {
+    "latency_all": {
+      "n": 180,
+      "median_s": 0.28123581199906766,
+      "p95_s": 0.610596218748833,
+      "max_s": 1.0417495830333792
+    },
+    "latency_first_pass": {
+      "n": 60,
+      "median_s": 0.27512099998421036,
+      "p95_s": 0.598961370170582,
+      "max_s": 1.0417495830333792
+    },
+    "short": {
+      "n": 162,
+      "median_s": 0.2727046874933876,
+      "p95_s": 0.41150443752994736,
+      "max_s": 0.5969325420446694
+    },
+    "paragraph": {
+      "n": 18,
+      "median_s": 0.6126805625099223,
+      "p95_s": 0.9001822955149689,
+      "max_s": 1.0417495830333792
+    },
+    "error_count": 0,
+    "truncated_count": 0,
+    "changed_on_repeat": 0,
+    "quality_counts": {
+      "0": 3,
+      "1": 11,
+      "2": 22,
+      "3": 24
+    },
+    "quality_penalty_sum": 127,
+    "vs_apple": {
+      "better": 0,
+      "same_score": 11,
+      "worse": 49
+    },
+    "bleu": 20.17091946252308,
+    "chrfpp": 47.0920679420371,
+    "bleu_signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.6.0",
+    "chrf_signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.6.0",
+    "categories": {
+      "business": {
+        "penalty_sum": 12,
+        "major_or_critical": 4
+      },
+      "disfluency": {
+        "penalty_sum": 13,
+        "major_or_critical": 5
+      },
+      "entities": {
+        "penalty_sum": 16,
+        "major_or_critical": 5
+      },
+      "everyday": {
+        "penalty_sum": 13,
+        "major_or_critical": 5
+      },
+      "idiom": {
+        "penalty_sum": 12,
+        "major_or_critical": 6
+      },
+      "negation": {
+        "penalty_sum": 10,
+        "major_or_critical": 4
+      },
+      "numbers": {
+        "penalty_sum": 13,
+        "major_or_critical": 4
+      },
+      "paragraph": {
+        "penalty_sum": 14,
+        "major_or_critical": 5
+      },
+      "technical": {
+        "penalty_sum": 13,
+        "major_or_critical": 5
+      },
+      "unpunctuated": {
+        "penalty_sum": 11,
+        "major_or_critical": 3
+      }
+    },
+    "loaded": {
+      "model": "t5",
+      "type": "loaded",
+      "load_s": 2.126879666990135,
+      "parameter_count": 110724480,
+      "dtype": "float32"
+    },
+    "resources": {
+      "model": "t5",
+      "type": "summary",
+      "peak_rss_bytes": 1037516800,
+      "mps_current_allocated_bytes": 444683776,
+      "mps_driver_allocated_bytes": 1160511488
+    }
+  },
+  "madlad": {
+    "latency_all": {
+      "n": 180,
+      "median_s": 0.904859853500966,
+      "p95_s": 2.3585857431404293,
+      "max_s": 3.8261520420201123
+    },
+    "latency_first_pass": {
+      "n": 60,
+      "median_s": 1.0686188749969006,
+      "p95_s": 2.1516873639426186,
+      "max_s": 3.8261520420201123
+    },
+    "short": {
+      "n": 162,
+      "median_s": 0.8842317919770721,
+      "p95_s": 1.3400978202349505,
+      "max_s": 1.8118740420322865
+    },
+    "paragraph": {
+      "n": 18,
+      "median_s": 2.3610726870247163,
+      "p95_s": 2.9122279331262675,
+      "max_s": 3.8261520420201123
+    },
+    "error_count": 0,
+    "truncated_count": 0,
+    "changed_on_repeat": 0,
+    "quality_counts": {
+      "0": 29,
+      "1": 14,
+      "2": 12,
+      "3": 5
+    },
+    "quality_penalty_sum": 53,
+    "vs_apple": {
+      "better": 8,
+      "same_score": 30,
+      "worse": 22
+    },
+    "bleu": 38.8251745909551,
+    "chrfpp": 59.321754750262244,
+    "bleu_signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.6.0",
+    "chrf_signature": "nrefs:1|case:mixed|eff:yes|nc:6|nw:2|space:no|version:2.6.0",
+    "categories": {
+      "business": {
+        "penalty_sum": 6,
+        "major_or_critical": 1
+      },
+      "disfluency": {
+        "penalty_sum": 5,
+        "major_or_critical": 2
+      },
+      "entities": {
+        "penalty_sum": 3,
+        "major_or_critical": 1
+      },
+      "everyday": {
+        "penalty_sum": 6,
+        "major_or_critical": 2
+      },
+      "idiom": {
+        "penalty_sum": 13,
+        "major_or_critical": 6
+      },
+      "negation": {
+        "penalty_sum": 0,
+        "major_or_critical": 0
+      },
+      "numbers": {
+        "penalty_sum": 5,
+        "major_or_critical": 2
+      },
+      "paragraph": {
+        "penalty_sum": 6,
+        "major_or_critical": 1
+      },
+      "technical": {
+        "penalty_sum": 2,
+        "major_or_critical": 1
+      },
+      "unpunctuated": {
+        "penalty_sum": 7,
+        "major_or_critical": 1
+      }
+    },
+    "loaded": {
+      "model": "madlad",
+      "type": "loaded",
+      "load_s": 15.995488832995761,
+      "parameter_count": 2940374016,
+      "dtype": "float32"
+    },
+    "resources": {
+      "model": "madlad",
+      "type": "summary",
+      "peak_rss_bytes": 728121344,
+      "mps_current_allocated_bytes": 11778273280,
+      "mps_driver_allocated_bytes": 12041584640
+    }
+  }
+}
