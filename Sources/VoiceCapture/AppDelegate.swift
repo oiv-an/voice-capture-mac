@@ -422,8 +422,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                         NSLog("[FluidAudio Live] Preview #\(pass): пустой результат")
                         return
                     }
-                    let stableText = self.stabilizeFluidPreview(
-                        previous: self.fluidLatestText, current: text)
+                    let cleanedText = SpeechTextCleaner.clean(text)
+                    let stableText =
+                        cleanedText.isEmpty
+                        ? ""
+                        : self.stabilizeFluidPreview(
+                            previous: self.fluidLatestText, current: cleanedText)
                     self.fluidLatestText = stableText
                     NSLog("[FluidAudio Live] Preview #\(pass): \(stableText)")
                     self.statusUI.show(.liveText(stableText))
@@ -625,8 +629,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     private func handleResult(_ text: String, settings: AppSettings, source: String? = nil) {
+        let text = SpeechTextCleaner.clean(text)
         guard !text.isEmpty else {
             isProcessing = false
+            addCurrentResultAsTodo = false
+            translateCurrentResult = false
             NSLog("[App] Пустой результат распознавания")
             statusUI.show(.error("Пустой результат"))
             return
