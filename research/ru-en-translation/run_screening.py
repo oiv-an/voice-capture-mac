@@ -62,7 +62,8 @@ class MemorySampler:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", required=True, choices=["yandex", "hy", "madlad", "opus", "t5"])
+    parser.add_argument("--model", required=True,
+                        choices=["yandex", "hy", "madlad", "opus", "t5", "hymt3-1.8b", "hymt3-7b", "hymt3-30b"])
     parser.add_argument("--path", required=True)
     parser.add_argument("--output", required=True)
     parser.add_argument("--server", default="dist/translation-screening/llama/llama-b11433/llama-server")
@@ -128,9 +129,15 @@ def main():
                     if args.model == "madlad":
                         prompt = "<2en> " + text
                     else:
-                        instruction = ("Переведи следующий текст с русского на английский. Сохрани весь смысл, числа и имена. "
-                                       "Выведи только перевод, без пояснений.\n\n" + text) if args.model == "yandex" else (
-                                       "Translate the following segment into English, without additional explanation.\n\n" + text)
+                        if args.model == "yandex":
+                            instruction = ("Переведи следующий текст с русского на английский. Сохрани весь смысл, числа и имена. "
+                                           "Выведи только перевод, без пояснений.\n\n" + text)
+                        elif args.model.startswith("hymt3"):
+                            # Official Hy-MT3 "Default Translation" prompt (README, 2026-11-24); no system prompt.
+                            instruction = ("Translate the following text into English. Note that you should only output "
+                                           "the translated result without any additional explanation:\n\n" + text)
+                        else:
+                            instruction = "Translate the following segment into English, without additional explanation.\n\n" + text
                         if args.model == "yandex":
                             instruction = instruction.replace("\n", "[NL]")
                         response = client.post(base + "/apply-template", json={"messages": [{"role": "user", "content": instruction}],

@@ -1,0 +1,155 @@
+[
+  {
+    "id": "11",
+    "source": "Счёт оплатили вчера. Проверьте, пожалуйста, поступление, а не дату выставления счёта.",
+    "check": "Payment vs issue date distinction.",
+    "variants": {
+      "A": "The invoice was paid yesterday. Please check the receipt of payment, not the invoice date.",
+      "B": "The invoice was paid yesterday. Please check the receipt, not the invoice issue date.",
+      "C": "The payment was made yesterday. Please check whether the payment has been received, rather than just the date on which the bill was issued.",
+      "D": "The bill was paid yesterday. Please check the receipt, not the invoice date.",
+      "E": "The invoice was paid yesterday. Please check the receipt, not the invoice date.",
+      "F": "Check the bill yesterday. Please check in, not date of depositing account",
+      "G": "The bill was paid yesterday. Please check the receipt, not the date of the invoice.",
+      "H": "The invoice was paid yesterday. Please check the receipt, not the date of invoice issuance.",
+      "I": "The bill was paid yesterday. Please check the receipt, not the date of the bill."
+    }
+  },
+  {
+    "id": "12",
+    "source": "Пока ничего не отправляйте клиенту. Сначала согласуем формулировки внутри команды.",
+    "check": "Prohibition until internal wording approval.",
+    "variants": {
+      "A": "So far, don't send anything to the customer. First we agree on language within a team",
+      "B": "For now, don’t send anything to the client yet. First, we need to agree on the wording of the messages that will be sent within the team.",
+      "C": "Don't send anything to the client yet, but first we agree on the language inside the team.",
+      "D": "Don't send anything to the client yet. First, let's agree on the wording within the team.",
+      "E": "Don't send anything to the client for now. Let's first agree on the wording within the team.",
+      "F": "Don't send anything to the client for now. First, let's align on the wording within the team.",
+      "G": "Do not send anything to the client yet. First, let's agree on the wording within the team.",
+      "H": "For now, don’t send anything to the client. First, we’ll coordinate the wording within the team.",
+      "I": "Do not send anything to the client yet. First, we agree on the wording within the team."
+    }
+  },
+  {
+    "id": "13",
+    "source": "Я не говорил, что он не придёт. Я сказал, что он пока не подтвердил участие.",
+    "check": "Preserve nested negation and distinction not confirmed/not coming.",
+    "variants": {
+      "A": "I didn't say that he wouldn't come. I said that he hadn't confirmed his participation yet.",
+      "B": "I didn't say he wouldn't come. I said he hadn't confirmed his participation yet.",
+      "C": "I didn’t say that he wouldn’t come. I said that he hasn’t yet confirmed his participation.",
+      "D": "I didn't say he wasn&apos; s not coming, and i said that it hadn &quot\"; yet confirmed his participation.",
+      "E": "I didn't say he wouldn't come. I said he hasn't confirmed his participation yet.",
+      "F": "I didn't say he wasn't coming.",
+      "G": "I didn't say he wouldn't come. I said that he hasn't confirmed his participation yet.",
+      "H": "I didn’t say that he wouldn’t come. I said that he hadn’t confirmed his participation yet."
+    }
+  },
+  {
+    "id": "14",
+    "source": "Не отключай уведомления, пока не убедишься, что резервный канал работает.",
+    "check": "Do not disable until verification.",
+    "variants": {
+      "A": "Don’t turn off the notifications until you’re sure that the backup channel is working properly.",
+      "B": "Don't disconnect the notification until you make sure that backup canal is working.",
+      "C": "Don’t turn off notifications until you’re sure that the backup channel is working.",
+      "D": "Do not turn off notifications until you are sure that the backup channel is working.",
+      "E": "Don't turn off notifications until you've confirmed that the backup channel is working.",
+      "F": "Don't disable notifications until you're sure the backup channel is working.",
+      "G": "Don't turn off the notices until you know the backup canal is working."
+    }
+  },
+  {
+    "id": "15",
+    "source": "Доступ получат все, кроме тех, кто не подтвердил почту.",
+    "check": "Unverified users excluded, not included.",
+    "variants": {
+      "A": "Access will be granted to everyone, except those who did not confirm their email.",
+      "B": "Everyone will be able to access it, except those who haven’t confirmed their email addresses.",
+      "C": "All will be accessed except those who have not confirmed the email.",
+      "D": "Everyone except those who have not confirmed their email will get access.",
+      "E": "Access will be granted to all except those who have not confirmed their email.",
+      "F": "Everyone will have access except for those who have not confirmed the mail.",
+      "G": "Everyone will get access except those who haven't confirmed their email.",
+      "H": "Everyone will get access, except for those who have not confirmed the mail.",
+      "I": "Everyone will gain access, except those who have not verified their email."
+    }
+  },
+  {
+    "id": "16",
+    "source": "Скидка действует не на весь заказ, а только на второй товар.",
+    "check": "Only second item discounted.",
+    "variants": {
+      "A": "The discount is not valid for the entire order, but only for the second product.",
+      "B": "The discount applies not to the entire order, but only to the second item.",
+      "C": "The discount is not valid for the whole order, but only on second goods.",
+      "D": "The discount does not apply to the entire order—only to the second item.",
+      "E": "This discount applies only to the second item ordered. It does not apply to the entire order.",
+      "F": "The discount applies only to the second item, not to the entire order.",
+      "G": "The discount doesn't work for the whole order, it only works for the second item.",
+      "H": "The discount does not apply to the entire order, but only to the second item.",
+      "I": "The discount is not valid for the entire order, but only for the second item."
+    }
+  },
+  {
+    "id": "17",
+    "source": "Если бы я знал об этом раньше, я бы не стал отменять встречу.",
+    "check": "Past counterfactual: meeting was cancelled.",
+    "variants": {
+      "A": "If I had known about this earlier, I wouldn't have cancelled the meeting.",
+      "B": "If I had known about it before, then i wouldn't have canceled the meeting.",
+      "C": "If I had known about this earlier, I wouldn’t have canceled the meeting at all.",
+      "D": "If I had known about it earlier, I wouldn't have canceled the meeting.",
+      "E": "If I had known about this earlier, I wouldn't have canceled the meeting.",
+      "F": "If I'd known about this before, I wouldn't have cancelled."
+    }
+  },
+  {
+    "id": "18",
+    "source": "Он вряд ли откажется, но считать это согласием пока нельзя.",
+    "check": "Likely agreement is not confirmed agreement.",
+    "variants": {
+      "A": "He's not gonna say no, but we can't call it a yes yet.",
+      "B": "He is unlikely to refuse, but it cannot be considered consent yet.",
+      "C": "He's unlikely to refuse, but for now this can't be regarded as consent.",
+      "D": "He is unlikely to refuse, but it can't be considered an agreement yet.",
+      "E": "He is unlikely to refuse, but it cannot yet be considered consent.",
+      "F": "He is unlikely to retract, but it cannot be considered as such.",
+      "G": "He is unlikely to refuse, but it is not yet an acceptance.",
+      "H": "It’s unlikely that he will refuse. But it can’t be considered a true agreement for now.",
+      "I": "He is unlikely to refuse, but we cannot yet consider this as agreement."
+    }
+  },
+  {
+    "id": "19",
+    "source": "Переведи, пожалуйста, 1250 рублей, а не 12 500. Комиссия уже включена.",
+    "check": "Exact two amounts, negation, fee included.",
+    "variants": {
+      "A": "Please translate 1250 rubles, not 12 500. The commission is already included.",
+      "B": "Please transfer 1,250 roubles, not 12,500.",
+      "C": "Please convert 1250 rubles, not 12,500. The commission is already included.",
+      "D": "Please transfer 1,250 rubles, not 12,500. The fee is already included.",
+      "E": "Please translate 1250 rubles, not 12,500. The commission is already included.",
+      "F": "Please translate 1250 rubles, not 12,500. The commission has already been included in the price.",
+      "G": "Please transfer 1250 rubles, not 12,500. The commission is already included.",
+      "H": "Please transfer 1,250 rubles instead of the $3.4 million commission is already included",
+      "I": "Please transfer 1250 rubles, not 12,500."
+    }
+  },
+  {
+    "id": "20",
+    "source": "Цена выросла с 80 до 100 долларов, то есть на 25 процентов.",
+    "check": "80→100; 25 percent not 20.",
+    "variants": {
+      "A": "The price rose from $80 to $100, which is 25 percent.",
+      "B": "The price rose from $80 to $100—that is, by 25 percent.",
+      "C": "The price has risen from $80 to $100, or by 25 per cent.",
+      "D": "The price increased from 80 to 100 dollars, that is, by 25 percent.",
+      "E": "The price has risen from $80 to 1,35 percent.",
+      "F": "The price rose from 80 to 100 dollars, that is, by 25 percent.",
+      "G": "The price has increased from 80 to 100 dollars, which means a rise of 25 percent.",
+      "H": "The price has risen from 80 to 100 dollars, that is, by 25 percent."
+    }
+  }
+]

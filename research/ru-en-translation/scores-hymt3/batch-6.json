@@ -1,0 +1,77 @@
+[
+  {
+    "id": "51",
+    "scores": { "A": 0, "B": 0, "C": 0, "D": 0, "E": 0, "F": 0 }
+  },
+  {
+    "id": "52",
+    "scores": { "A": 0, "B": 0, "C": 0, "D": 0, "E": 0, "F": 0 }
+  },
+  {
+    "id": "53",
+    "scores": { "A": 0, "B": 0, "C": 1, "D": 0, "E": 0, "F": 0 },
+    "notes": {
+      "C": "Тире-калька File ... — current вместо полноценной фразы."
+    }
+  },
+  {
+    "id": "54",
+    "scores": { "A": 0, "B": 0, "C": 2, "D": 1, "E": 2, "F": 0 },
+    "notes": {
+      "C": "we leave the Pro tariff — двусмысленно (можно понять как уходим с тарифа); places вместо seats.",
+      "D": "Калька tariff, we keep — неестественно.",
+      "E": "Оставлено русское слово «тариф»."
+    }
+  },
+  {
+    "id": "55",
+    "scores": { "A": 0, "B": 1, "C": 3, "D": 2, "E": 0, "F": 0 },
+    "notes": {
+      "B": "download вместо export; многословно.",
+      "C": "Выгрузка передана как upload (обратное направление), история — как story.",
+      "D": "data unloading — неверный термин выгрузки."
+    }
+  },
+  {
+    "id": "56",
+    "scores": { "A": 0, "B": 0, "C": 0, "D": 1, "E": 0, "F": 0 },
+    "notes": {
+      "D": "must be left — неестественно; by mail двусмысленно."
+    }
+  },
+  {
+    "id": "57",
+    "scores": { "A": 0, "B": 2, "C": 0, "D": 0, "E": 1, "F": 0 },
+    "notes": {
+      "B": "Russian language вместо речи; потеряно «точнее»; ожидание отнесено к переводу каждого предложения.",
+      "E": "make you wait вместо make me wait."
+    }
+  },
+  {
+    "id": "58",
+    "scores": { "A": 0, "B": 1, "C": 0, "D": 1, "E": 1, "F": 0 },
+    "notes": {
+      "B": "correcting the comments — исправление комментариев, а не устранение замечаний.",
+      "D": "correcting the comments — исправление комментариев, а не устранение замечаний.",
+      "E": "Раздуто: is completed, mentioned in the feedback, needs to be postponed."
+    }
+  },
+  {
+    "id": "59",
+    "scores": { "A": 1, "B": 0, "C": 2, "D": 1, "E": 0, "F": 0 },
+    "notes": {
+      "A": "Грамматика: half of the conditions is lost.",
+      "C": "Перевод назван transfer — термин искажён.",
+      "D": "Раздуто: make sure to, perfectly polished."
+    }
+  },
+  {
+    "id": "60",
+    "scores": { "A": 0, "B": 1, "C": 2, "D": 1, "E": 0, "F": 0 },
+    "notes": {
+      "B": "Склейка separately look; sums вместо amounts.",
+      "C": "still tends to mix up — утверждение, будто модель уже путает; потеряна условность «начнёт».",
+      "D": "work application вместо рабочего (production) приложения."
+    }
+  }
+]

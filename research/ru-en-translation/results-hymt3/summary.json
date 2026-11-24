@@ -1,0 +1,215 @@
+{
+  "apple": {
+    "short": {
+      "n": 162,
+      "median_s": 0.067,
+      "p95_s": 0.079,
+      "max_s": 0.1
+    },
+    "paragraph": {
+      "n": 18,
+      "median_s": 0.105,
+      "p95_s": 0.115,
+      "max_s": 0.116
+    },
+    "quality_counts": {
+      "0": 39,
+      "1": 7,
+      "2": 11,
+      "3": 3
+    },
+    "major_or_critical": 14,
+    "critical": 3,
+    "penalty_sum": 38,
+    "vs_apple": {
+      "better": 0,
+      "same": 60,
+      "worse": 0
+    },
+    "critical_ids": [
+      "03",
+      "41",
+      "55"
+    ],
+    "chrfpp": 66.33,
+    "changed_on_repeat": 0,
+    "peak_rss_bytes": null,
+    "load_s": null
+  },
+  "yandex": {
+    "short": {
+      "n": 162,
+      "median_s": 0.492,
+      "p95_s": 0.64,
+      "max_s": 0.753
+    },
+    "paragraph": {
+      "n": 18,
+      "median_s": 1.283,
+      "p95_s": 1.539,
+      "max_s": 1.577
+    },
+    "quality_counts": {
+      "0": 46,
+      "1": 8,
+      "2": 4,
+      "3": 2
+    },
+    "major_or_critical": 6,
+    "critical": 2,
+    "penalty_sum": 22,
+    "vs_apple": {
+      "better": 18,
+      "same": 32,
+      "worse": 10
+    },
+    "critical_ids": [
+      "19",
+      "38"
+    ],
+    "chrfpp": 67.83,
+    "changed_on_repeat": 0,
+    "peak_rss_bytes": 6108774400,
+    "load_s": 4.409
+  },
+  "hy": {
+    "short": {
+      "n": 162,
+      "median_s": 0.174,
+      "p95_s": 0.237,
+      "max_s": 0.286
+    },
+    "paragraph": {
+      "n": 18,
+      "median_s": 0.458,
+      "p95_s": 0.524,
+      "max_s": 0.541
+    },
+    "quality_counts": {
+      "0": 23,
+      "1": 25,
+      "2": 9,
+      "3": 3
+    },
+    "major_or_critical": 12,
+    "critical": 3,
+    "penalty_sum": 52,
+    "vs_apple": {
+      "better": 12,
+      "same": 24,
+      "worse": 24
+    },
+    "critical_ids": [
+      "04",
+      "19",
+      "38"
+    ],
+    "chrfpp": 57.92,
+    "changed_on_repeat": 0,
+    "peak_rss_bytes": 1860534272,
+    "load_s": 0.526
+  },
+  "hymt3-1.8b": {
+    "short": {
+      "n": 162,
+      "median_s": 0.166,
+      "p95_s": 0.23,
+      "max_s": 0.255
+    },
+    "paragraph": {
+      "n": 18,
+      "median_s": 0.423,
+      "p95_s": 0.521,
+      "max_s": 0.617
+    },
+    "quality_counts": {
+      "0": 38,
+      "1": 15,
+      "2": 6,
+      "3": 1
+    },
+    "major_or_critical": 7,
+    "critical": 1,
+    "penalty_sum": 30,
+    "vs_apple": {
+      "better": 16,
+      "same": 32,
+      "worse": 12
+    },
+    "critical_ids": [
+      "19"
+    ],
+    "chrfpp": 65.77,
+    "changed_on_repeat": 0,
+    "peak_rss_bytes": 2002862080,
+    "load_s": 5.02
+  },
+  "hymt3-7b": {
+    "short": {
+      "n": 162,
+      "median_s": 0.525,
+      "p95_s": 0.655,
+      "max_s": 0.772
+    },
+    "paragraph": {
+      "n": 18,
+      "median_s": 1.365,
+      "p95_s": 1.621,
+      "max_s": 1.645
+    },
+    "quality_counts": {
+      "0": 54,
+      "1": 5,
+      "2": 0,
+      "3": 1
+    },
+    "major_or_critical": 1,
+    "critical": 1,
+    "penalty_sum": 8,
+    "vs_apple": {
+      "better": 21,
+      "same": 35,
+      "worse": 4
+    },
+    "critical_ids": [
+      "19"
+    ],
+    "chrfpp": 71.55,
+    "changed_on_repeat": 0,
+    "peak_rss_bytes": 6253330432,
+    "load_s": 1.29
+  },
+  "hymt3-30b": {
+    "short": {
+      "n": 162,
+      "median_s": 0.41,
+      "p95_s": 0.527,
+      "max_s": 0.582
+    },
+    "paragraph": {
+      "n": 18,
+      "median_s": 1.002,
+      "p95_s": 1.157,
+      "max_s": 1.164
+    },
+    "quality_counts": {
+      "0": 58,
+      "1": 2,
+      "2": 0,
+      "3": 0
+    },
+    "major_or_critical": 0,
+    "critical": 0,
+    "penalty_sum": 2,
+    "vs_apple": {
+      "better": 21,
+      "same": 39,
+      "worse": 0
+    },
+    "critical_ids": [],
+    "chrfpp": 74.77,
+    "changed_on_repeat": 0,
+    "peak_rss_bytes": 10354720768,
+    "load_s": 19.341
+  }
+}

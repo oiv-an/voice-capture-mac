@@ -1,0 +1,482 @@
+{
+  "01": {
+    "A": "hymt3-1.8b",
+    "B": "yandex",
+    "C": "apple",
+    "D": "hy",
+    "E": "hymt3-30b",
+    "F": "hymt3-7b"
+  },
+  "02": {
+    "A": "hymt3-7b",
+    "B": "hymt3-30b",
+    "C": "yandex",
+    "D": "hy",
+    "E": "apple",
+    "F": "hymt3-1.8b"
+  },
+  "03": {
+    "A": "hymt3-30b",
+    "B": "hy",
+    "C": "yandex",
+    "D": "hymt3-1.8b",
+    "E": "hymt3-7b",
+    "F": "apple"
+  },
+  "04": {
+    "A": "hymt3-7b",
+    "B": "hymt3-1.8b",
+    "C": "yandex",
+    "D": "hy",
+    "E": "hymt3-30b",
+    "F": "apple"
+  },
+  "05": {
+    "A": "hymt3-1.8b",
+    "B": "hymt3-30b",
+    "C": "hymt3-7b",
+    "D": "hy",
+    "E": "apple",
+    "F": "yandex"
+  },
+  "06": {
+    "A": "hymt3-30b",
+    "B": "apple",
+    "C": "yandex",
+    "D": "hymt3-1.8b",
+    "E": "hymt3-7b",
+    "F": "hy"
+  },
+  "07": {
+    "A": "hymt3-1.8b",
+    "B": "apple",
+    "C": "hymt3-7b",
+    "D": "yandex",
+    "E": "hymt3-30b",
+    "F": "hy"
+  },
+  "08": {
+    "A": "hymt3-7b",
+    "B": "apple",
+    "C": "yandex",
+    "D": "hymt3-1.8b",
+    "E": "hy",
+    "F": "hymt3-30b"
+  },
+  "09": {
+    "A": "hymt3-1.8b",
+    "B": "hymt3-30b",
+    "C": "yandex",
+    "D": "hymt3-7b",
+    "E": "apple",
+    "F": "hy"
+  },
+  "10": {
+    "A": "yandex",
+    "B": "hymt3-1.8b",
+    "C": "hy",
+    "D": "hymt3-7b",
+    "E": "hymt3-30b",
+    "F": "apple"
+  },
+  "11": {
+    "A": "hy",
+    "B": "yandex",
+    "C": "apple",
+    "D": "hymt3-30b",
+    "E": "hymt3-1.8b",
+    "F": "hymt3-7b"
+  },
+  "12": {
+    "A": "yandex",
+    "B": "hy",
+    "C": "hymt3-1.8b",
+    "D": "apple",
+    "E": "hymt3-7b",
+    "F": "hymt3-30b"
+  },
+  "13": {
+    "A": "hymt3-1.8b",
+    "B": "hymt3-7b",
+    "C": "hymt3-30b",
+    "D": "apple",
+    "E": "hy",
+    "F": "yandex"
+  },
+  "14": {
+    "A": "hymt3-30b",
+    "B": "hy",
+    "C": "hymt3-1.8b",
+    "D": "yandex",
+    "E": "hymt3-7b",
+    "F": "apple"
+  },
+  "15": {
+    "A": "yandex",
+    "B": "hymt3-1.8b",
+    "C": "hy",
+    "D": "hymt3-7b",
+    "E": "hymt3-30b",
+    "F": "apple"
+  },
+  "16": {
+    "A": "hymt3-7b",
+    "B": "hy",
+    "C": "hymt3-30b",
+    "D": "apple",
+    "E": "yandex",
+    "F": "hymt3-1.8b"
+  },
+  "17": {
+    "A": "hymt3-7b",
+    "B": "hy",
+    "C": "hymt3-30b",
+    "D": "yandex",
+    "E": "apple",
+    "F": "hymt3-1.8b"
+  },
+  "18": {
+    "A": "apple",
+    "B": "hymt3-30b",
+    "C": "yandex",
+    "D": "hymt3-7b",
+    "E": "hy",
+    "F": "hymt3-1.8b"
+  },
+  "19": {
+    "A": "yandex",
+    "B": "hymt3-30b",
+    "C": "apple",
+    "D": "hy",
+    "E": "hymt3-7b",
+    "F": "hymt3-1.8b"
+  },
+  "20": {
+    "A": "hy",
+    "B": "yandex",
+    "C": "hymt3-1.8b",
+    "D": "apple",
+    "E": "hymt3-7b",
+    "F": "hymt3-30b"
+  },
+  "21": {
+    "A": "yandex",
+    "B": "hymt3-7b",
+    "C": "hymt3-30b",
+    "D": "apple",
+    "E": "hymt3-1.8b",
+    "F": "hy"
+  },
+  "22": {
+    "A": "hymt3-1.8b",
+    "B": "hy",
+    "C": "apple",
+    "D": "yandex",
+    "E": "hymt3-30b",
+    "F": "hymt3-7b"
+  },
+  "23": {
+    "A": "apple",
+    "B": "hymt3-7b",
+    "C": "hy",
+    "D": "yandex",
+    "E": "hymt3-30b",
+    "F": "hymt3-1.8b"
+  },
+  "24": {
+    "A": "yandex",
+    "B": "apple",
+    "C": "hymt3-1.8b",
+    "D": "hy",
+    "E": "hymt3-30b",
+    "F": "hymt3-7b"
+  },
+  "25": {
+    "A": "apple",
+    "B": "hymt3-1.8b",
+    "C": "hymt3-7b",
+    "D": "hy",
+    "E": "hymt3-30b",
+    "F": "yandex"
+  },
+  "26": {
+    "A": "hymt3-1.8b",
+    "B": "hymt3-7b",
+    "C": "hymt3-30b",
+    "D": "yandex",
+    "E": "apple",
+    "F": "hy"
+  },
+  "27": {
+    "A": "hymt3-30b",
+    "B": "hy",
+    "C": "apple",
+    "D": "hymt3-7b",
+    "E": "yandex",
+    "F": "hymt3-1.8b"
+  },
+  "28": {
+    "A": "yandex",
+    "B": "hymt3-1.8b",
+    "C": "apple",
+    "D": "hy",
+    "E": "hymt3-30b",
+    "F": "hymt3-7b"
+  },
+  "29": {
+    "A": "hymt3-7b",
+    "B": "hymt3-30b",
+    "C": "yandex",
+    "D": "hy",
+    "E": "hymt3-1.8b",
+    "F": "apple"
+  },
+  "30": {
+    "A": "hymt3-30b",
+    "B": "hymt3-7b",
+    "C": "yandex",
+    "D": "hy",
+    "E": "apple",
+    "F": "hymt3-1.8b"
+  },
+  "31": {
+    "A": "hymt3-7b",
+    "B": "apple",
+    "C": "yandex",
+    "D": "hy",
+    "E": "hymt3-1.8b",
+    "F": "hymt3-30b"
+  },
+  "32": {
+    "A": "apple",
+    "B": "hymt3-30b",
+    "C": "hy",
+    "D": "hymt3-1.8b",
+    "E": "hymt3-7b",
+    "F": "yandex"
+  },
+  "33": {
+    "A": "apple",
+    "B": "hymt3-1.8b",
+    "C": "hymt3-7b",
+    "D": "hymt3-30b",
+    "E": "yandex",
+    "F": "hy"
+  },
+  "34": {
+    "A": "apple",
+    "B": "hymt3-7b",
+    "C": "hy",
+    "D": "hymt3-30b",
+    "E": "hymt3-1.8b",
+    "F": "yandex"
+  },
+  "35": {
+    "A": "hymt3-7b",
+    "B": "hymt3-30b",
+    "C": "yandex",
+    "D": "apple",
+    "E": "hymt3-1.8b",
+    "F": "hy"
+  },
+  "36": {
+    "A": "hymt3-1.8b",
+    "B": "apple",
+    "C": "hymt3-30b",
+    "D": "hy",
+    "E": "yandex",
+    "F": "hymt3-7b"
+  },
+  "37": {
+    "A": "apple",
+    "B": "hymt3-7b",
+    "C": "hy",
+    "D": "hymt3-30b",
+    "E": "yandex",
+    "F": "hymt3-1.8b"
+  },
+  "38": {
+    "A": "hymt3-1.8b",
+    "B": "apple",
+    "C": "yandex",
+    "D": "hymt3-30b",
+    "E": "hymt3-7b",
+    "F": "hy"
+  },
+  "39": {
+    "A": "hymt3-7b",
+    "B": "hymt3-1.8b",
+    "C": "hy",
+    "D": "hymt3-30b",
+    "E": "yandex",
+    "F": "apple"
+  },
+  "40": {
+    "A": "apple",
+    "B": "yandex",
+    "C": "hymt3-7b",
+    "D": "hy",
+    "E": "hymt3-30b",
+    "F": "hymt3-1.8b"
+  },
+  "41": {
+    "A": "apple",
+    "B": "hymt3-30b",
+    "C": "hymt3-7b",
+    "D": "hy",
+    "E": "hymt3-1.8b",
+    "F": "yandex"
+  },
+  "42": {
+    "A": "apple",
+    "B": "hymt3-7b",
+    "C": "yandex",
+    "D": "hy",
+    "E": "hymt3-1.8b",
+    "F": "hymt3-30b"
+  },
+  "43": {
+    "A": "hymt3-7b",
+    "B": "apple",
+    "C": "yandex",
+    "D": "hymt3-1.8b",
+    "E": "hy",
+    "F": "hymt3-30b"
+  },
+  "44": {
+    "A": "hy",
+    "B": "yandex",
+    "C": "hymt3-30b",
+    "D": "hymt3-1.8b",
+    "E": "apple",
+    "F": "hymt3-7b"
+  },
+  "45": {
+    "A": "apple",
+    "B": "hymt3-7b",
+    "C": "hymt3-1.8b",
+    "D": "hy",
+    "E": "yandex",
+    "F": "hymt3-30b"
+  },
+  "46": {
+    "A": "apple",
+    "B": "hymt3-7b",
+    "C": "hymt3-1.8b",
+    "D": "hy",
+    "E": "yandex",
+    "F": "hymt3-30b"
+  },
+  "47": {
+    "A": "yandex",
+    "B": "hymt3-30b",
+    "C": "hy",
+    "D": "apple",
+    "E": "hymt3-7b",
+    "F": "hymt3-1.8b"
+  },
+  "48": {
+    "A": "hymt3-30b",
+    "B": "yandex",
+    "C": "hy",
+    "D": "hymt3-7b",
+    "E": "apple",
+    "F": "hymt3-1.8b"
+  },
+  "49": {
+    "A": "hymt3-7b",
+    "B": "yandex",
+    "C": "hymt3-1.8b",
+    "D": "apple",
+    "E": "hy",
+    "F": "hymt3-30b"
+  },
+  "50": {
+    "A": "apple",
+    "B": "hymt3-30b",
+    "C": "yandex",
+    "D": "hy",
+    "E": "hymt3-1.8b",
+    "F": "hymt3-7b"
+  },
+  "51": {
+    "A": "apple",
+    "B": "hymt3-1.8b",
+    "C": "hymt3-7b",
+    "D": "hymt3-30b",
+    "E": "hy",
+    "F": "yandex"
+  },
+  "52": {
+    "A": "apple",
+    "B": "yandex",
+    "C": "hy",
+    "D": "hymt3-7b",
+    "E": "hymt3-1.8b",
+    "F": "hymt3-30b"
+  },
+  "53": {
+    "A": "hymt3-7b",
+    "B": "yandex",
+    "C": "hymt3-1.8b",
+    "D": "hy",
+    "E": "hymt3-30b",
+    "F": "apple"
+  },
+  "54": {
+    "A": "hymt3-30b",
+    "B": "hymt3-7b",
+    "C": "apple",
+    "D": "hymt3-1.8b",
+    "E": "yandex",
+    "F": "hy"
+  },
+  "55": {
+    "A": "hymt3-30b",
+    "B": "hy",
+    "C": "apple",
+    "D": "yandex",
+    "E": "hymt3-1.8b",
+    "F": "hymt3-7b"
+  },
+  "56": {
+    "A": "hymt3-7b",
+    "B": "hy",
+    "C": "hymt3-1.8b",
+    "D": "apple",
+    "E": "yandex",
+    "F": "hymt3-30b"
+  },
+  "57": {
+    "A": "yandex",
+    "B": "hy",
+    "C": "hymt3-30b",
+    "D": "hymt3-7b",
+    "E": "apple",
+    "F": "hymt3-1.8b"
+  },
+  "58": {
+    "A": "hymt3-7b",
+    "B": "yandex",
+    "C": "hymt3-1.8b",
+    "D": "apple",
+    "E": "hy",
+    "F": "hymt3-30b"
+  },
+  "59": {
+    "A": "hymt3-1.8b",
+    "B": "yandex",
+    "C": "apple",
+    "D": "hy",
+    "E": "hymt3-7b",
+    "F": "hymt3-30b"
+  },
+  "60": {
+    "A": "hymt3-7b",
+    "B": "yandex",
+    "C": "hy",
+    "D": "apple",
+    "E": "hymt3-30b",
+    "F": "hymt3-1.8b"
+  }
+}

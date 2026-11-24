@@ -1,0 +1,932 @@
+[
+  {
+    "id": "01",
+    "category": "everyday",
+    "scores": {
+      "hymt3-1.8b": 0,
+      "yandex": 0,
+      "apple": 0,
+      "hy": 1,
+      "hymt3-30b": 0,
+      "hymt3-7b": 0
+    },
+    "notes": {
+      "hy": "Добавлено back: возвращение не задано исходником."
+    }
+  },
+  {
+    "id": "02",
+    "category": "everyday",
+    "scores": {
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "yandex": 0,
+      "hy": 0,
+      "apple": 0,
+      "hymt3-1.8b": 2
+    },
+    "notes": {
+      "hymt3-1.8b": "«Не принципиально» передано буквально как matter of principle, говорящий встречается сам с собой — смысл искажён."
+    }
+  },
+  {
+    "id": "03",
+    "category": "everyday",
+    "scores": {
+      "hymt3-30b": 0,
+      "hy": 1,
+      "yandex": 0,
+      "hymt3-1.8b": 2,
+      "hymt3-7b": 0,
+      "apple": 3
+    },
+    "notes": {
+      "hy": "Пассив was sent to me теряет, что адрес присылал собеседник.",
+      "hymt3-1.8b": "Отправитель сменён на they.",
+      "apple": "Отправитель перевёрнут: I sent вместо you sent — меняет, кто ошибся."
+    }
+  },
+  {
+    "id": "04",
+    "category": "everyday",
+    "scores": {
+      "hymt3-7b": 0,
+      "hymt3-1.8b": 1,
+      "yandex": 1,
+      "hy": 3,
+      "hymt3-30b": 0,
+      "apple": 0
+    },
+    "notes": {
+      "hymt3-1.8b": "Let's not today — неполная, разговорно-кривая конструкция.",
+      "yandex": "Let's not today — неполная, разговорно-кривая конструкция.",
+      "hy": "Послезавтра заменено на завтра; противоречит второй фразе."
+    }
+  },
+  {
+    "id": "05",
+    "category": "everyday",
+    "scores": {
+      "hymt3-1.8b": 1,
+      "hymt3-30b": 0,
+      "hymt3-7b": 0,
+      "hy": 0,
+      "apple": 0,
+      "yandex": 0
+    },
+    "notes": {
+      "hymt3-1.8b": "come back вместо go back — направление с точки зрения говорящего неточное."
+    }
+  },
+  {
+    "id": "06",
+    "category": "everyday",
+    "scores": {
+      "hymt3-30b": 0,
+      "apple": 0,
+      "yandex": 0,
+      "hymt3-1.8b": 1,
+      "hymt3-7b": 0,
+      "hy": 0
+    },
+    "notes": {
+      "hymt3-1.8b": "Thanks for warning без объекта — неестественно."
+    }
+  },
+  {
+    "id": "07",
+    "category": "business",
+    "scores": {
+      "hymt3-1.8b": 0,
+      "apple": 1,
+      "hymt3-7b": 0,
+      "yandex": 0,
+      "hymt3-30b": 0,
+      "hy": 1
+    },
+    "notes": {
+      "apple": "postpone ... for half an hour later — грамматически избыточно.",
+      "hy": "Добавлено necessary; тяжеловесная конструкция."
+    }
+  },
+  {
+    "id": "08",
+    "category": "business",
+    "scores": {
+      "hymt3-7b": 0,
+      "apple": 0,
+      "yandex": 0,
+      "hymt3-1.8b": 0,
+      "hy": 0,
+      "hymt3-30b": 0
+    },
+    "notes": {}
+  },
+  {
+    "id": "09",
+    "category": "business",
+    "scores": {
+      "hymt3-1.8b": 0,
+      "hymt3-30b": 0,
+      "yandex": 0,
+      "hymt3-7b": 0,
+      "apple": 0,
+      "hy": 1
+    },
+    "notes": {
+      "hy": "draft text — неестественно."
+    }
+  },
+  {
+    "id": "10",
+    "category": "business",
+    "scores": {
+      "yandex": 1,
+      "hymt3-1.8b": 1,
+      "hy": 1,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "apple": 0
+    },
+    "notes": {
+      "yandex": "Потеряно «уже» (already).",
+      "hymt3-1.8b": "Громоздко и неестественно (stay within limits ... exceed them).",
+      "hy": "Многословно, добавлено manage to get everything done."
+    }
+  },
+  {
+    "id": "11",
+    "category": "business",
+    "scores": {
+      "hy": 1,
+      "yandex": 0,
+      "apple": 0,
+      "hymt3-30b": 0,
+      "hymt3-1.8b": 0,
+      "hymt3-7b": 0
+    },
+    "notes": {
+      "hy": "Добавлено just, «счёт» стал payment; многословно, но смысл сохранён."
+    }
+  },
+  {
+    "id": "12",
+    "category": "business",
+    "scores": {
+      "yandex": 0,
+      "hy": 2,
+      "hymt3-1.8b": 0,
+      "apple": 0,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0
+    },
+    "notes": {
+      "hy": "Искажено: согласование формулировок сообщений, которые будут отправлены внутри команды; лишние for now/yet."
+    }
+  },
+  {
+    "id": "13",
+    "category": "negation",
+    "scores": {
+      "hymt3-1.8b": 0,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "apple": 0,
+      "hy": 0,
+      "yandex": 0
+    },
+    "notes": {}
+  },
+  {
+    "id": "14",
+    "category": "negation",
+    "scores": {
+      "hymt3-30b": 0,
+      "hy": 0,
+      "hymt3-1.8b": 0,
+      "yandex": 0,
+      "hymt3-7b": 0,
+      "apple": 0
+    },
+    "notes": {}
+  },
+  {
+    "id": "15",
+    "category": "negation",
+    "scores": {
+      "yandex": 0,
+      "hymt3-1.8b": 0,
+      "hy": 0,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "apple": 1
+    },
+    "notes": {
+      "apple": "confirmed the mail — буквальная «почта» вместо email."
+    }
+  },
+  {
+    "id": "16",
+    "category": "negation",
+    "scores": {
+      "hymt3-7b": 0,
+      "hy": 0,
+      "hymt3-30b": 0,
+      "apple": 0,
+      "yandex": 0,
+      "hymt3-1.8b": 0
+    },
+    "notes": {}
+  },
+  {
+    "id": "17",
+    "category": "negation",
+    "scores": {
+      "hymt3-7b": 0,
+      "hy": 0,
+      "hymt3-30b": 0,
+      "yandex": 0,
+      "apple": 0,
+      "hymt3-1.8b": 0
+    },
+    "notes": {}
+  },
+  {
+    "id": "18",
+    "category": "negation",
+    "scores": {
+      "apple": 0,
+      "hymt3-30b": 0,
+      "yandex": 0,
+      "hymt3-7b": 0,
+      "hy": 1,
+      "hymt3-1.8b": 0
+    },
+    "notes": {
+      "hy": "Добавлено true agreement; разбито на две фразы без нужды."
+    }
+  },
+  {
+    "id": "19",
+    "category": "numbers",
+    "scores": {
+      "yandex": 3,
+      "hymt3-30b": 0,
+      "apple": 0,
+      "hy": 3,
+      "hymt3-7b": 3,
+      "hymt3-1.8b": 3
+    },
+    "notes": {
+      "yandex": "Денежный перевод передан как translate — действие искажено.",
+      "hy": "Денежный перевод передан как translate — действие искажено; добавлено in the price.",
+      "hymt3-7b": "convert вместо transfer — другое действие.",
+      "hymt3-1.8b": "Денежный перевод передан как translate — действие искажено."
+    }
+  },
+  {
+    "id": "20",
+    "category": "numbers",
+    "scores": {
+      "hy": 0,
+      "yandex": 0,
+      "hymt3-1.8b": 0,
+      "apple": 0,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0
+    },
+    "notes": {}
+  },
+  {
+    "id": "21",
+    "category": "numbers",
+    "scores": {
+      "yandex": 1,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "apple": 0,
+      "hymt3-1.8b": 1,
+      "hy": 1
+    },
+    "notes": {
+      "yandex": "We meet — неестественное настоящее время для договорённости.",
+      "hymt3-1.8b": "We meet — неестественное настоящее время для договорённости.",
+      "hy": "Разбито на две фразы, It's not the local time — неуклюже."
+    }
+  },
+  {
+    "id": "22",
+    "category": "numbers",
+    "scores": {
+      "hymt3-1.8b": 1,
+      "hy": 1,
+      "apple": 0,
+      "yandex": 1,
+      "hymt3-30b": 0,
+      "hymt3-7b": 1
+    },
+    "notes": {
+      "hymt3-1.8b": "Субъект You need вместо нейтрального «нужно»/we; потеряно «ещё».",
+      "hy": "Добавлено need to be purchased — домысел о покупке.",
+      "yandex": "Субъект You need вместо нейтрального «нужно»/we.",
+      "hymt3-7b": "Субъект I need — домысел."
+    }
+  },
+  {
+    "id": "23",
+    "category": "numbers",
+    "scores": {
+      "apple": 0,
+      "hymt3-7b": 0,
+      "hy": 1,
+      "yandex": 0,
+      "hymt3-30b": 0,
+      "hymt3-1.8b": 0
+    },
+    "notes": {
+      "hy": "still ... left — лишнее still."
+    }
+  },
+  {
+    "id": "24",
+    "category": "numbers",
+    "scores": {
+      "yandex": 0,
+      "apple": 0,
+      "hymt3-1.8b": 0,
+      "hy": 0,
+      "hymt3-30b": 0,
+      "hymt3-7b": 0
+    },
+    "notes": {}
+  },
+  {
+    "id": "25",
+    "category": "technical",
+    "scores": {
+      "apple": 0,
+      "hymt3-1.8b": 0,
+      "hymt3-7b": 0,
+      "hy": 1,
+      "hymt3-30b": 0,
+      "yandex": 0
+    },
+    "notes": {
+      "hy": "Добавлено just fine."
+    }
+  },
+  {
+    "id": "26",
+    "category": "technical",
+    "scores": {
+      "hymt3-1.8b": 0,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "yandex": 0,
+      "apple": 0,
+      "hy": 1
+    },
+    "notes": {
+      "hy": "Cancel вместо roll back — неточный термин миграции."
+    }
+  },
+  {
+    "id": "27",
+    "category": "technical",
+    "scores": {
+      "hymt3-30b": 0,
+      "hy": 1,
+      "apple": 0,
+      "hymt3-7b": 0,
+      "yandex": 0,
+      "hymt3-1.8b": 0
+    },
+    "notes": {
+      "hy": "Потеряно «тело ответа» (response itself)."
+    }
+  },
+  {
+    "id": "28",
+    "category": "technical",
+    "scores": {
+      "yandex": 0,
+      "hymt3-1.8b": 0,
+      "apple": 2,
+      "hy": 0,
+      "hymt3-30b": 0,
+      "hymt3-7b": 0
+    },
+    "notes": {
+      "apple": "Калька roll up the update и return the previous version — неверные термины."
+    }
+  },
+  {
+    "id": "29",
+    "category": "technical",
+    "scores": {
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "yandex": 2,
+      "hy": 1,
+      "hymt3-1.8b": 0,
+      "apple": 0
+    },
+    "notes": {
+      "yandex": "Оставлено русское слово «заново».",
+      "hy": "Сильно раздуто: always have to, from scratch, every time we need to use it."
+    }
+  },
+  {
+    "id": "30",
+    "category": "technical",
+    "scores": {
+      "hymt3-30b": 0,
+      "hymt3-7b": 0,
+      "yandex": 0,
+      "hy": 1,
+      "apple": 0,
+      "hymt3-1.8b": 0
+    },
+    "notes": {
+      "hy": "Тавтология a variable within the environment variables."
+    }
+  },
+  {
+    "id": "31",
+    "category": "idiom",
+    "scores": {
+      "hymt3-7b": 0,
+      "apple": 2,
+      "yandex": 0,
+      "hy": 2,
+      "hymt3-1.8b": 0,
+      "hymt3-30b": 1
+    },
+    "notes": {
+      "apple": "«Без воды» переведено буквально как without water.",
+      "hy": "Буквальная вода: Let's not talk about water anymore — смысл потерян.",
+      "hymt3-30b": "cut the crap — грубее исходного регистра."
+    }
+  },
+  {
+    "id": "32",
+    "category": "idiom",
+    "scores": {
+      "apple": 2,
+      "hymt3-30b": 0,
+      "hy": 0,
+      "hymt3-1.8b": 2,
+      "hymt3-7b": 0,
+      "yandex": 0
+    },
+    "notes": {
+      "apple": "Идиома переведена буквально: invent a bicycle.",
+      "hymt3-1.8b": "Идиома переведена буквально: invent a bicycle."
+    }
+  },
+  {
+    "id": "33",
+    "category": "idiom",
+    "scores": {
+      "apple": 2,
+      "hymt3-1.8b": 2,
+      "hymt3-7b": 1,
+      "hymt3-30b": 1,
+      "yandex": 0,
+      "hy": 2
+    },
+    "notes": {
+      "apple": "I'm off topic yet — неверный смысл «не в теме».",
+      "hymt3-1.8b": "not in the right topic — неверно; in two words буквально.",
+      "hymt3-7b": "in two words — буквальный перевод «в двух словах».",
+      "hymt3-30b": "in two words — буквальный перевод «в двух словах».",
+      "hy": "not really relevant to this topic — смысл искажён; in two words буквально."
+    }
+  },
+  {
+    "id": "34",
+    "category": "idiom",
+    "scores": {
+      "apple": 2,
+      "hymt3-7b": 1,
+      "hy": 0,
+      "hymt3-30b": 0,
+      "hymt3-1.8b": 0,
+      "yandex": 0
+    },
+    "notes": {
+      "apple": "in person ... once in a while — неверно передано «вживую» и «через раз».",
+      "hymt3-7b": "in person вместо in practice."
+    }
+  },
+  {
+    "id": "35",
+    "category": "idiom",
+    "scores": {
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "yandex": 0,
+      "apple": 2,
+      "hymt3-1.8b": 2,
+      "hy": 2
+    },
+    "notes": {
+      "apple": "Буквальная идиома: cut it off the shoulder.",
+      "hymt3-1.8b": "Don't just dismiss it — неверный смысл идиомы.",
+      "hy": "Don't just accept it without thinking — неверный смысл идиомы."
+    }
+  },
+  {
+    "id": "36",
+    "category": "idiom",
+    "scores": {
+      "hymt3-1.8b": 2,
+      "apple": 2,
+      "hymt3-30b": 0,
+      "hy": 2,
+      "yandex": 0,
+      "hymt3-7b": 0
+    },
+    "notes": {
+      "hymt3-1.8b": "«Не горит» передано как isn't currently active — смысл срочности потерян.",
+      "apple": "Буквально: is not burning.",
+      "hy": "isn't currently active — неверно; вторая фраза раздута."
+    }
+  },
+  {
+    "id": "37",
+    "category": "disfluency",
+    "scores": {
+      "apple": 1,
+      "hymt3-7b": 0,
+      "hy": 1,
+      "hymt3-30b": 0,
+      "yandex": 0,
+      "hymt3-1.8b": 1
+    },
+    "notes": {
+      "apple": "in general — калька «в общем»; still postponing подразумевает уже идущий перенос.",
+      "hy": "Вопрос о плане превращён в should we — предложение решить.",
+      "hymt3-1.8b": "do we actually postpone it — грамматически неуклюже, добавлено I guess."
+    }
+  },
+  {
+    "id": "38",
+    "category": "disfluency",
+    "scores": {
+      "hymt3-1.8b": 0,
+      "apple": 0,
+      "yandex": 3,
+      "hymt3-30b": 0,
+      "hymt3-7b": 0,
+      "hy": 3
+    },
+    "notes": {
+      "yandex": "Имена переставлены: итоговый получатель Сергей вместо Андрея.",
+      "hy": "Андрей потерян полностью — нового получателя нет."
+    }
+  },
+  {
+    "id": "39",
+    "category": "disfluency",
+    "scores": {
+      "hymt3-7b": 0,
+      "hymt3-1.8b": 1,
+      "hy": 1,
+      "hymt3-30b": 0,
+      "yandex": 2,
+      "apple": 0
+    },
+    "notes": {
+      "hymt3-1.8b": "more precisely — неестественно для самоисправления.",
+      "hy": "or better yet превращает исправление в предпочтение; after noon.",
+      "yandex": "Оставлено русское слово «точнее»."
+    }
+  },
+  {
+    "id": "40",
+    "category": "disfluency",
+    "scores": {
+      "apple": 2,
+      "yandex": 0,
+      "hymt3-7b": 0,
+      "hy": 1,
+      "hymt3-30b": 0,
+      "hymt3-1.8b": 1
+    },
+    "notes": {
+      "apple": "Слово-паразит переведено как like him — бессмыслица.",
+      "hy": "Повтор itself, causing the issue — тяжеловесно.",
+      "hymt3-1.8b": "Паразит превращён в вопрос what should I call it?."
+    }
+  },
+  {
+    "id": "41",
+    "category": "disfluency",
+    "scores": {
+      "apple": 3,
+      "hymt3-30b": 0,
+      "hymt3-7b": 0,
+      "hy": 1,
+      "hymt3-1.8b": 1,
+      "yandex": 0
+    },
+    "notes": {
+      "apple": "Смысл перевёрнут: I don't need the meaning to be lost — требование превращено в отрицание.",
+      "hy": "Добавлено out of thin air, раздуто.",
+      "hymt3-1.8b": "I need it to be so that — неестественно."
+    }
+  },
+  {
+    "id": "42",
+    "category": "disfluency",
+    "scores": {
+      "apple": 0,
+      "hymt3-7b": 0,
+      "yandex": 0,
+      "hy": 0,
+      "hymt3-1.8b": 0,
+      "hymt3-30b": 0
+    },
+    "notes": {}
+  },
+  {
+    "id": "43",
+    "category": "unpunctuated",
+    "scores": {
+      "hymt3-7b": 0,
+      "apple": 0,
+      "yandex": 0,
+      "hymt3-1.8b": 0,
+      "hy": 0,
+      "hymt3-30b": 0
+    },
+    "notes": {}
+  },
+  {
+    "id": "44",
+    "category": "unpunctuated",
+    "scores": {
+      "hy": 0,
+      "yandex": 0,
+      "hymt3-30b": 0,
+      "hymt3-1.8b": 0,
+      "apple": 0,
+      "hymt3-7b": 0
+    },
+    "notes": {}
+  },
+  {
+    "id": "45",
+    "category": "unpunctuated",
+    "scores": {
+      "apple": 2,
+      "hymt3-7b": 0,
+      "hymt3-1.8b": 0,
+      "hy": 1,
+      "yandex": 0,
+      "hymt3-30b": 0
+    },
+    "notes": {
+      "apple": "Обрыв to leave — вторая часть смысла потеряна.",
+      "hy": "Добавлено as a backup."
+    }
+  },
+  {
+    "id": "46",
+    "category": "unpunctuated",
+    "scores": {
+      "apple": 0,
+      "hymt3-7b": 0,
+      "hymt3-1.8b": 0,
+      "hy": 1,
+      "yandex": 0,
+      "hymt3-30b": 0
+    },
+    "notes": {
+      "hy": "start with free support — бесплатным стал не старт, а поддержка."
+    }
+  },
+  {
+    "id": "47",
+    "category": "unpunctuated",
+    "scores": {
+      "yandex": 0,
+      "hymt3-30b": 0,
+      "hy": 0,
+      "apple": 0,
+      "hymt3-7b": 0,
+      "hymt3-1.8b": 1
+    },
+    "notes": {
+      "hymt3-1.8b": "«просто» прикреплено к not against just doing it — неверный разбор."
+    }
+  },
+  {
+    "id": "48",
+    "category": "unpunctuated",
+    "scores": {
+      "hymt3-30b": 0,
+      "yandex": 1,
+      "hy": 2,
+      "hymt3-7b": 0,
+      "apple": 0,
+      "hymt3-1.8b": 0
+    },
+    "notes": {
+      "yandex": "Без запятых список неоднозначен.",
+      "hy": "Просьба записать заменена на purchase, добавлено also."
+    }
+  },
+  {
+    "id": "49",
+    "category": "entities",
+    "scores": {
+      "hymt3-7b": 1,
+      "yandex": 1,
+      "hymt3-1.8b": 1,
+      "apple": 0,
+      "hy": 2,
+      "hymt3-30b": 0
+    },
+    "notes": {
+      "hymt3-7b": "Калька put in copy вместо CC.",
+      "yandex": "Калька put in the copy вместо CC.",
+      "hymt3-1.8b": "Калька put on a copy; For Olga — неуклюже.",
+      "hy": "make a copy of it for Ilya — копия (CC) понята как отдельная копия письма."
+    }
+  },
+  {
+    "id": "50",
+    "category": "entities",
+    "scores": {
+      "apple": 0,
+      "hymt3-30b": 0,
+      "yandex": 0,
+      "hy": 1,
+      "hymt3-1.8b": 0,
+      "hymt3-7b": 1
+    },
+    "notes": {
+      "hy": "change the link from — лишний предлог меняет смысл.",
+      "hymt3-7b": "enter вместо leave — действие слегка изменено."
+    }
+  },
+  {
+    "id": "51",
+    "category": "entities",
+    "scores": {
+      "apple": 0,
+      "hymt3-1.8b": 0,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "hy": 0,
+      "yandex": 0
+    },
+    "notes": {}
+  },
+  {
+    "id": "52",
+    "category": "entities",
+    "scores": {
+      "apple": 0,
+      "yandex": 0,
+      "hy": 0,
+      "hymt3-7b": 0,
+      "hymt3-1.8b": 0,
+      "hymt3-30b": 0
+    },
+    "notes": {}
+  },
+  {
+    "id": "53",
+    "category": "entities",
+    "scores": {
+      "hymt3-7b": 0,
+      "yandex": 0,
+      "hymt3-1.8b": 1,
+      "hy": 0,
+      "hymt3-30b": 0,
+      "apple": 0
+    },
+    "notes": {
+      "hymt3-1.8b": "Тире-калька File ... — current вместо полноценной фразы."
+    }
+  },
+  {
+    "id": "54",
+    "category": "entities",
+    "scores": {
+      "hymt3-30b": 0,
+      "hymt3-7b": 0,
+      "apple": 2,
+      "hymt3-1.8b": 1,
+      "yandex": 2,
+      "hy": 0
+    },
+    "notes": {
+      "apple": "we leave the Pro tariff — двусмысленно (можно понять как уходим с тарифа); places вместо seats.",
+      "hymt3-1.8b": "Калька tariff, we keep — неестественно.",
+      "yandex": "Оставлено русское слово «тариф»."
+    }
+  },
+  {
+    "id": "55",
+    "category": "paragraph",
+    "scores": {
+      "hymt3-30b": 0,
+      "hy": 1,
+      "apple": 3,
+      "yandex": 2,
+      "hymt3-1.8b": 0,
+      "hymt3-7b": 0
+    },
+    "notes": {
+      "hy": "download вместо export; многословно.",
+      "apple": "Выгрузка передана как upload (обратное направление), история — как story.",
+      "yandex": "data unloading — неверный термин выгрузки."
+    }
+  },
+  {
+    "id": "56",
+    "category": "paragraph",
+    "scores": {
+      "hymt3-7b": 0,
+      "hy": 0,
+      "hymt3-1.8b": 0,
+      "apple": 1,
+      "yandex": 0,
+      "hymt3-30b": 0
+    },
+    "notes": {
+      "apple": "must be left — неестественно; by mail двусмысленно."
+    }
+  },
+  {
+    "id": "57",
+    "category": "paragraph",
+    "scores": {
+      "yandex": 0,
+      "hy": 2,
+      "hymt3-30b": 0,
+      "hymt3-7b": 0,
+      "apple": 1,
+      "hymt3-1.8b": 0
+    },
+    "notes": {
+      "hy": "Russian language вместо речи; потеряно «точнее»; ожидание отнесено к переводу каждого предложения.",
+      "apple": "make you wait вместо make me wait."
+    }
+  },
+  {
+    "id": "58",
+    "category": "paragraph",
+    "scores": {
+      "hymt3-7b": 0,
+      "yandex": 1,
+      "hymt3-1.8b": 0,
+      "apple": 1,
+      "hy": 1,
+      "hymt3-30b": 0
+    },
+    "notes": {
+      "yandex": "correcting the comments — исправление комментариев, а не устранение замечаний.",
+      "apple": "correcting the comments — исправление комментариев, а не устранение замечаний.",
+      "hy": "Раздуто: is completed, mentioned in the feedback, needs to be postponed."
+    }
+  },
+  {
+    "id": "59",
+    "category": "paragraph",
+    "scores": {
+      "hymt3-1.8b": 1,
+      "yandex": 0,
+      "apple": 2,
+      "hy": 1,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0
+    },
+    "notes": {
+      "hymt3-1.8b": "Грамматика: half of the conditions is lost.",
+      "apple": "Перевод назван transfer — термин искажён.",
+      "hy": "Раздуто: make sure to, perfectly polished."
+    }
+  },
+  {
+    "id": "60",
+    "category": "paragraph",
+    "scores": {
+      "hymt3-7b": 0,
+      "yandex": 1,
+      "hy": 2,
+      "apple": 1,
+      "hymt3-30b": 0,
+      "hymt3-1.8b": 0
+    },
+    "notes": {
+      "yandex": "Склейка separately look; sums вместо amounts.",
+      "hy": "still tends to mix up — утверждение, будто модель уже путает; потеряна условность «начнёт».",
+      "apple": "work application вместо рабочего (production) приложения."
+    }
+  }
+]

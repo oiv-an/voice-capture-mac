@@ -1,0 +1,1257 @@
+[
+  {
+    "id": "01",
+    "category": "everyday",
+    "scores": {
+      "t5": 1,
+      "hymt3-30b": 0,
+      "hymt3-1.8b": 0,
+      "yandex": 0,
+      "apple": 0,
+      "madlad": 1,
+      "hy": 1,
+      "opus": 1,
+      "hymt3-7b": 0
+    },
+    "notes": {
+      "t5": "Неполное I'll be in; потеря приблизительности времени.",
+      "madlad": "Неполное I'll be in, sugar-free; потеря приблизительности.",
+      "hy": "Добавлено back: возвращение не задано исходником.",
+      "opus": "Приблизительное время стало точным, добавлена связка so."
+    }
+  },
+  {
+    "id": "02",
+    "category": "everyday",
+    "scores": {
+      "yandex": 0,
+      "madlad": 0,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "t5": 2,
+      "hy": 0,
+      "opus": 2,
+      "hymt3-1.8b": 2,
+      "apple": 0
+    },
+    "notes": {
+      "t5": "not really interested + just if it wasnt — условие передано ненадёжно, грамматика сломана.",
+      "opus": "«Не принципиально» стало личным принципом не встречаться.",
+      "hymt3-1.8b": "Буквальный matter of principle, говорящий встречается сам — смысл искажён."
+    }
+  },
+  {
+    "id": "03",
+    "category": "everyday",
+    "scores": {
+      "opus": 3,
+      "yandex": 0,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "t5": 3,
+      "apple": 3,
+      "hymt3-1.8b": 2,
+      "hy": 1,
+      "madlad": 0
+    },
+    "notes": {
+      "opus": "Потеряно всё второе предложение (адрес не открывается).",
+      "t5": "Просьба превращена в бессмысленное отрицательное утверждение (slapped).",
+      "apple": "Отправитель перевёрнут: I sent вместо you sent.",
+      "hymt3-1.8b": "Отправитель сменён на they.",
+      "hy": "Пассив was sent to me теряет, что адрес присылал собеседник."
+    }
+  },
+  {
+    "id": "04",
+    "category": "everyday",
+    "scores": {
+      "hymt3-7b": 0,
+      "madlad": 0,
+      "yandex": 1,
+      "hymt3-1.8b": 1,
+      "opus": 3,
+      "hymt3-30b": 0,
+      "hy": 3,
+      "apple": 0,
+      "t5": 3
+    },
+    "notes": {
+      "yandex": "Let's not today — неполная конструкция.",
+      "hymt3-1.8b": "Let's not today — неполная конструкция.",
+      "opus": "Потеряно первое предложение: перенос на послезавтра исчез.",
+      "hy": "Послезавтра заменено на завтра.",
+      "t5": "Послезавтра заменено на завтра, второе предложение потеряно."
+    }
+  },
+  {
+    "id": "05",
+    "category": "everyday",
+    "scores": {
+      "madlad": 2,
+      "hymt3-30b": 0,
+      "hymt3-7b": 0,
+      "hymt3-1.8b": 1,
+      "hy": 0,
+      "yandex": 0,
+      "t5": 2,
+      "opus": 2,
+      "apple": 0
+    },
+    "notes": {
+      "madlad": "Потеряно «Придётся вернуться».",
+      "hymt3-1.8b": "come back вместо go back.",
+      "t5": "Потеряно «Придётся вернуться»; I'm out неточно.",
+      "opus": "Потеряно «Придётся вернуться»."
+    }
+  },
+  {
+    "id": "06",
+    "category": "everyday",
+    "scores": {
+      "apple": 0,
+      "madlad": 2,
+      "hy": 0,
+      "yandex": 0,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "t5": 2,
+      "hymt3-1.8b": 1,
+      "opus": 0
+    },
+    "notes": {
+      "madlad": "I wouldn't have come here in vain — контрфактическое значение искажено.",
+      "t5": "or I'd be in vain — бессмысленно, поездка потеряна.",
+      "hymt3-1.8b": "Thanks for warning без объекта — неестественно."
+    }
+  },
+  {
+    "id": "07",
+    "category": "business",
+    "scores": {
+      "madlad": 2,
+      "hymt3-7b": 0,
+      "hy": 1,
+      "apple": 1,
+      "yandex": 0,
+      "hymt3-30b": 0,
+      "hymt3-1.8b": 0,
+      "t5": 3,
+      "opus": 1
+    },
+    "notes": {
+      "madlad": "Созвон переведён как bell.",
+      "hy": "Добавлено necessary; тяжеловесно.",
+      "apple": "postpone ... for half an hour later — избыточно.",
+      "t5": "Бессмыслица let'll take the callphone; причина потеряна.",
+      "opus": "Причинная связь заменена на and; разговорное gonna."
+    }
+  },
+  {
+    "id": "08",
+    "category": "business",
+    "scores": {
+      "t5": 1,
+      "apple": 0,
+      "yandex": 0,
+      "hymt3-1.8b": 0,
+      "opus": 0,
+      "madlad": 0,
+      "hymt3-30b": 0,
+      "hymt3-7b": 0,
+      "hy": 0
+    },
+    "notes": {
+      "t5": "until late Friday — неверный предлог для дедлайна."
+    }
+  },
+  {
+    "id": "09",
+    "category": "business",
+    "scores": {
+      "t5": 2,
+      "hymt3-7b": 0,
+      "yandex": 0,
+      "madlad": 0,
+      "apple": 0,
+      "hy": 1,
+      "hymt3-30b": 0,
+      "opus": 1,
+      "hymt3-1.8b": 0
+    },
+    "notes": {
+      "t5": "drafter back in by night — черновик искажён, грамматика сломана.",
+      "hy": "draft text — неестественно.",
+      "opus": "Сегодня стало tonight дважды — срок сдвинут."
+    }
+  },
+  {
+    "id": "10",
+    "category": "business",
+    "scores": {
+      "apple": 0,
+      "hymt3-1.8b": 1,
+      "hymt3-30b": 0,
+      "hy": 1,
+      "t5": 2,
+      "opus": 1,
+      "hymt3-7b": 0,
+      "madlad": 1,
+      "yandex": 1
+    },
+    "notes": {
+      "hymt3-1.8b": "Громоздко: stay within limits ... exceed them.",
+      "hy": "Многословно, добавлено manage to get everything done.",
+      "t5": "on timetables, budget is out of reach — смысл превышения бюджета потерян.",
+      "opus": "getting on time — неестественно.",
+      "madlad": "out of budget — скорее «деньги кончились», а не превышение.",
+      "yandex": "Потеряно «уже»."
+    }
+  },
+  {
+    "id": "11",
+    "category": "business",
+    "scores": {
+      "hymt3-30b": 0,
+      "hymt3-7b": 0,
+      "hy": 1,
+      "apple": 0,
+      "yandex": 0,
+      "t5": 3,
+      "madlad": 0,
+      "hymt3-1.8b": 0,
+      "opus": 0
+    },
+    "notes": {
+      "hy": "Многословно, добавлено just.",
+      "t5": "Оплата превращена в «проверь счёт вчера», check in и depositing account — смысл разрушен."
+    }
+  },
+  {
+    "id": "12",
+    "category": "business",
+    "scores": {
+      "t5": 1,
+      "hy": 2,
+      "opus": 1,
+      "apple": 0,
+      "hymt3-30b": 0,
+      "hymt3-7b": 0,
+      "yandex": 0,
+      "hymt3-1.8b": 0,
+      "madlad": 0
+    },
+    "notes": {
+      "t5": "So far и language вместо wording — неточно.",
+      "hy": "Искажено: формулировки сообщений, которые будут отправлены внутри команды.",
+      "opus": "Связка but ломает логику; language вместо wording."
+    }
+  },
+  {
+    "id": "13",
+    "category": "negation",
+    "scores": {
+      "yandex": 0,
+      "madlad": 0,
+      "hymt3-7b": 0,
+      "hymt3-1.8b": 0,
+      "t5": 3,
+      "hymt3-30b": 0,
+      "opus": 3,
+      "apple": 0,
+      "hy": 0
+    },
+    "notes": {
+      "t5": "HTML-артефакты и it вместо he — текст повреждён.",
+      "opus": "Потеряно второе предложение — ключевое различие исчезло."
+    }
+  },
+  {
+    "id": "14",
+    "category": "negation",
+    "scores": {
+      "hy": 0,
+      "t5": 2,
+      "hymt3-1.8b": 0,
+      "apple": 0,
+      "yandex": 0,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "madlad": 0,
+      "opus": 2
+    },
+    "notes": {
+      "t5": "canal вместо channel; disconnect the notification — неверные термины.",
+      "opus": "notices и canal — неверные термины."
+    }
+  },
+  {
+    "id": "15",
+    "category": "negation",
+    "scores": {
+      "hymt3-1.8b": 0,
+      "hy": 0,
+      "t5": 2,
+      "yandex": 0,
+      "madlad": 0,
+      "opus": 1,
+      "hymt3-30b": 0,
+      "apple": 1,
+      "hymt3-7b": 0
+    },
+    "notes": {
+      "t5": "All will be accessed — пассив меняет смысл: доступ к людям, а не людей.",
+      "opus": "the mail — буквальная «почта».",
+      "apple": "the mail — буквальная «почта»."
+    }
+  },
+  {
+    "id": "16",
+    "category": "negation",
+    "scores": {
+      "apple": 0,
+      "yandex": 0,
+      "t5": 1,
+      "hymt3-30b": 0,
+      "hy": 0,
+      "hymt3-1.8b": 0,
+      "opus": 0,
+      "hymt3-7b": 0,
+      "madlad": 0
+    },
+    "notes": {
+      "t5": "on second goods — неграмотно."
+    }
+  },
+  {
+    "id": "17",
+    "category": "negation",
+    "scores": {
+      "madlad": 0,
+      "t5": 1,
+      "hy": 0,
+      "apple": 0,
+      "yandex": 0,
+      "hymt3-1.8b": 0,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "opus": 1
+    },
+    "notes": {
+      "t5": "Строчная i — артефакт.",
+      "opus": "Потеряно «встречу»."
+    }
+  },
+  {
+    "id": "18",
+    "category": "negation",
+    "scores": {
+      "opus": 1,
+      "yandex": 0,
+      "hymt3-30b": 0,
+      "apple": 0,
+      "hymt3-7b": 0,
+      "t5": 3,
+      "madlad": 0,
+      "hy": 1,
+      "hymt3-1.8b": 0
+    },
+    "notes": {
+      "opus": "not gonna say no — вероятность стала уверенностью.",
+      "t5": "retract вместо refuse и потеряно «согласием» — смысл разрушен.",
+      "hy": "Добавлено true agreement."
+    }
+  },
+  {
+    "id": "19",
+    "category": "numbers",
+    "scores": {
+      "yandex": 3,
+      "opus": 2,
+      "hymt3-7b": 3,
+      "hymt3-30b": 0,
+      "hymt3-1.8b": 3,
+      "hy": 3,
+      "apple": 0,
+      "t5": 3,
+      "madlad": 2
+    },
+    "notes": {
+      "yandex": "Денежный перевод передан как translate.",
+      "opus": "Потеряно предложение о комиссии.",
+      "hymt3-7b": "convert вместо transfer — другое действие.",
+      "hymt3-1.8b": "Денежный перевод передан как translate.",
+      "hy": "Денежный перевод передан как translate.",
+      "t5": "Вторая сумма заменена на $3.4 million, текст склеен — критическое искажение.",
+      "madlad": "Потеряно предложение о комиссии."
+    }
+  },
+  {
+    "id": "20",
+    "category": "numbers",
+    "scores": {
+      "opus": 0,
+      "hymt3-30b": 0,
+      "madlad": 0,
+      "apple": 0,
+      "t5": 3,
+      "yandex": 0,
+      "hymt3-7b": 0,
+      "hy": 0,
+      "hymt3-1.8b": 0
+    },
+    "notes": {
+      "t5": "Сумма 100 потеряна, процент 1,35 выдуман."
+    }
+  },
+  {
+    "id": "21",
+    "category": "numbers",
+    "scores": {
+      "hy": 1,
+      "t5": 3,
+      "yandex": 1,
+      "hymt3-1.8b": 1,
+      "apple": 0,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "madlad": 1,
+      "opus": 1
+    },
+    "notes": {
+      "hy": "Разбито на две фразы, It's not the local time — неуклюже.",
+      "t5": "Время 16:30 потеряно (about a.m), Москва привязана к местному времени.",
+      "yandex": "We meet — неестественное настоящее время.",
+      "hymt3-1.8b": "We meet — неестественное настоящее время.",
+      "madlad": "We meet — неестественное настоящее время.",
+      "opus": "Moscow без time — неполно; We meet."
+    }
+  },
+  {
+    "id": "22",
+    "category": "numbers",
+    "scores": {
+      "t5": 1,
+      "hymt3-7b": 1,
+      "hymt3-30b": 0,
+      "yandex": 1,
+      "opus": 3,
+      "hy": 1,
+      "hymt3-1.8b": 1,
+      "madlad": 1,
+      "apple": 0
+    },
+    "notes": {
+      "t5": "two more separates — неграмотно.",
+      "hymt3-7b": "Субъект I need — домысел.",
+      "yandex": "Субъект You need вместо нейтрального «нужно».",
+      "opus": "12 grand packages — количество искажено.",
+      "hy": "Добавлено need to be purchased.",
+      "hymt3-1.8b": "Субъект You need; потеряно «ещё».",
+      "madlad": "Субъект You need; потеряно «штуки»."
+    }
+  },
+  {
+    "id": "23",
+    "category": "numbers",
+    "scores": {
+      "hymt3-7b": 0,
+      "opus": 0,
+      "madlad": 2,
+      "t5": 3,
+      "hymt3-1.8b": 0,
+      "apple": 0,
+      "yandex": 0,
+      "hymt3-30b": 0,
+      "hy": 1
+    },
+    "notes": {
+      "madlad": "Потеряно первое предложение с 0,75 литра.",
+      "t5": "Бессмысленный выдуманный хвост, «ровно литр» потерян.",
+      "hy": "Лишнее still."
+    }
+  },
+  {
+    "id": "24",
+    "category": "numbers",
+    "scores": {
+      "yandex": 0,
+      "hy": 0,
+      "t5": 0,
+      "hymt3-30b": 0,
+      "madlad": 0,
+      "hymt3-1.8b": 0,
+      "hymt3-7b": 0,
+      "opus": 0,
+      "apple": 0
+    },
+    "notes": {}
+  },
+  {
+    "id": "25",
+    "category": "technical",
+    "scores": {
+      "yandex": 0,
+      "t5": 2,
+      "hy": 1,
+      "madlad": 0,
+      "opus": 3,
+      "hymt3-1.8b": 0,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "apple": 0
+    },
+    "notes": {
+      "t5": "Деплой стал debugging — неверный термин.",
+      "hy": "Добавлено just fine.",
+      "opus": "Деплой стал debut, второе предложение про Chrome потеряно."
+    }
+  },
+  {
+    "id": "26",
+    "category": "technical",
+    "scores": {
+      "t5": 3,
+      "hy": 1,
+      "yandex": 0,
+      "hymt3-1.8b": 0,
+      "hymt3-7b": 0,
+      "apple": 0,
+      "hymt3-30b": 0,
+      "opus": 3,
+      "madlad": 1
+    },
+    "notes": {
+      "t5": "Remove migration вместо отката, hawker вместо worker — опасное искажение команды.",
+      "hy": "Cancel вместо roll back.",
+      "opus": "reset migration и crow вместо worker — команда искажена.",
+      "madlad": "Unroll — нестандартный термин."
+    }
+  },
+  {
+    "id": "27",
+    "category": "technical",
+    "scores": {
+      "yandex": 0,
+      "madlad": 0,
+      "t5": 3,
+      "opus": 0,
+      "hy": 1,
+      "apple": 0,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "hymt3-1.8b": 0
+    },
+    "notes": {
+      "t5": "Код 200 стал 20.",
+      "hy": "Потеряно «тело ответа»."
+    }
+  },
+  {
+    "id": "28",
+    "category": "technical",
+    "scores": {
+      "hy": 0,
+      "yandex": 0,
+      "madlad": 0,
+      "apple": 2,
+      "hymt3-1.8b": 0,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "opus": 3,
+      "t5": 2
+    },
+    "notes": {
+      "apple": "roll up the update, return the previous version — неверные термины.",
+      "opus": "Обновление стало reset, условный откат потерян.",
+      "t5": "patch up и условие проверки искажено."
+    }
+  },
+  {
+    "id": "29",
+    "category": "technical",
+    "scores": {
+      "opus": 2,
+      "yandex": 2,
+      "madlad": 0,
+      "hymt3-30b": 0,
+      "t5": 0,
+      "hy": 1,
+      "apple": 0,
+      "hymt3-1.8b": 0,
+      "hymt3-7b": 0
+    },
+    "notes": {
+      "opus": "Загрузка модели потеряна (doing it again).",
+      "yandex": "Оставлено русское слово «заново».",
+      "hy": "Сильно раздуто: always have to, from scratch, every time we need to use it."
+    }
+  },
+  {
+    "id": "30",
+    "category": "technical",
+    "scores": {
+      "yandex": 0,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "t5": 1,
+      "apple": 0,
+      "madlad": 0,
+      "hy": 1,
+      "hymt3-1.8b": 0,
+      "opus": 1
+    },
+    "notes": {
+      "t5": "variable environment — порядок слов неверный.",
+      "hy": "Тавтология a variable within the environment variables.",
+      "opus": "variable environment — порядок слов неверный."
+    }
+  },
+  {
+    "id": "31",
+    "category": "idiom",
+    "scores": {
+      "hymt3-30b": 1,
+      "t5": 2,
+      "madlad": 2,
+      "opus": 1,
+      "yandex": 0,
+      "hymt3-7b": 0,
+      "apple": 2,
+      "hy": 2,
+      "hymt3-1.8b": 0
+    },
+    "notes": {
+      "hymt3-30b": "cut the crap — грубее исходного регистра.",
+      "t5": "«Без воды» переведено буквально как without water.",
+      "madlad": "«Без воды» переведено буквально как without water.",
+      "opus": "Потеряна просьба говорить по делу.",
+      "apple": "«Без воды» переведено буквально как without water.",
+      "hy": "Буквальная вода: not talk about water — смысл потерян."
+    }
+  },
+  {
+    "id": "32",
+    "category": "idiom",
+    "scores": {
+      "hy": 1,
+      "t5": 2,
+      "yandex": 0,
+      "madlad": 2,
+      "opus": 3,
+      "apple": 2,
+      "hymt3-1.8b": 2,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0
+    },
+    "notes": {
+      "hy": "Идиома раскрыта описательно, добавлено completely new/Instead.",
+      "t5": "Идиома буквально: invent a bicycle.",
+      "madlad": "Идиома буквально: invent a bicycle.",
+      "opus": "Обе мысли потеряны: «примем решение и проверим».",
+      "apple": "Идиома буквально: invent a bicycle.",
+      "hymt3-1.8b": "Идиома буквально: invent a bicycle."
+    }
+  },
+  {
+    "id": "33",
+    "category": "idiom",
+    "scores": {
+      "yandex": 0,
+      "hymt3-30b": 1,
+      "madlad": 2,
+      "hy": 2,
+      "apple": 2,
+      "hymt3-7b": 1,
+      "opus": 3,
+      "hymt3-1.8b": 2,
+      "t5": 2
+    },
+    "notes": {
+      "hymt3-30b": "in two words — буквально.",
+      "madlad": "not in the subject и in two words — буквально.",
+      "hy": "not really relevant to this topic — смысл искажён; in two words.",
+      "apple": "I'm off topic yet — неверный смысл.",
+      "hymt3-7b": "in two words — буквально.",
+      "opus": "Просьба ввести в курс дела потеряна полностью.",
+      "hymt3-1.8b": "not in the right topic — неверно; in two words.",
+      "t5": "not on the subject, in two words — буквально, обрыв."
+    }
+  },
+  {
+    "id": "34",
+    "category": "idiom",
+    "scores": {
+      "hy": 0,
+      "hymt3-30b": 0,
+      "yandex": 0,
+      "madlad": 2,
+      "hymt3-7b": 1,
+      "opus": 3,
+      "hymt3-1.8b": 0,
+      "apple": 2,
+      "t5": 3
+    },
+    "notes": {
+      "madlad": "через раз стало works only once.",
+      "hymt3-7b": "in person вместо in practice.",
+      "opus": "Смысл перевёрнут: works in person — ненадёжность потеряна.",
+      "apple": "in person ... once in a while — неточно.",
+      "t5": "works lively once — бессмыслица."
+    }
+  },
+  {
+    "id": "35",
+    "category": "idiom",
+    "scores": {
+      "madlad": 3,
+      "hy": 2,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "apple": 2,
+      "hymt3-1.8b": 2,
+      "yandex": 0,
+      "opus": 2,
+      "t5": 2
+    },
+    "notes": {
+      "madlad": "Неверная идиома и потеряна вторая фраза.",
+      "hy": "Don't just accept it without thinking — неверный смысл идиомы.",
+      "apple": "Буквальная идиома: cut it off the shoulder.",
+      "hymt3-1.8b": "Don't just dismiss it — неверный смысл идиомы.",
+      "opus": "Идиома потеряна полностью.",
+      "t5": "Идиома потеряна полностью."
+    }
+  },
+  {
+    "id": "36",
+    "category": "idiom",
+    "scores": {
+      "hymt3-30b": 0,
+      "hy": 2,
+      "hymt3-1.8b": 2,
+      "hymt3-7b": 0,
+      "opus": 1,
+      "t5": 2,
+      "madlad": 2,
+      "apple": 2,
+      "yandex": 0
+    },
+    "notes": {
+      "hy": "isn't currently active — неверно; вторая фраза раздута.",
+      "hymt3-1.8b": "isn't currently active — срочность потеряна.",
+      "opus": "not a burning task — полу-калька.",
+      "t5": "Буквально: is not burning.",
+      "madlad": "Буквально: is not burning.",
+      "apple": "Буквально: is not burning."
+    }
+  },
+  {
+    "id": "37",
+    "category": "disfluency",
+    "scores": {
+      "hy": 1,
+      "hymt3-7b": 0,
+      "apple": 1,
+      "t5": 3,
+      "madlad": 0,
+      "opus": 2,
+      "hymt3-1.8b": 1,
+      "hymt3-30b": 0,
+      "yandex": 0
+    },
+    "notes": {
+      "hy": "Вопрос о плане превращён в should we.",
+      "apple": "in general — калька; still postponing.",
+      "t5": "Уточнение стало make a point, вопрос о переносе стал they still going on.",
+      "opus": "Альтернатива переноса потеряна (or what we're doing).",
+      "hymt3-1.8b": "do we actually postpone it — неуклюже, добавлено I guess."
+    }
+  },
+  {
+    "id": "38",
+    "category": "disfluency",
+    "scores": {
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "hy": 3,
+      "madlad": 2,
+      "t5": 3,
+      "hymt3-1.8b": 0,
+      "apple": 0,
+      "yandex": 3,
+      "opus": 3
+    },
+    "notes": {
+      "hy": "Андрей потерян полностью — нового получателя нет.",
+      "madlad": "Потеряно «Сергею пока не надо».",
+      "t5": "Имена искажены (Sergio, Andrea, Serhie), смысл разрушен.",
+      "yandex": "Имена переставлены: итоговый получатель Сергей.",
+      "opus": "Адресат превращён в обращение к Сергею — смысл искажён."
+    }
+  },
+  {
+    "id": "39",
+    "category": "disfluency",
+    "scores": {
+      "madlad": 1,
+      "hymt3-1.8b": 1,
+      "hy": 1,
+      "t5": 1,
+      "yandex": 2,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "opus": 1,
+      "apple": 0
+    },
+    "notes": {
+      "madlad": "Let's go — меняет действие (идти, а не назначить).",
+      "hymt3-1.8b": "more precisely — неестественно для самоисправления.",
+      "hy": "or better yet превращает исправление в предпочтение.",
+      "t5": "Let's go — меняет действие.",
+      "yandex": "Оставлено русское слово «точнее».",
+      "opus": "Исправление стало выбором Friday or Thursday."
+    }
+  },
+  {
+    "id": "40",
+    "category": "disfluency",
+    "scores": {
+      "hy": 1,
+      "hymt3-7b": 0,
+      "yandex": 0,
+      "hymt3-1.8b": 1,
+      "t5": 3,
+      "opus": 1,
+      "apple": 2,
+      "madlad": 3,
+      "hymt3-30b": 0
+    },
+    "notes": {
+      "hy": "Повтор itself, causing the issue — тяжеловесно.",
+      "hymt3-1.8b": "Паразит превращён в вопрос what should I call it?.",
+      "t5": "Смысл перевёрнут: перевод тормозит загрузку; as he did.",
+      "opus": "download вместо loading.",
+      "apple": "like him — паразит понят как сравнение.",
+      "madlad": "like him и причина перевёрнута: перевод замедляет загрузку."
+    }
+  },
+  {
+    "id": "41",
+    "category": "disfluency",
+    "scores": {
+      "madlad": 0,
+      "hymt3-7b": 0,
+      "t5": 2,
+      "hymt3-1.8b": 1,
+      "hymt3-30b": 0,
+      "yandex": 0,
+      "apple": 3,
+      "opus": 2,
+      "hy": 1
+    },
+    "notes": {
+      "t5": "Субъект сменён на you want — требование приписано собеседнику.",
+      "hymt3-1.8b": "I need it to be so that — неестественно.",
+      "apple": "Смысл перевёрнут: I don't need the meaning to be lost.",
+      "opus": "Требование сохранить смысл стало meaningful — неточно.",
+      "hy": "Добавлено out of thin air, раздуто."
+    }
+  },
+  {
+    "id": "42",
+    "category": "disfluency",
+    "scores": {
+      "hymt3-1.8b": 0,
+      "hy": 0,
+      "t5": 1,
+      "opus": 0,
+      "madlad": 0,
+      "hymt3-7b": 0,
+      "yandex": 0,
+      "hymt3-30b": 0,
+      "apple": 0
+    },
+    "notes": {
+      "t5": "paid out — выплачены, а не оплачены."
+    }
+  },
+  {
+    "id": "43",
+    "category": "unpunctuated",
+    "scores": {
+      "madlad": 1,
+      "hy": 0,
+      "opus": 1,
+      "apple": 0,
+      "t5": 2,
+      "yandex": 0,
+      "hymt3-1.8b": 0,
+      "hymt3-30b": 0,
+      "hymt3-7b": 0
+    },
+    "notes": {
+      "madlad": "Без артикля и пунктуации — run-on.",
+      "opus": "Run-on без разделителя.",
+      "t5": "Мусорные символы havenaEURTM, gotten a check — искажено."
+    }
+  },
+  {
+    "id": "44",
+    "category": "unpunctuated",
+    "scores": {
+      "yandex": 0,
+      "hy": 0,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "t5": 1,
+      "apple": 0,
+      "opus": 2,
+      "hymt3-1.8b": 0,
+      "madlad": 1
+    },
+    "notes": {
+      "t5": "Без запятых условие читается двусмысленно.",
+      "opus": "if it's not on the terrace — второе условие искажено.",
+      "madlad": "Без запятых условие читается двусмысленно."
+    }
+  },
+  {
+    "id": "45",
+    "category": "unpunctuated",
+    "scores": {
+      "opus": 2,
+      "yandex": 0,
+      "hymt3-30b": 0,
+      "hymt3-1.8b": 0,
+      "hymt3-7b": 0,
+      "t5": 2,
+      "hy": 1,
+      "madlad": 1,
+      "apple": 2
+    },
+    "notes": {
+      "opus": "rename it an old copy — сохранение старой копии потеряно.",
+      "t5": "rename it as an old copy — смысл сохранения копии потерян.",
+      "hy": "Добавлено as a backup.",
+      "madlad": "to keep — неполная конструкция.",
+      "apple": "Обрыв to leave — вторая часть потеряна."
+    }
+  },
+  {
+    "id": "46",
+    "category": "unpunctuated",
+    "scores": {
+      "hymt3-30b": 0,
+      "hymt3-1.8b": 0,
+      "hymt3-7b": 0,
+      "apple": 0,
+      "t5": 0,
+      "yandex": 0,
+      "madlad": 0,
+      "opus": 0,
+      "hy": 1
+    },
+    "notes": {
+      "hy": "start with free support — бесплатным стал не старт, а поддержка."
+    }
+  },
+  {
+    "id": "47",
+    "category": "unpunctuated",
+    "scores": {
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "hymt3-1.8b": 1,
+      "opus": 0,
+      "hy": 0,
+      "yandex": 0,
+      "t5": 2,
+      "madlad": 0,
+      "apple": 0
+    },
+    "notes": {
+      "hymt3-1.8b": "«просто» прикреплено к not against just doing it.",
+      "t5": "let me first calculate — совместное действие стало «я посчитаю»."
+    }
+  },
+  {
+    "id": "48",
+    "category": "unpunctuated",
+    "scores": {
+      "hymt3-30b": 0,
+      "madlad": 1,
+      "apple": 0,
+      "hy": 2,
+      "yandex": 1,
+      "hymt3-1.8b": 0,
+      "hymt3-7b": 0,
+      "t5": 2,
+      "opus": 1
+    },
+    "notes": {
+      "madlad": "Без запятых список неоднозначен.",
+      "hy": "Просьба записать заменена на purchase, добавлено also.",
+      "yandex": "Без запятых список неоднозначен.",
+      "t5": "sign up — неверное действие.",
+      "opus": "Потеряно «купить»; список без запятых."
+    }
+  },
+  {
+    "id": "49",
+    "category": "entities",
+    "scores": {
+      "opus": 3,
+      "hymt3-7b": 1,
+      "hymt3-30b": 0,
+      "apple": 0,
+      "hy": 2,
+      "t5": 3,
+      "hymt3-1.8b": 1,
+      "yandex": 1,
+      "madlad": 2
+    },
+    "notes": {
+      "opus": "Илья стал Elijah, исключение Ольги потеряно.",
+      "hymt3-7b": "Калька put in copy.",
+      "hy": "make a copy of it for Ilya — CC понят как отдельная копия.",
+      "t5": "Исключение Ольги искажено: Olga not yet sent you.",
+      "hymt3-1.8b": "Калька put on a copy.",
+      "yandex": "Калька put in the copy.",
+      "madlad": "Don't send Olga — «не отправляй Ольгу», а не Ольге."
+    }
+  },
+  {
+    "id": "50",
+    "category": "entities",
+    "scores": {
+      "apple": 0,
+      "hymt3-1.8b": 0,
+      "hymt3-30b": 0,
+      "hymt3-7b": 1,
+      "yandex": 0,
+      "madlad": 0,
+      "hy": 1,
+      "t5": 3,
+      "opus": 2
+    },
+    "notes": {
+      "hymt3-7b": "enter вместо leave.",
+      "hy": "change the link from — лишний предлог.",
+      "t5": "URL изменён: HTTPs://Example/pay.",
+      "opus": "email field стал text field; конструкция кривая."
+    }
+  },
+  {
+    "id": "51",
+    "category": "entities",
+    "scores": {
+      "apple": 0,
+      "madlad": 0,
+      "hy": 0,
+      "yandex": 0,
+      "hymt3-30b": 0,
+      "hymt3-1.8b": 0,
+      "hymt3-7b": 0,
+      "opus": 1,
+      "t5": 3
+    },
+    "notes": {
+      "opus": "order for AB-1042 — номер стал предметом заказа; лишние артикли.",
+      "t5": "Номер офиса 305 стал +35, номер квартиры потерян."
+    }
+  },
+  {
+    "id": "52",
+    "category": "entities",
+    "scores": {
+      "t5": 2,
+      "hy": 0,
+      "opus": 0,
+      "hymt3-30b": 0,
+      "apple": 0,
+      "yandex": 0,
+      "madlad": 0,
+      "hymt3-1.8b": 0,
+      "hymt3-7b": 0
+    },
+    "notes": {
+      "t5": "cite it as Done и from To Do in — неверные термины."
+    }
+  },
+  {
+    "id": "53",
+    "category": "entities",
+    "scores": {
+      "opus": 1,
+      "hy": 0,
+      "yandex": 0,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "t5": 3,
+      "hymt3-1.8b": 1,
+      "apple": 0,
+      "madlad": 0
+    },
+    "notes": {
+      "opus": "valid file вместо current.",
+      "t5": "Имена файлов искажены: report_finals _v2.pdf, Reporting/findPDF.",
+      "hymt3-1.8b": "Тире-калька File ... — current."
+    }
+  },
+  {
+    "id": "54",
+    "category": "entities",
+    "scores": {
+      "hymt3-1.8b": 1,
+      "yandex": 2,
+      "apple": 2,
+      "opus": 0,
+      "hy": 0,
+      "hymt3-7b": 0,
+      "madlad": 1,
+      "t5": 3,
+      "hymt3-30b": 0
+    },
+    "notes": {
+      "hymt3-1.8b": "Калька tariff, we keep — неестественно.",
+      "yandex": "Оставлено русское слово «тариф».",
+      "apple": "we leave the Pro tariff — двусмысленно; places вместо seats.",
+      "madlad": "Безличные пассивы — неестественно.",
+      "t5": "Дополнительные места потеряны, you will disconnect — смысл искажён."
+    }
+  },
+  {
+    "id": "55",
+    "category": "paragraph",
+    "scores": {
+      "madlad": 1,
+      "opus": 3,
+      "hymt3-30b": 0,
+      "yandex": 2,
+      "apple": 3,
+      "hy": 1,
+      "hymt3-1.8b": 0,
+      "hymt3-7b": 0,
+      "t5": 2
+    },
+    "notes": {
+      "madlad": "download вместо export.",
+      "opus": "Разница +20 стала ценой $20, история стала taking the whole story away.",
+      "yandex": "data unloading — неверный термин.",
+      "apple": "Выгрузка передана как upload (обратное направление), история — как story.",
+      "hy": "download вместо export; многословно.",
+      "t5": "Вопрос вместо утверждения, take back up, HTML-артефакты."
+    }
+  },
+  {
+    "id": "56",
+    "category": "paragraph",
+    "scores": {
+      "madlad": 0,
+      "hy": 0,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "opus": 1,
+      "yandex": 0,
+      "t5": 3,
+      "apple": 1,
+      "hymt3-1.8b": 0
+    },
+    "notes": {
+      "opus": "Потеряно «вчера»; одна длинная фраза.",
+      "t5": "card of this day, no need not cancel — инструкции искажены.",
+      "apple": "must be left — неестественно; by mail двусмысленно."
+    }
+  },
+  {
+    "id": "57",
+    "category": "paragraph",
+    "scores": {
+      "apple": 1,
+      "yandex": 0,
+      "hy": 2,
+      "hymt3-7b": 0,
+      "opus": 2,
+      "hymt3-30b": 0,
+      "hymt3-1.8b": 0,
+      "madlad": 0,
+      "t5": 1
+    },
+    "notes": {
+      "apple": "make you wait вместо make me wait.",
+      "hy": "Russian language вместо речи; потеряно «точнее»; ожидание отнесено к каждому предложению.",
+      "opus": "Смысл «передавал смысл» потерян (more precise), make it wait.",
+      "t5": "Грамматика сломана, translate без -s."
+    }
+  },
+  {
+    "id": "58",
+    "category": "paragraph",
+    "scores": {
+      "t5": 3,
+      "hymt3-7b": 0,
+      "madlad": 3,
+      "hymt3-30b": 0,
+      "opus": 1,
+      "hy": 1,
+      "apple": 1,
+      "yandex": 1,
+      "hymt3-1.8b": 0
+    },
+    "notes": {
+      "t5": "Второе условие оплаты искажено (only to correct comments), сдвиг сроков размыт.",
+      "madlad": "Потеряны два последних предложения: «не предоплата» и сдвиг срока.",
+      "opus": "first part of us — ошибка; одна длинная фраза.",
+      "hy": "Раздуто: is completed, mentioned in the feedback.",
+      "apple": "correcting the comments — исправление комментариев.",
+      "yandex": "correcting the comments — исправление комментариев."
+    }
+  },
+  {
+    "id": "59",
+    "category": "paragraph",
+    "scores": {
+      "hy": 1,
+      "hymt3-7b": 0,
+      "hymt3-30b": 0,
+      "madlad": 1,
+      "opus": 3,
+      "apple": 2,
+      "t5": 3,
+      "hymt3-1.8b": 1,
+      "yandex": 0
+    },
+    "notes": {
+      "hy": "Раздуто: make sure to, perfectly polished.",
+      "madlad": "terms вместо conditions — допустимо, но неточно.",
+      "opus": "brown English, лишнее but — смысл искажён.",
+      "apple": "Перевод назван transfer.",
+      "t5": "Предложения склеены, corked English, сравнение потеряно.",
+      "hymt3-1.8b": "Грамматика: half of the conditions is lost."
+    }
+  },
+  {
+    "id": "60",
+    "category": "paragraph",
+    "scores": {
+      "opus": 1,
+      "hymt3-30b": 0,
+      "madlad": 1,
+      "apple": 1,
+      "hy": 2,
+      "t5": 3,
+      "yandex": 1,
+      "hymt3-7b": 0,
+      "hymt3-1.8b": 0
+    },
+    "notes": {
+      "opus": "denials вместо negations.",
+      "madlad": "Склейка separately look; sums.",
+      "apple": "work application вместо рабочего приложения.",
+      "hy": "still tends to mix up — условность «начнёт» потеряна.",
+      "t5": "«пока» потеряно, последнее предложение грамматически разрушено.",
+      "yandex": "sums вместо amounts; склейка."
+    }
+  }
+]

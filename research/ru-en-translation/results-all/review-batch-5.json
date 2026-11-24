@@ -1,0 +1,155 @@
+[
+  {
+    "id": "41",
+    "source": "Смотри, мне не нужен идеальный текст, мне нужно, чтобы смысл не терялся и ничего не придумывалось.",
+    "check": "Meaning/fidelity priority over polish.",
+    "variants": {
+      "A": "Look, I don't need the perfect text, I need the sense to be kept and nothing to be invented.",
+      "B": "Look, I don't need a perfect text—I just need the meaning to stay intact and nothing to be made up.",
+      "C": "Look, I don't need the perfect text and you want to make sure that no sense is lost or anything has been invented.",
+      "D": "Look, I don’t need an ideal text—I need it to be so that the meaning doesn’t get lost and nothing is invented.",
+      "E": "Look, I don't need a perfect text—I just need the meaning to be preserved and nothing to be made up.",
+      "F": "Look, I don't need a perfect text, I need the meaning to be preserved and nothing to be invented.",
+      "G": "Look, I don't need a perfect text, I don't need the meaning to be lost and nothing is invented.",
+      "H": "Look, I don't need the perfect text, I need it to be meaningful and not to be made up.",
+      "I": "Look, I don’t need an ideal text. What I need is a text where the meaning isn’t lost, and nothing is invented out of thin air."
+    }
+  },
+  {
+    "id": "42",
+    "source": "Там было пятнадцать, нет, пятьдесят заявок. Из них оплачены только восемь.",
+    "check": "Corrected total 50, paid 8.",
+    "variants": {
+      "A": "There were fifteen, no, fifty applications. Of those, only eight have been paid.",
+      "B": "There were fifteen, no, fifty applications. Of those, only eight have been paid for.",
+      "C": "There were fifteen, no fifty applications. Of them only eight have been paid out",
+      "D": "There were fifteen, no, fifty applications, of which only eight were paid.",
+      "E": "There were fifteen, no, fifty applications. Of these, only eight have been paid for.",
+      "F": "There were fifteen, no, fifty applications. Only eight of them were paid.",
+      "G": "There were fifteen—no, fifty—applications. Of those, only eight have been paid for.",
+      "H": "There were fifteen, no, fifty applications. Only eight of them have been paid."
+    }
+  },
+  {
+    "id": "43",
+    "source": "пожалуйста не отправляй заказ сегодня я ещё не проверил адрес доставки",
+    "check": "Do not ship today; address unchecked.",
+    "variants": {
+      "A": "please don't send order today I haven't checked the delivery address yet",
+      "B": "Please don’t send the order today. I haven’t checked the delivery address yet.",
+      "C": "Please don't send the order today I haven't checked the delivery address yet.",
+      "D": "Please don't send the order today, I haven't checked the delivery address yet",
+      "E": "Please don't send an order today I havenaEURTM gotten a check on the delivery address yet",
+      "F": "please do not send the order today, I have not checked the delivery address yet",
+      "G": "Please don't send the order today—I haven't checked the delivery address yet.",
+      "H": "Please don't ship the order today; I haven't checked the delivery address yet."
+    }
+  },
+  {
+    "id": "44",
+    "source": "если завтра будет дождь встречаемся внутри если нет то на террасе",
+    "check": "Two conditional locations.",
+    "variants": {
+      "A": "If it rains tomorrow, we meet inside, if not, then on the terrace.",
+      "B": "If it’s going to rain tomorrow, we’ll meet inside. If not, then we’ll meet on the terrace.",
+      "C": "If it rains tomorrow, let's meet inside; if not, let's meet on the terrace.",
+      "D": "If there is rain tomorrow, we meet inside if not on the terrace.",
+      "E": "If it rains tomorrow, we'll meet inside, if not, then on the terrace",
+      "F": "If it rains tomorrow we meet inside if it's not on the terrace",
+      "G": "If it rains tomorrow, we meet inside; if not, then on the terrace.",
+      "H": "If it's raining tomorrow we'll meet inside if not on the terrace"
+    }
+  },
+  {
+    "id": "45",
+    "source": "нет я имел в виду не удалить файл а переименовать его старую копию оставить",
+    "check": "Rename not delete; keep copy.",
+    "variants": {
+      "A": "No, I meant not to delete the file, but to rename it an old copy.",
+      "B": "no, I meant not to delete the file but to rename it, leave its old copy.",
+      "C": "No, I meant not to delete the file but to rename it and keep the old copy.",
+      "D": "No, I meant not to delete the file but to rename its old copy and keep it.",
+      "E": "No, I meant not to delete the file, but to rename it—keep the old copy.",
+      "F": "No, I meant not to delete the file but rename it as an old copy.",
+      "G": "No, what I meant was not to delete the file, but to rename its old copy and keep it as a backup.",
+      "H": "no I meant not to delete the file but to rename its old copy to keep",
+      "I": "No, I meant not to delete the file, but to rename its old copy to leave"
+    }
+  },
+  {
+    "id": "46",
+    "source": "мы можем начать бесплатно но поддержка после первого месяца будет платной",
+    "check": "Free start, paid support after first month.",
+    "variants": {
+      "A": "We can start for free, but support will be paid for after the first month.",
+      "B": "We can start for free, but support after the first month will be paid.",
+      "C": "We can start for free, but support after the first month will be paid",
+      "D": "We can start for free but the support after first month will be paid",
+      "E": "we can start for free but support will be paid after the first month",
+      "F": "we can start for free but support after the first month will be paid",
+      "G": "We can start free, but the support after the first month will be paid.",
+      "H": "We can start with free support, but after the first month, the support will become paid."
+    }
+  },
+  {
+    "id": "47",
+    "source": "я не против просто давай сначала посчитаем сколько это будет стоить в месяц",
+    "check": "Not opposed, calculate monthly cost first.",
+    "variants": {
+      "A": "I don't mind; let's just calculate first how much this will cost per month.",
+      "B": "I don't mind—let's just work out first how much this will cost per month.",
+      "C": "I'm not against just doing it—let's first calculate how much this will cost per month.",
+      "D": "I don't mind. Let's just count first how much it's gonna cost a month.",
+      "E": "I don’t mind. Let’s first calculate how much it will cost per month.",
+      "F": "I don't mind, let's just calculate first how much it will cost per month.",
+      "G": "I don't mind just let me first calculate how much it will cost a month.",
+      "H": "I'm okay just let's first calculate how much it will cost per month",
+      "I": "I don't mind, let's just calculate how much it will cost per month first"
+    }
+  },
+  {
+    "id": "48",
+    "source": "запиши пожалуйста купить молоко без лактозы яйца и хлеб без глютена",
+    "check": "Milk lactose-free; bread gluten-free; eggs included.",
+    "variants": {
+      "A": "Please note: buy lactose-free milk, eggs, and gluten-free bread.",
+      "B": "please write to buy lactose free milk eggs and gluten free bread",
+      "C": "Please write down to buy lactose-free milk, eggs and gluten-free bread",
+      "D": "Please also purchase lactose-free milk, eggs, and gluten-free bread.",
+      "E": "please write down buy lactose-free milk eggs and gluten-free bread",
+      "F": "Please write: buy lactose-free milk, eggs, and gluten-free bread.",
+      "G": "Please sign up to buy milk without lactose, eggs and bread with no gluten",
+      "H": "Please write down the milk without lactose eggs and bread without gluten."
+    }
+  },
+  {
+    "id": "49",
+    "source": "Отправь письмо Анне Смирновой и поставь Илью в копию. Ольге пока не отправляй.",
+    "check": "Anna recipient, Ilya CC, Olga excluded; reasonable transliteration accepted.",
+    "variants": {
+      "A": "Send a letter to Anna Smirnova and put Elijah in a copy.",
+      "B": "Send a letter to Anna Smirnova and put Ilya in copy. Don't send it to Olga for now.",
+      "C": "Send an email to Anna Smirnova and put Ilya on the CC. Don't send it to Olga for now.",
+      "D": "Send a letter to Anna Smirnova and copy Ilya. Don't send it to Olga yet.",
+      "E": "Send a letter to Anna Smirnova, and make a copy of it for Ilya. Don’t send it to Olga yet.",
+      "F": "Send a letter to Anna Smirnova and send Ilya in copy. Olga not yet sent you",
+      "G": "Send a letter to Anna Smirnova and put Ilya on a copy. For Olga, don’t send it yet.",
+      "H": "Send a letter to Anna Smirnova and put Ilya in the copy. Do not send it to Olga yet.",
+      "I": "Send a letter to Anna Smirnova and put Ilya in a copy. Don't send Olga yet."
+    }
+  },
+  {
+    "id": "50",
+    "source": "В поле email оставь test@example.com, а ссылку https://example.com/pay не меняй.",
+    "check": "Email and URL unchanged.",
+    "variants": {
+      "A": "Leave test@example.com in the email field, and do not change the link https://example.com/pay.",
+      "B": "In the email field, leave test@example.com, and don't change the link https://example.com/pay.",
+      "C": "In the email field, enter test@example.com, and do not change the link https://example.com/pay.",
+      "D": "In the email field, leave test@example.com, and do not change the link https://example.com/pay.",
+      "E": "Please leave test@example.com in the email field. Do not change the link from https://example.com/pay.",
+      "F": "In the email field, leave test@example.com and HTTPs://Example/pay link not to change",
+      "G": "Leave the text field to test@example.com, and the link https://example.com/pay is not changed."
+    }
+  }
+]
