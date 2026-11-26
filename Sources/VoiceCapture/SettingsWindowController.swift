@@ -91,6 +91,11 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         {
             backendPopup.item(at: index)?.isEnabled = false
         }
+        if !FluidSpeechProStore.supported,
+            let index = RecognitionBackend.allCases.firstIndex(of: .fluidSpeechPro)
+        {
+            backendPopup.item(at: index)?.isEnabled = false
+        }
         backendPopup.target = self
         backendPopup.action = #selector(backendChanged)
         addRow("Распознавание:", backendPopup)
@@ -283,7 +288,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     }
 
     @objc private func modelChanged() {
-        if selectedBackend != .fluidAudio && selectedBackend != .gigaAM {
+        if !selectedBackend.isLiveCoreML {
             pendingWhisperModelID = selectedModel().id
         }
         updateModelStatus()
@@ -326,6 +331,13 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
             modelPopup.addItem(withTitle: "GigaAM v3 E2E RNNT (~425 MB, macOS 15+)")
             return
         }
+        if selectedBackend == .fluidSpeechPro {
+            modelPopup.addItem(
+                withTitle:
+                    "Fluid Speech Pro — 25 языков live (\(FluidSpeechProStore.approxDownloadSize), macOS 15+)"
+            )
+            return
+        }
         if selectedBackend == .fluidAudio {
             modelPopup.addItem(
                 withTitle:
@@ -346,7 +358,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     private func updateEnabled() {
         let backend = selectedBackend
         let whisperOn = backend == .local || backend == .both
-        let fluidOn = backend == .fluidAudio || backend == .gigaAM
+        let fluidOn = backend.isLiveCoreML
         let groqOn = backend == .groq || backend == .both
 
         modelPopup.isEnabled = whisperOn
@@ -367,6 +379,14 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
             modelStatusLabel.textColor =
                 GigaAMModelStore.isDownloaded ? .systemGreen : .systemOrange
             downloadButton.title = GigaAMModelStore.isDownloaded ? "Перекачать" : "Скачать"
+            return
+        }
+        if selectedBackend == .fluidSpeechPro {
+            let ready = FluidSpeechProStore.isDownloaded
+            modelStatusLabel.stringValue =
+                ready ? "✓ Fluid Speech Pro скачана" : "Fluid Speech Pro не скачана"
+            modelStatusLabel.textColor = ready ? .systemGreen : .systemOrange
+            downloadButton.title = ready ? "Перекачать" : "Скачать"
             return
         }
         if selectedBackend == .fluidAudio {
@@ -397,6 +417,10 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     @objc private func downloadTapped() {
         if selectedBackend == .gigaAM {
             downloadGigaAMModel()
+            return
+        }
+        if selectedBackend == .fluidSpeechPro {
+            downloadFluidSpeechProModel()
             return
         }
         if selectedBackend == .fluidAudio {
@@ -436,6 +460,37 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
         Task { [self] in
             do {
                 try await GigaAMModelStore.installer.download { [weak self] fraction, status in
+                    DispatchQueue.main.async {
+                        self?.progressBar.doubleValue = fraction
+                        self?.modelStatusLabel.stringValue = status
+                    }
+                }
+                await MainActor.run {
+                    self.updateModelStatus()
+                }
+            } catch {
+                await MainActor.run {
+                    self.modelStatusLabel.stringValue = error.localizedDescription
+                    self.modelStatusLabel.textColor = .systemRed
+                }
+            }
+            await MainActor.run {
+                self.downloadButton.isEnabled = true
+                self.backendPopup.isEnabled = true
+                self.progressBar.isHidden = true
+            }
+        }
+    }
+
+    private func downloadFluidSpeechProModel() {
+        downloadButton.isEnabled = false
+        backendPopup.isEnabled = false
+        progressBar.isHidden = false
+        progressBar.doubleValue = 0
+        modelStatusLabel.textColor = .secondaryLabelColor
+        Task { [self] in
+            do {
+                try await FluidSpeechProStore.installer.download { [weak self] fraction, status in
                     DispatchQueue.main.async {
                         self?.progressBar.doubleValue = fraction
                         self?.modelStatusLabel.stringValue = status
@@ -665,6 +720,12 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
     @objc private func openModelsFolder() {
         if selectedBackend == .gigaAM {
             NSWorkspace.shared.open(GigaAMModelStore.directory)
+            return
+        }
+        if selectedBackend == .fluidSpeechPro {
+            NSWorkspace.shared.open(
+                FluidSpeechProStore.isDownloaded
+                    ? FluidSpeechProStore.directory : AppSettings.modelsDirectory)
             return
         }
         let directory =

@@ -8,10 +8,20 @@ import Foundation
 final class FluidAudioRecognizer {
     typealias UIProgressHandler = @Sendable (_ fraction: Double, _ status: String) -> Void
 
+    /// Which Parakeet-family weights to run through the same FluidAudio TDT pipeline.
+    enum Variant: Sendable {
+        case parakeetV3
+        case fluidSpeechPro
+    }
+
     static let displayName = "FluidAudio — Parakeet TDT v3 (live)"
     static let approxDownloadSize = "~500 MB"
 
-    private let engine = Engine()
+    private let engine: Engine
+
+    init(variant: Variant = .parakeetV3) {
+        engine = Engine(variant: variant)
+    }
 
     static var modelDirectory: URL {
         AsrModels.defaultCacheDirectory(for: .v3)
@@ -89,8 +99,13 @@ final class FluidAudioRecognizer {
     }
 
     private actor Engine {
+        private let variant: Variant
         private var manager: AsrManager?
         private var preparationTask: Task<AsrManager, Error>?
+
+        init(variant: Variant) {
+            self.variant = variant
+        }
 
         func prepare(progress: UIProgressHandler?) async throws {
             if manager != nil { return }
@@ -100,11 +115,18 @@ final class FluidAudioRecognizer {
                 return
             }
 
+            let variant = self.variant
             let task = Task<AsrManager, Error> {
-                let models = try await AsrModels.downloadAndLoad(
-                    version: .v3,
-                    progressHandler: FluidAudioRecognizer.fluidProgressHandler(progress)
-                )
+                let models: AsrModels
+                switch variant {
+                case .parakeetV3:
+                    models = try await AsrModels.downloadAndLoad(
+                        version: .v3,
+                        progressHandler: FluidAudioRecognizer.fluidProgressHandler(progress)
+                    )
+                case .fluidSpeechPro:
+                    models = try await FluidSpeechProStore.loadModels()
+                }
                 let manager = AsrManager(config: .default)
                 try await manager.loadModels(models)
                 return manager
@@ -115,7 +137,9 @@ final class FluidAudioRecognizer {
                 let loadedManager = try await task.value
                 manager = loadedManager
                 preparationTask = nil
-                NSLog("[FluidAudio] Parakeet TDT v3 загружен")
+                NSLog(
+                    "[FluidAudio] %@ загружен",
+                    variant == .parakeetV3 ? "Parakeet TDT v3" : "Fluid Speech Pro")
             } catch {
                 preparationTask = nil
                 throw error

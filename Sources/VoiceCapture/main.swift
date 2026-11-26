@@ -2,6 +2,44 @@ import AppKit
 import FluidAudio
 import Foundation
 
+// Fluid Speech Pro: model installation / file transcription without GUI.
+if CommandLine.arguments.contains("--fsp-download")
+    || CommandLine.arguments.contains("--fsp-file")
+{
+    let arguments = CommandLine.arguments
+    Task {
+        do {
+            if arguments.contains("--fsp-download") {
+                try await FluidSpeechProStore.installer.download { fraction, status in
+                    NSLog("[FSP install] %.0f%% %@", fraction * 100, status)
+                }
+            }
+            if let index = arguments.firstIndex(of: "--fsp-file") {
+                guard index + 1 < arguments.count else {
+                    throw GigaAMError.message("Укажите путь к аудиофайлу после --fsp-file")
+                }
+                let samples = try AudioConverter().resampleAudioFile(
+                    URL(fileURLWithPath: arguments[index + 1]))
+                let recognizer = FluidAudioRecognizer(variant: .fluidSpeechPro)
+                let loadStart = Date()
+                try await recognizer.prepare()
+                NSLog("[FSP] загрузка %.2f с", Date().timeIntervalSince(loadStart))
+                let start = Date()
+                let text = try await recognizer.transcribe(samples: samples)
+                print(text)
+                NSLog(
+                    "[FSP] %.2f с аудио за %.2f с", Double(samples.count) / 16000,
+                    Date().timeIntervalSince(start))
+            }
+            exit(0)
+        } catch {
+            NSLog("[FSP] %@", String(describing: error))
+            exit(1)
+        }
+    }
+    dispatchMain()
+}
+
 // Local file transcription / model installation, without microphone, clipboard or GUI lock.
 if CommandLine.arguments.contains("--gigaam-download")
     || CommandLine.arguments.contains("--gigaam-file")

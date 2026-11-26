@@ -1,4 +1,4 @@
-# VoiceCapture 3.6.1
+# VoiceCapture 3.7.0
 
 Нативное menu bar-приложение на **Swift + AppKit** для голосового ввода в macOS: зажимаешь выбранный хоткей (по умолчанию **⌘ + ⌃**), говоришь, отпускаешь — готовый текст вставляется в активное приложение.
 
@@ -7,10 +7,22 @@
 Главные возможности:
 
 - hold-to-talk с глобальным хоткеем;
-- локальные Whisper, NVIDIA Parakeet TDT v3, GigaAM v3 E2E RNNT и облачный Groq;
-- live-текст во время записи в режимах FluidAudio и GigaAM;
+- локальные Whisper, NVIDIA Parakeet TDT v3, Fluid Speech Pro, GigaAM v3 E2E RNNT и облачный Groq;
+- live-текст во время записи в режимах FluidAudio, Fluid Speech Pro и GigaAM;
 - Apple Translation без облачных API;
 - текущий список дел с плавающей шайбой поверх окон.
+
+## Что нового в 3.7.0
+
+- **Fluid Speech Pro** — новый локальный движок от FluidVoice Labs: дообученный Parakeet TDT v3 (0.63B, 25 языков, включая русский и украинский), пунктуация и регистр. По данным авторов — на ~20% меньше ошибок, чем у Parakeet v3, на не-английских языках.
+- Работает через тот же пайплайн FluidAudio: **live-текст во время записи**, финальный проход после отпускания хоткея, вставка, перевод через ⌥ и список дел через ⇧.
+- Выбор: **Настройки… → Распознавание → Fluid Speech Pro (Parakeet v3+ — live)** → **Скачать** (~652 MB) → **Сохранить**. Требуется **Apple Silicon + macOS 15+**.
+- Модель закреплена на ревизии [FluidVoice-Labs/fluid-speech-pro-coreml](https://huggingface.co/FluidVoice-Labs/fluid-speech-pro-coreml) (CC BY 4.0, «Fluid Speech Pro by FluidVoice») и хранится в подпапке `fluid-speech-pro` каталога моделей VoiceCapture. Обычный Parakeet v3 не затрагивается.
+- Ограничения: словарь как у Parakeet v3 — без «ё» (модель пишет «е»); Clean mode (удаление слов-паразитов моделью) в Core ML-сборке пока отсутствует; первая загрузка в Neural Engine ~9 с, дальше ~0,2 с.
+
+CLI без микрофона: `.build/release/VoiceCapture --fsp-download`, `.build/release/VoiceCapture --fsp-file <audio>`.
+
+[Скачать VoiceCapture 3.7.0 для macOS (Apple Silicon)](https://github.com/oiv-an/voice-capture-mac/releases/download/v3.7.0/VoiceCapture-3.7.0-macOS-arm64.zip) · [Описание релиза](RELEASE_NOTES_3.7.0.md)
 
 ## Что нового в 3.6.1
 
@@ -19,7 +31,7 @@
 - Обычные слова «ну», «вот», «как бы», одиночные «а» и латинское A сохраняются. Если после очистки ничего не осталось, вставка и создание задачи не выполняются, буфер не меняется.
 - Ограничение: фильтр видит текст, а не интонацию. Намеренно продиктованное междометие или совпадающая аббревиатура также могут быть удалены. Регистр оставшихся слов не переписывается; ошибки самого распознавания фильтр не исправляет.
 
-[Скачать VoiceCapture 3.6.1 для macOS (Apple Silicon)](https://github.com/oiv-an/voice-capture-mac/releases/download/v3.6.1/VoiceCapture-3.6.1-macOS-arm64.zip) · [Описание релиза](RELEASE_NOTES_3.6.1.md)
+[Описание релиза 3.6.1](RELEASE_NOTES_3.6.1.md)
 
 ## Что нового в 3.6.0
 

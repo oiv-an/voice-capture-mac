@@ -111,6 +111,13 @@ open dist/VoiceCapture.app
 
 ## 5. Модели распознавания
 
+### Fluid Speech Pro (3.7.0, backend `fluidSpeechPro`)
+
+- FluidVoice Labs, дообученный Parakeet TDT v3, CC BY 4.0. Core ML: `FluidVoice-Labs/fluid-speech-pro-coreml`, ревизия закреплена в `FluidSpeechProStore.swift`. macOS 15+.
+- Хранится в `~/Library/Application Support/VoiceCapture/Models/fluid-speech-pro`, скачивается своим installer'ом (staging + проверка загрузки MLModel), не через ModelHub.
+- Официальный путь (`.fluidParakeetPro` в форке altic-dev/FluidAudio) **отклонён** — зависимость не меняем. Модели грузим вручную в `AsrModels(... version: .v3)`; joint без top_k, поэтому `language:` в `transcribe` НЕ передавать.
+- Тот же live/final пайплайн, что и `.fluidAudio` (`FluidAudioRecognizer(variant: .fluidSpeechPro)`). CLI: `--fsp-download`, `--fsp-file <audio>`.
+
 ### FluidAudio / Parakeet TDT v3
 
 - Скачивается из окна настроек, размер около 500 MB.
