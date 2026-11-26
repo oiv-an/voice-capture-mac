@@ -75,6 +75,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         // Прогрев модели в фоне, чтобы первое распознавание не ждало загрузки 3 ГБ.
         prewarmRecognizer()
+
+        // Daily update check against GitHub Releases.
+        NotificationCenter.default.addObserver(
+            forName: Updater.willRelaunch, object: nil, queue: .main
+        ) { [weak self] _ in
+            MainActor.assumeIsolated {
+                self?.endFluidLiveSession()
+                self?.hotkeys.stop()
+            }
+        }
+        MainActor.assumeIsolated { Updater.shared.start() }
     }
 
     private func prewarmRecognizer() {
@@ -159,6 +170,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
             ?? "3.6.0"
         menu.addItem(NSMenuItem(title: "VoiceCapture \(version)", action: nil, keyEquivalent: ""))
+        if let update = MainActor.assumeIsolated({ Updater.shared.available }) {
+            let item = NSMenuItem(
+                title: "⬆︎ Доступно обновление \(update.version)…",
+                action: #selector(showUpdate), keyEquivalent: "")
+            item.target = self
+            menu.addItem(item)
+        }
         let todoState = settings.todoEnabled ? "включён" : "выключен"
         let todoItem = NSMenuItem(
             title: "Список дел: \(todoState)", action: #selector(toggleTodoFromMenu),
@@ -225,6 +243,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             NSMenuItem(
                 title: "Проверить доступ (Accessibility)", action: #selector(checkAccessibility),
                 keyEquivalent: ""))
+        let checkUpdates = NSMenuItem(
+            title: "Проверить обновления…", action: #selector(checkUpdates), keyEquivalent: "")
+        checkUpdates.target = self
+        menu.addItem(checkUpdates)
         menu.addItem(.separator())
         menu.addItem(
             NSMenuItem(title: "Перезапустить", action: #selector(restart), keyEquivalent: "r"))
@@ -892,6 +914,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         alert.informativeText =
             "Для глобальных горячих клавиш и авто-вставки разрешите VoiceCapture в Системные настройки → Конфиденциальность и безопасность → Универсальный доступ, затем перезапустите приложение."
         alert.runModal()
+    }
+
+    @objc private func checkUpdates() {
+        MainActor.assumeIsolated { Updater.shared.check(userInitiated: true) }
+    }
+
+    @objc private func showUpdate() {
+        MainActor.assumeIsolated { Updater.shared.showAvailable() }
     }
 
     @objc private func restart() {

@@ -75,6 +75,25 @@ if CommandLine.arguments.contains("--gigaam-download")
     dispatchMain()
 }
 
+// Headless self-update: `VoiceCapture --update-now` checks GitHub and installs a newer release.
+if CommandLine.arguments.contains("--update-now") {
+    Task { @MainActor in
+        do {
+            let release = try await Updater.fetchLatest()
+            guard Updater.isNewer(release.version, than: Updater.currentVersion) else {
+                print("Up to date: \(Updater.currentVersion)")
+                exit(0)
+            }
+            print("Updating \(Updater.currentVersion) → \(release.version)")
+            try await Updater.shared.install(release) { print($0) }
+        } catch {
+            print("Update failed: \(error.localizedDescription)")
+            exit(1)
+        }
+    }
+    dispatchMain()
+}
+
 let app = NSApplication.shared
 // Меню-бар приложение без иконки в Dock (как accessory).
 app.setActivationPolicy(.accessory)
