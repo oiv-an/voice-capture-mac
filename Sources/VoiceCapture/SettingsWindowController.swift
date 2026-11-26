@@ -363,7 +363,8 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate,
 
         modelPopup.isEnabled = whisperOn
         downloadButton.isEnabled = whisperOn || fluidOn
-        languagePopup.isEnabled = !fluidOn
+        // Fluid backends use «ru» to restore Russian words emitted in Latin; GigaAM is Russian-only.
+        languagePopup.isEnabled = backend != .gigaAM
         promptTextView.isEditable = whisperOn
         promptTextView.isSelectable = whisperOn
         groqKeyField.isEnabled = groqOn

@@ -429,7 +429,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                         samples: snapshot, preview: true)
                 } else {
                     text = try await self.fluidRecognizer(for: backend).transcribe(
-                        samples: snapshot)
+                        samples: snapshot, russian: self.settings.language == "ru")
                 }
                 await MainActor.run {
                     guard self.fluidSessionID == sessionID, self.recorder.isRecording else {
@@ -536,7 +536,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         Task { [weak self] in
             guard let self = self else { return }
             do {
-                let text = try await recognizer.transcribe(samples: samples)
+                let text = try await recognizer.transcribe(
+                    samples: samples, russian: settings.language == "ru")
                 await MainActor.run {
                     watchdog.cancel()
                     self.handleResult(text, settings: settings, source: source)

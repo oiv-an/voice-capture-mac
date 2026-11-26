@@ -54,11 +54,14 @@ final class FluidAudioRecognizer {
     }
 
     /// Распознаёт полный snapshot записи. Используется и для live-preview, и для финального текста.
-    func transcribe(samples: [Float]) async throws -> String {
+    /// `russian`: Latin words that are really Russian («Publicuj») are converted back to Cyrillic;
+    /// real English words and phrases are kept.
+    func transcribe(samples: [Float], russian: Bool = true) async throws -> String {
         guard !samples.isEmpty else { throw RecognizerError.emptyAudio }
         let result = try await engine.transcribe(samples: samples)
-        return Self.fixUnknownTokens(result.text)
-            .trimmingCharacters(in: .whitespacesAndNewlines)
+        var text = Self.fixUnknownTokens(result.text)
+        if russian { text = RussianLatinFixer.fix(text) }
+        return text.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     /// В словаре Parakeet v3 / Fluid Speech Pro нет ни «ё», ни кавычек — обе выдаются как `<unk>`.
