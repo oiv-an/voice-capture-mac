@@ -1,4 +1,4 @@
-# VoiceCapture 3.7.0
+# VoiceCapture 3.7.1
 
 Нативное menu bar-приложение на **Swift + AppKit** для голосового ввода в macOS: зажимаешь выбранный хоткей (по умолчанию **⌘ + ⌃**), говоришь, отпускаешь — готовый текст вставляется в активное приложение.
 
@@ -12,6 +12,13 @@
 - Apple Translation без облачных API;
 - текущий список дел с плавающей шайбой поверх окон.
 
+## Что нового в 3.7.1
+
+- Исправлено: кавычки больше не превращаются в «Ё» («ЁИё» → «И»). У Parakeet v3 и Fluid Speech Pro «ё» и кавычки приходят одним служебным токеном; теперь он разбирается по контексту и русскому словарю macOS: внутри слова — «ё», на краю — «ё» или кавычка, отдельно — кавычка.
+- Ограничение: эвристика. Пары реальных слов («все»/«всё») внутри цитаты решаются в пользу кавычки; редкие имена могут разобраться неверно.
+
+[Скачать VoiceCapture 3.7.1 для macOS (Apple Silicon)](https://github.com/oiv-an/voice-capture-mac/releases/download/v3.7.1/VoiceCapture-3.7.1-macOS-arm64.zip) · [Описание релиза](RELEASE_NOTES_3.7.1.md)
+
 ## Что нового в 3.7.0
 
 - **Fluid Speech Pro** — новый локальный движок от FluidVoice Labs: дообученный Parakeet TDT v3 (0.63B, 25 языков, включая русский и украинский), пунктуация и регистр. По данным авторов — на ~20% меньше ошибок, чем у Parakeet v3, на не-английских языках.
@@ -22,7 +29,7 @@
 
 CLI без микрофона: `.build/release/VoiceCapture --fsp-download`, `.build/release/VoiceCapture --fsp-file <audio>`.
 
-[Скачать VoiceCapture 3.7.0 для macOS (Apple Silicon)](https://github.com/oiv-an/voice-capture-mac/releases/download/v3.7.0/VoiceCapture-3.7.0-macOS-arm64.zip) · [Описание релиза](RELEASE_NOTES_3.7.0.md)
+[Описание релиза 3.7.0](RELEASE_NOTES_3.7.0.md)
 
 ## Что нового в 3.6.1
 

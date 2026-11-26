@@ -61,22 +61,10 @@ final class FluidAudioRecognizer {
             .trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
-    /// В словаре Parakeet v3 нет «ё»/«Ё» — модель выдаёт вместо них `<unk>`.
-    /// Возвращаем букву: «Ё» в начале предложения или перед заглавной, иначе «ё».
+    /// В словаре Parakeet v3 / Fluid Speech Pro нет ни «ё», ни кавычек — обе выдаются как `<unk>`.
+    /// Разбор по контексту и орфографическому словарю — в `UnknownTokenFixer`.
     static func fixUnknownTokens(_ text: String) -> String {
-        guard text.contains("<unk>") else { return text }
-        var out = ""
-        var rest = Substring(text)
-        while let range = rest.range(of: "<unk>") {
-            out += rest[..<range.lowerBound]
-            let prev = out.last(where: { !$0.isWhitespace })
-            let sentenceStart = prev == nil || ".!?…".contains(prev!)
-            let nextUpper = rest[range.upperBound...].first?.isUppercase ?? false
-            out += (sentenceStart || nextUpper) ? "Ё" : "ё"
-            rest = rest[range.upperBound...]
-        }
-        out += rest
-        return out
+        UnknownTokenFixer.fix(text)
     }
 
     private static func fluidProgressHandler(
